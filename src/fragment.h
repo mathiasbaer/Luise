@@ -14,7 +14,7 @@ public:
     // x and y in relation to rotation if in structure mode
     
     Fragment() {
-        //LFO iRotation = new LFO;
+        //*iRotation = new LFO();
         //iLength     = new LFO();
         
         opacity     = 0;
@@ -23,7 +23,7 @@ public:
     }
     
      
-    //LFO iRotation;
+    LFO iRotation;
     LFO iLength;
     
     LFO lfos[2];
