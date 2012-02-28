@@ -1,9 +1,9 @@
 #include "fragment.h"
 
 
-void Fragment::create(float _x, float _y) {
+void Fragment::create(float _x, float _y, int _id) {
    
-    
+    fragID = _id;
     fillColor.set(200,230,60);
     
     iRotation.setRange(PI/20);
@@ -21,7 +21,7 @@ void Fragment::create(float _x, float _y) {
     
 }
 
-void Fragment::update() {
+void Fragment::update(std::vector<Fragment> _fragments) {
     
     if( hasTarget || opacity > 0 ) {
         for ( int i=0; i<sizeof(lfos); i++ ) { lfos[i].update(); }
@@ -30,7 +30,9 @@ void Fragment::update() {
     
     // is in structure
     if( hasTarget ) {
-    /*    
+		Fragment target = _fragments[targetID];
+		
+		/*
         // current fragment
         ofVec2f v0 = position;
         // following this fragment
@@ -38,7 +40,8 @@ void Fragment::update() {
         
         // get desired position in structure => v1
         rotation = iRotation.value + target.rotation;
-        ofVec2f offset = new ofVec2f( cos(rotation), sin(rotation) );
+        ofVec2f offset;
+		offset.set( cos(rotation), sin(rotation) );
         offset.mult( offsetToTarget );
         v1.add( offset );
         
@@ -75,7 +78,8 @@ void Fragment::update() {
         force = new PVector(0,-1.5);
         force.add(vel);
         force.limit( 2 );
-     */
+		 */
+     
     }
     // free movement
     else {

@@ -18,12 +18,12 @@ public:
 	
 	// seperate create and build functions if existing
 	// structure needs to be rebuild or should have no children
-	//void create();
-	//void build( std::vector<Fragment> _fs );
-	//void destroy();
-	//FocusObject leader;
-	//std::vector<Fragment> children;
-	
+	void create(int _id);
+	void build( std::vector<Fragment> _fs );
+	void destroy();
+	FocusObject leader;
+	std::vector<Fragment> children;
+	int structID;
 	
 };
 

@@ -20,6 +20,7 @@ public:
         
         hasTarget       = false;
         isLeader        = false;
+		followsLeader	= false;
         
         childIndex      = 0;
         
@@ -31,7 +32,8 @@ public:
     };    
 
     void checkBoundries();
-    void setTarget( DisplayObject t );
+    void setTarget( int _ti );
+	void setTarget( int _ti, bool _leader );
     void clearTarget();
 	//void setStructure( Structure s );
     void setPosition( float x, float y );
@@ -48,9 +50,11 @@ public:
     ofVec2f     position, desired, vel, acc, force;
 	
 	//DisplayObject target;
+	int			targetID;
     
     bool        hasTarget;
     bool        isLeader;
+	bool		followsLeader;
     
     // position in structure
     int childIndex;

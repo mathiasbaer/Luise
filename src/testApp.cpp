@@ -42,7 +42,7 @@ void testApp::setup(){
     
     //Create Fragments
     for (int i=0; i<FRAGMENTNUMBER; i++) {
-        f.create(ofRandomWidth(),ofRandomHeight());
+        f.create(ofRandomWidth(),ofRandomHeight(), i);
         fragments.push_back(f);
     }
 
@@ -102,7 +102,7 @@ void testApp::update(){
     //Update Fragments
     int ln = fragments.size(); // faster
     for ( int i=0; i<ln; i++ ) {
-        fragments[i].update();
+        fragments[i].update(fragments);
     }
        
 }

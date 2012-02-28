@@ -22,8 +22,8 @@ public:
     // x and y in relation to rotation if in structure mode
     
     
-    void create(float _x, float _y);
-    void update();
+    void create(float _x, float _y, int _id);
+    void update(std::vector<Fragment> _fragments);
     void setPropertiesWithIndex( int _i );
     void draw();
     LFO iRotation;
@@ -31,6 +31,7 @@ public:
     LFO lfos[2];
     // appearance
     float opacity;
+	int fragID;
     
     
     

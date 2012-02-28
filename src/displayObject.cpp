@@ -12,12 +12,22 @@ void DisplayObject::checkBoundries() {
     
 }
 
-void DisplayObject::setTarget( DisplayObject t ) {
+void DisplayObject::setTarget( int _ti ) {
     
 	//target = t;
+	targetID = _ti;
     hasTarget = true;
-
 }
+
+void DisplayObject::setTarget( int _ti, bool _leader ) {
+    
+	//target = t;
+	targetID = _ti;
+	followsLeader = _leader;
+    hasTarget = true;
+	
+}
+
 
 void DisplayObject::clearTarget() {
     
