@@ -1,4 +1,3 @@
-/*
 #ifndef schirn_foyer_focusobject_h
 #define schirn_foyer_focusobject_h
 
@@ -14,7 +13,7 @@ public:
         isLeader = true;
 		position.set(ofRandomWidth(), 0);
     }
-    
+   
 	void create();
 	void update();
 	void draw();
@@ -23,4 +22,3 @@ public:
 
 
 #endif
-*/

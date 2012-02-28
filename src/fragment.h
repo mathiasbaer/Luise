@@ -1,7 +1,6 @@
 #ifndef schirn_foyer_fragment_h
 #define schirn_foyer_fragment_h
 
-
 #include "ofMain.h"
 #include "displayObject.h"
 #include "LFO.h"

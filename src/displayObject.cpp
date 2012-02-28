@@ -32,7 +32,7 @@ void DisplayObject::setStructure( Structure s ) {
     this.structure = s;
 
 }
- */
+*/
 
 void DisplayObject::setPosition( float x, float y ) {
     pos( x,y );

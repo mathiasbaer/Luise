@@ -2,10 +2,9 @@
 #define schirn_foyer_displayObject_h
 
 #include "ofMain.h"
-#include "Structure.h"
+//#include "Structure.h"
 
 class DisplayObject {
-    
  
 public:
     
