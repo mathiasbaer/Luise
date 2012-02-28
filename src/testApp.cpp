@@ -25,8 +25,8 @@ void testApp::setup(){
     
     //GUI
     gui.addTitle("screen settings");
-	gui.addSlider("screen start", scStart, 0, ofGetWidth()); 
-	gui.addSlider("screen end", scStop, 0, ofGetWidth()); 
+	gui.addSlider("screen start", scStart, -2000, 2000); 
+	gui.addSlider("screen end", scStop, -2000, 2000); 
     gui.addSlider("screen height", scHeight, -200, 1500); 
     
     //VideoSetup
@@ -139,7 +139,7 @@ void testApp::draw(){
     ofRectangle screenRect;
     screenRect.set(scStart, scHeight-hoehe, breite, hoehe);
 
-	if(setupMode) {
+	//if(setupMode) {
         //Draw Camera & Blobs
         ofSetHexColor(0xffffff);
 
@@ -156,7 +156,7 @@ void testApp::draw(){
         char reportStr[1024];
         sprintf(reportStr, "bg subtraction and blob detection\nthreshold %i \nnum blobs found %i, fps: %f", threshold, contourFinder.nBlobs, ofGetFrameRate());
         ofDrawBitmapString(reportStr, 20, 600);
-    }
+    //}
     
     //Streifen
     
