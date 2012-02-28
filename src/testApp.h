@@ -5,7 +5,14 @@
 #include "ofxOpenCv.h"
 
 #include "displayObject.h"
-#include "fragment.h"
+#include"fragment.h"
+
+//CONST
+#define RECORDPICTURES 8
+#define FRAGMENTNUMBER 500
+#define CAMWIDTH 320
+#define CAMHIGHT 240
+
 
 class testApp : public ofBaseApp{
 
@@ -23,6 +30,9 @@ class testApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);		
+    
+        //2 Bilder Addieren
+        unsigned char*  maxImage( ofxCvGrayscaleImage& mom, ofxCvGrayscaleImage& dad );
 
         ofVideoGrabber 		vidGrabber;
 
@@ -30,10 +40,13 @@ class testApp : public ofBaseApp{
         ofxCvColorImage			colorImg;
 
         ofxCvGrayscaleImage 	grayImage;
-		ofxCvGrayscaleImage 	grayBg;
 		ofxCvGrayscaleImage 	grayDiff;
 
         ofxCvContourFinder 	contourFinder;
+    
+        //Tracking
+        ofxCvGrayscaleImage     arrSavePictures[RECORDPICTURES];
+        ofxCvGrayscaleImage 	allDiff;
 
         bool speichern;
 		
@@ -48,6 +61,7 @@ class testApp : public ofBaseApp{
         int         scHeight;
 
         int         threshold;
+        int         blur;
     
 };
 

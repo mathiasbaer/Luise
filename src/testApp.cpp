@@ -4,25 +4,22 @@
 void testApp::setup(){
 
     vidGrabber.setVerbose(true);
-    vidGrabber.initGrabber(320,240);
+    vidGrabber.initGrabber(CAMWIDTH,CAMHIGHT);
 
 
-    colorImg.allocate(320,240);
-	grayImage.allocate(320,240);
-	grayBg.allocate(320,240);
-	grayDiff.allocate(320,240);
-
+    colorImg.allocate(CAMWIDTH,CAMHIGHT);
+	grayImage.allocate(CAMWIDTH,CAMHIGHT);
+	grayDiff.allocate(CAMWIDTH,CAMHIGHT);
+    allDiff.allocate(CAMWIDTH,CAMHIGHT);
+    
+    for (int i=0; i<RECORDPICTURES; i++) {
+        arrSavePictures[i].allocate(CAMWIDTH,CAMHIGHT);
+    }
+    
 	ofSetFrameRate(30);
     
     //Set Screen
     setupMode = true;
-    
-    //scStart = 0;
-    //scStop = ofGetWidth();
-    //scHeight = 100;    
-    
-    //threshold = 80;
-    
     speichern= false;
     
     
@@ -35,6 +32,7 @@ void testApp::setup(){
     //VideoSetup
 	gui.addTitle("video settings").setNewColumn(true);
 	gui.addSlider("threshold", threshold, 0, 200);
+    gui.addSlider("blur", blur, 0, 10);
     gui.addContent("gray diff", grayDiff);
     
     cout << "load settings from XLM" << endl;
@@ -43,7 +41,7 @@ void testApp::setup(){
     
     
     //Create Fragments
-    for (int i=0; i<500; i++) {
+    for (int i=0; i<FRAGMENTNUMBER; i++) {
         f.create(ofRandomWidth(),ofRandomHeight());
         fragments.push_back(f);
     }
@@ -54,7 +52,7 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
     
-    cout << ofNoise(ofGetElapsedTimef()) << endl;
+   
 	ofBackground(0);
 
     bool bNewFrame = false;
@@ -66,26 +64,40 @@ void testApp::update(){
 	if (bNewFrame){
 
 
-        colorImg.setFromPixels(vidGrabber.getPixels(), 320,240);
+        colorImg.setFromPixels(vidGrabber.getPixels(), CAMWIDTH,CAMHIGHT);
 
 
         grayImage = colorImg;
 		
 
 		// take the abs value of the difference between background and incoming and then threshold:
-		grayDiff.absDiff(grayBg, grayImage);
+		grayDiff.absDiff(allDiff, grayImage);
+       
+        grayDiff.blur(blur);
 		grayDiff.threshold(threshold);
-
+  
 		// find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
 		// also, find holes is set to true so we will get interior contours as well....
 		contourFinder.findContours(grayDiff, 20, (340*240)/3, 10, true);	// find holes
 	}
 
-    //Bild Speichern
-    if(speichern) {
-    grayBg = grayImage;	
-        speichern= false;
+    
+    //Save Picture
+    int picNr = ofGetFrameNum()%RECORDPICTURES;
+    arrSavePictures[picNr] = grayImage;
+    
+    ofxCvGrayscaleImage 	tmpGrayImg;
+    tmpGrayImg.allocate(CAMWIDTH, CAMHIGHT);
+    tmpGrayImg = grayDiff;
+    
+    for(int i=0;i<RECORDPICTURES;i++) {
+        unsigned char * mergePixels = maxImage(tmpGrayImg,arrSavePictures[i]);
+        tmpGrayImg.setFromPixels(mergePixels, CAMWIDTH, CAMHIGHT);
+        
     }
+    
+    allDiff = tmpGrayImg;
+    
     
     //Update Fragments
     int ln = fragments.size(); // faster
@@ -96,13 +108,34 @@ void testApp::update(){
 }
 
 //--------------------------------------------------------------
+//Die Funktion ist noch nicht optimal, aber funktioniert schon... besser wŠre, wenn man direkt das Bilderarray Ÿbergibt und er alle Bilder addiert...
+unsigned char* testApp::maxImage( ofxCvGrayscaleImage& mom, ofxCvGrayscaleImage& dad ) {
+
+    int totalPixels = mom.width * mom.height;  
+    unsigned char * momPixels = mom.getPixels();  
+    unsigned char * dadPixels = dad.getPixels();  
+    
+    for(int i=0; i<totalPixels; i++) {  
+        momPixels[i] = std::max(momPixels[i],dadPixels[i]);
+    }
+    
+    return momPixels;
+
+    
+}
+
+//--------------------------------------------------------------
 void testApp::draw(){
 
     ofSetHexColor(0xffffff);
+
+   //allDiff.draw(0, 100);
     
-    
+   
+    float ch = CAMHIGHT;
+    float cw = CAMWIDTH;
     int breite = scStop-scStart;
-    int hoehe = (int) ((3.0f/4.0f)*breite);
+    int hoehe = (int) ((ch/cw)*breite);
     ofRectangle screenRect;
     screenRect.set(scStart, scHeight-hoehe, breite, hoehe);
 
@@ -130,8 +163,8 @@ void testApp::draw(){
     ofSetColor(255, 0, 0, 50);
     for (int i = 0; i < contourFinder.nBlobs; i++){
         ofxCvBlob tmpBlob = contourFinder.blobs[i];
-        int blobXMapped = ofMap(tmpBlob.centroid.x, 0, 320, scStart, scStop);
-        int blobTopMapped = ofMap(tmpBlob.boundingRect.y, 0, 240, 0, screenRect.height);
+        int blobXMapped = ofMap(tmpBlob.centroid.x, 0, CAMWIDTH, scStart, scStop);
+        int blobTopMapped = ofMap(tmpBlob.boundingRect.y, 0, CAMHIGHT, 0, screenRect.height);
         
         ofFill();
         ofRect(blobXMapped, 0, 20, scHeight-blobTopMapped);
