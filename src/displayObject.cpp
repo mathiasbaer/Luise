@@ -14,7 +14,7 @@ void DisplayObject::checkBoundries() {
 
 void DisplayObject::setTarget( DisplayObject t ) {
     
-   // target = t;
+	//target = t;
     hasTarget = true;
 
 }
@@ -26,11 +26,13 @@ void DisplayObject::clearTarget() {
     
 }
 
-//void DisplayObject::setStructure( Structure s ) {
+/*
+void DisplayObject::setStructure( Structure s ) {
 
-    //this.structure = s;
+    this.structure = s;
 
-//}
+}
+ */
 
 void DisplayObject::setPosition( float x, float y ) {
     pos( x,y );

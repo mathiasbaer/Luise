@@ -5,7 +5,9 @@
 #include "ofxOpenCv.h"
 
 #include "displayObject.h"
-#include"fragment.h"
+#include "fragment.h"
+#include "Structure.h"
+//#include "FocusObject.h"
 
 //CONST
 #define RECORDPICTURES 8
@@ -53,6 +55,9 @@ class testApp : public ofBaseApp{
         //Fragmente Std Vector class..
         Fragment f;
         std::vector<Fragment> fragments;
+	
+		//Structure structure;
+		//std::vector<Structure> structures;
         
         //Setup Screen
         bool        setupMode;

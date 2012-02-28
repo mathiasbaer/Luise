@@ -3,29 +3,30 @@
 	23C5B06314FC05BD00FE80C6 /* displayObject.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {730, 1041}}";
-			sepNavSelRange = "{510, 0}";
-			sepNavVisRange = "{0, 921}";
+			sepNavSelRange = "{558, 0}";
+			sepNavVisRange = "{0, 910}";
 		};
 	};
 	23C5B06514FC05D500FE80C6 /* displayObject.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {730, 1041}}";
-			sepNavSelRange = "{498, 0}";
-			sepNavVisRange = "{0, 1434}";
+			sepNavSelRange = "{483, 0}";
+			sepNavVisRange = "{0, 1453}";
+			sepNavWindowFrame = "{{38, 319}, {1068, 833}}";
 		};
 	};
 	23C5B07114FC14BD00FE80C6 /* fragment.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {730, 1041}}";
-			sepNavSelRange = "{657, 0}";
-			sepNavVisRange = "{0, 667}";
+			sepNavIntBoundsRect = "{{0, 0}, {558, 559}}";
+			sepNavSelRange = "{131, 0}";
+			sepNavVisRange = "{0, 657}";
 		};
 	};
 	23C5B07214FC14C700FE80C6 /* fragment.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {730, 2366}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1888}";
+			sepNavIntBoundsRect = "{{0, 0}, {730, 2262}}";
+			sepNavSelRange = "{0, 21}";
+			sepNavVisRange = "{1478, 2319}";
 		};
 	};
 	23C5B07514FC178D00FE80C6 /* LFO.h */ = {
@@ -189,15 +190,47 @@
 		fRef = 23C5B06314FC05BD00FE80C6 /* displayObject.cpp */;
 		name = "displayObject.cpp: 23";
 		rLen = 0;
-		rLoc = 510;
+		rLoc = 507;
 		rType = 0;
 		vrLen = 921;
 		vrLoc = 0;
+	};
+	99F0C68714FD3AFB00DA1372 /* Structure.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {730, 1041}}";
+			sepNavSelRange = "{2, 0}";
+			sepNavVisRange = "{0, 494}";
+		};
+	};
+	99F0C68814FD3AFB00DA1372 /* Structure.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {730, 1041}}";
+			sepNavSelRange = "{424, 0}";
+			sepNavVisRange = "{0, 424}";
+		};
+	};
+	99F0C68A14FD3F4100DA1372 /* FocusObject.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {730, 1041}}";
+			sepNavSelRange = "{370, 0}";
+			sepNavVisRange = "{0, 370}";
+			sepNavWindowFrame = "{{15, 340}, {1068, 833}}";
+		};
+	};
+	99F0C68B14FD3F4100DA1372 /* FocusObject.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {730, 1041}}";
+			sepNavSelRange = "{127, 0}";
+			sepNavVisRange = "{0, 127}";
+		};
 	};
 	E4B69B4C0A3A1720003C02F2 /* Project object */ = {
 		activeBuildConfigurationName = Debug;
 		activeExecutable = 9949C6B714FC274500371963 /* schirn_foyer */;
 		activeTarget = E4B69B5A0A3A1756003C02F2 /* schirn_foyer */;
+		addToTargets = (
+			E4B69B5A0A3A1756003C02F2 /* schirn_foyer */,
+		);
 		codeSenseManager = 9949C6D814FC276600371963 /* Code sense */;
 		executables = (
 			9949C6B714FC274500371963 /* schirn_foyer */,
@@ -278,15 +311,15 @@
 	E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {730, 3289}}";
-			sepNavSelRange = "{566, 0}";
+			sepNavSelRange = "{1216, 23}";
 			sepNavVisRange = "{0, 2052}";
 		};
 	};
 	E4B69E1F0A3A1BDC003C02F2 /* testApp.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {730, 1041}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1466}";
+			sepNavSelRange = "{1333, 0}";
+			sepNavVisRange = "{0, 1585}";
 		};
 	};
 	E4EB691F138AFCF100A09F29 /* CoreOF.xcconfig */ = {

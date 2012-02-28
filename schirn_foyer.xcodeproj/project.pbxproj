@@ -36,6 +36,8 @@
 		9949C6B414FC274500371963 /* ofxCvImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9949C6A214FC274500371963 /* ofxCvImage.cpp */; };
 		9949C6B514FC274500371963 /* ofxCvHaarFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9949C6A414FC274500371963 /* ofxCvHaarFinder.cpp */; };
 		9949C6B614FC274500371963 /* ofxCvShortImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9949C6A714FC274500371963 /* ofxCvShortImage.cpp */; };
+		99F0C68914FD3AFB00DA1372 /* Structure.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99F0C68814FD3AFB00DA1372 /* Structure.cpp */; };
+		99F0C68C14FD3F4100DA1372 /* FocusObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99F0C68B14FD3F4100DA1372 /* FocusObject.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -158,6 +160,10 @@
 		9949C6A714FC274500371963 /* ofxCvShortImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxCvShortImage.cpp; path = ../../../addons/ofxOpenCv/src/ofxCvShortImage.cpp; sourceTree = SOURCE_ROOT; };
 		9949C6A814FC274500371963 /* ofxCvShortImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxCvShortImage.h; path = ../../../addons/ofxOpenCv/src/ofxCvShortImage.h; sourceTree = SOURCE_ROOT; };
 		9949C6A914FC274500371963 /* ofxOpenCv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxOpenCv.h; path = ../../../addons/ofxOpenCv/src/ofxOpenCv.h; sourceTree = SOURCE_ROOT; };
+		99F0C68714FD3AFB00DA1372 /* Structure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Structure.h; sourceTree = "<group>"; };
+		99F0C68814FD3AFB00DA1372 /* Structure.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Structure.cpp; sourceTree = "<group>"; };
+		99F0C68A14FD3F4100DA1372 /* FocusObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FocusObject.h; sourceTree = "<group>"; };
+		99F0C68B14FD3F4100DA1372 /* FocusObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FocusObject.cpp; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -431,6 +437,10 @@
 				23C5B06514FC05D500FE80C6 /* displayObject.h */,
 				23C5B07114FC14BD00FE80C6 /* fragment.h */,
 				23C5B07214FC14C700FE80C6 /* fragment.cpp */,
+				99F0C68714FD3AFB00DA1372 /* Structure.h */,
+				99F0C68814FD3AFB00DA1372 /* Structure.cpp */,
+				99F0C68A14FD3F4100DA1372 /* FocusObject.h */,
+				99F0C68B14FD3F4100DA1372 /* FocusObject.cpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -559,6 +569,8 @@
 				23505DBE14FBB88D009A4B03 /* ofxXmlSettings.cpp in Sources */,
 				23C5B06414FC05BD00FE80C6 /* displayObject.cpp in Sources */,
 				23C5B07314FC14C700FE80C6 /* fragment.cpp in Sources */,
+				99F0C68914FD3AFB00DA1372 /* Structure.cpp in Sources */,
+				99F0C68C14FD3F4100DA1372 /* FocusObject.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
