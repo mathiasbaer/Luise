@@ -1,13 +1,23 @@
 #ifndef LFO_1
 #define LFO_1
 
-
 #include "ofMain.h"
 
 class LFO {
     
 public:
+   
+    float radians;
+    float speed;
     
+    // result
+    float value;
+    float baseValue;
+    float minValue;
+    float maxValue;
+    
+    //----------------------------------------
+   
     LFO() {
         radians = 0;
         speed = 0;
@@ -21,35 +31,24 @@ public:
         maxValue = 0; 
     }
     
-    void setRange ( float r );
-    void update ();
+    //----------------------------------------
     
-    float radians;
-    float speed;
+    void setRange( float r ) {
+        range    =  r;
+        minValue = -r/2;
+        maxValue =  r/2;
+    }
     
-    // result
-    float value;
-    float baseValue;
-    float minValue;
-    float maxValue;
+    void update () {
+        radians += speed;
+        //value = ( sin(radians) * maxValue ) * 2 + minValue + baseValue;
+        value = ( (sin(radians) + 1) / 2 ) * range + minValue + baseValue;
+    }
 
 private:
     float range;
     
 };
-
-
-void LFO::setRange ( float r ) {
-    range    =  r;
-    minValue = -r/2;
-    maxValue =  r/2;
-}
-
-void LFO::update () {
-    radians += speed;
-    //this.value = ( sin(this.radians) * maxValue ) * 2 + minValue + baseValue;
-    value = ( (sin(radians) + 1) / 2 ) * range + minValue + baseValue;
-}
 
 
 #endif

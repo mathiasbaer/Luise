@@ -41,6 +41,14 @@ void testApp::setup(){
     gui.loadFromXML();
 	gui.show();
     
+    
+    //Create Fragments
+    for (int i=0; i<500; i++) {
+        f.create(ofRandomWidth(),ofRandomHeight());
+        fragments.push_back(f);
+    }
+
+    
 }
 
 //--------------------------------------------------------------
@@ -78,8 +86,13 @@ void testApp::update(){
     grayBg = grayImage;	
         speichern= false;
     }
-
     
+    //Update Fragments
+    int ln = fragments.size(); // faster
+    for ( int i=0; i<ln; i++ ) {
+        fragments[i].update();
+    }
+       
 }
 
 //--------------------------------------------------------------
@@ -123,13 +136,20 @@ void testApp::draw(){
         ofFill();
         ofRect(blobXMapped, 0, 20, scHeight-blobTopMapped);
     }
-    
-    
-    
-    
+
     
     //GUI
     gui.draw();
+    
+    
+    if(!setupMode) {
+        //Draw Fragments
+        int ln = fragments.size(); // faster
+        for ( int i=0; i<ln; i++ ) {
+            fragments[i].draw();
+        }
+    }
+
 
 }
 

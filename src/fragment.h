@@ -10,27 +10,30 @@ class Fragment: public DisplayObject {
     
 public:
     
-    // Interpolations
-    // x and y in relation to rotation if in structure mode
-    
-    Fragment() {
+    Fragment(): DisplayObject() {
         
         lfos[0] = iRotation;
         lfos[1] = iLength;
         
         opacity     = 0;
-    
+        
     }
     
-     
+    // Interpolations
+    // x and y in relation to rotation if in structure mode
+    
+    
+    void create(float _x, float _y);
+    void update();
+    void setPropertiesWithIndex( int _i );
+    void draw();
     LFO iRotation;
     LFO iLength;
-    
     LFO lfos[2];
-    
-    
     // appearance
     float opacity;
+    
+    
     
 };
 

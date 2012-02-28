@@ -5,6 +5,7 @@
 
 class DisplayObject {
     
+ 
 public:
     
     DisplayObject() {
@@ -22,12 +23,12 @@ public:
         
         childIndex      = 0;
         
-        mColor.r        = 255;
-        mColor.g        = 255;  
-        mColor.b        = 255;  
-        mColor.a        = 255;  
+        fillColor.r        = 255;
+        fillColor.g        = 255;  
+        fillColor.b        = 255;  
+        fillColor.a        = 255;  
         
-    };
+    };    
 
     void checkBoundries();
     void setTarget( DisplayObject t );
@@ -55,7 +56,7 @@ public:
     //Structure structure;
     //DisplayObject target;
     
-    ofColor     mColor;
+    ofColor     fillColor;
     
     
 private: 

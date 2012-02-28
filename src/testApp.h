@@ -5,6 +5,7 @@
 #include "ofxOpenCv.h"
 
 #include "displayObject.h"
+#include "fragment.h"
 
 class testApp : public ofBaseApp{
 
@@ -36,7 +37,9 @@ class testApp : public ofBaseApp{
 
         bool speichern;
 		
-        //std::vector<teilchen> fragments;
+        //Fragmente Std Vector class..
+        Fragment f;
+        std::vector<Fragment> fragments;
         
         //Setup Screen
         bool        setupMode;
