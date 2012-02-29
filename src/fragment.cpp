@@ -109,9 +109,7 @@ void Fragment::update() {
     }
     
     // reset rotation for next fragment
-	cout << rotation << "---" ;
     rotation -= iRotation.baseValue;
-	cout << rotation << endl;
 	
     length = iLength.value;
     
@@ -152,42 +150,21 @@ void Fragment::draw() {
          }
          */
         
-        /*
-        int con = 0;
-        
-        for (int i=0; i<structure.numChildren; i++) {
-            Fragment f = structure.children[i];
-            if (f!=this && con < 5) {
-                PVector p = new PVector(f.position.x - position.x, f.position.y - position.y);
-                float dist = PVector.sub(this.position,f.position).mag();
-                if (dist<100 && opacity < 0.8) {
-                    con++;
-                    float op = (1-dist/100);
-                    if (op>opacity) op = opacity;
-                    stroke(fillColor, op*250);
-                    line(0,0,p.x,p.y); 
-                }
-            }
-        }
-         */
-        
-        //glRotate produces a rotation of angle degrees around the vector 
-        glRotatef(PI/2,1,1,1);
         
         /*
          fill(fillColor);
          rect(-abs(d.x)/2,-length,abs(d.x),length);
          */
         
-		/*
+		
         ofSetColor(c, opacity*255/4);
         ofSetLineWidth(4);
-        ofLine(-length*3,0, length/2,0);
+        ofLine(0,-length*3, 0,length/2);
         
         ofSetColor(c, opacity*255/1.5);
         ofSetLineWidth(2);
-        ofLine(-length/2,0, length/2,0);
-		 */
+        ofLine(0,-length/2, 0,length/2);
+		
     }
     
 //    noStroke();

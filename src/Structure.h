@@ -22,6 +22,7 @@ public:
 	void addChildren( std::vector<Fragment*> _fs );
 	void destroy();
 	void update(float _x, float _y);
+	void draw();
     
 	FocusObject leader;
 	std::vector<Fragment*> children;

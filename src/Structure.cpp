@@ -25,7 +25,6 @@ void Structure::setBindings() {
 			// same as fragment. pass structure id and true for follow leader
 			child->setTarget( &leader );
 		}
-		
 		child->setPropertiesWithIndex( i );
     }
 }
@@ -39,6 +38,28 @@ void Structure::addChildren( std::vector<Fragment*> _fs ) {
 	setBindings();
 }
 
+void Structure::draw() {
+	
+	int ln = children.size();
+	
+	for (int i=0; i<ln-1; i++) {
+		Fragment* f0 = children[i];
+		
+		for (int j=i+1; j<ln; j++) {
+			Fragment* f1 = children[j];
+			
+			float dist = f0->position.distance(f1->position);
+			
+			if (dist<100 && f0->opacity < 0.8) {
+				float op = (1-dist/100);
+				if (op>f0->opacity) op = f0->opacity;
+				ofSetColor(f0->fillColor, op*250);
+				ofLine(f0->position.x,f0->position.y,f1->position.x,f1->position.y); 
+			}
+		}
+	}
+}
+
 void Structure::update(float _x, float _y) {
 	leader.update(_x, _y);
 }
@@ -49,6 +70,4 @@ void Structure::destroy() {
     //for ( int i=0; i<children.length; i++ ) {
     //    children[i].clearTarget();
     //} 
-    
-    
 }
