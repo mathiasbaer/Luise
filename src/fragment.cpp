@@ -179,6 +179,7 @@ void Fragment::draw() {
          rect(-abs(d.x)/2,-length,abs(d.x),length);
          */
         
+		/*
         ofSetColor(c, opacity*255/4);
         ofSetLineWidth(4);
         ofLine(-length*3,0, length/2,0);
@@ -186,6 +187,7 @@ void Fragment::draw() {
         ofSetColor(c, opacity*255/1.5);
         ofSetLineWidth(2);
         ofLine(-length/2,0, length/2,0);
+		 */
     }
     
 //    noStroke();
