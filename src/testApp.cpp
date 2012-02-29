@@ -88,6 +88,7 @@ void testApp::update(){
 	}
 
     /*
+     
     /////////////////////////////////////////////////
     // Tracking 
     // blobs
@@ -138,10 +139,30 @@ void testApp::update(){
                 nearestID = n;
             }
         }    
-        trackingPoints[i].update(m_blobs[nearestID].centroid);
+        
+        int ln_blobIDs = blobIDs.size();
+        bool foundBlobID = false;
+        for (int n = 0; n < ln_blobIDs; n++) {
+            if(blobIDs[n] == nearestID) {
+                foundBlobID = true;
+                break;
+            }
+        }
+        
+        if(foundBlobID) {
+            //Blob wird schon von TrackPoint verfolgt..
+            //Delete trackingPoint
+            trackingPoints.erase(i);
+            i--;
+            
+        }
+        else {
+            trackingPoints[i].update(m_blobs[nearestID].centroid);   
+        }
+        
     }
-
-    */
+*/
+    
     
     
     
