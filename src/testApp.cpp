@@ -91,7 +91,7 @@ void testApp::update(){
 		contourFinder.findContours(grayDiff, 20, (340*240)/3, 10, true);	// find holes
 	}
 
-    /*
+    
     /////////////////////////////////////////////////
     // Tracking 
     // blobs
@@ -142,10 +142,29 @@ void testApp::update(){
                 nearestID = n;
             }
         }    
-        trackingPoints[i].update(m_blobs[nearestID].centroid);
+        
+        
+        int ln_blobIDs = blobIDs.size();
+        bool foundBlobID = false;
+        for (int n = 0; n < ln_blobIDs; n++) {
+            if(blobIDs[n] == nearestID) {
+                foundBlobID = true;
+                break;
+            }
+        }
+        
+        if(foundBlobID) {
+            //Blob wird schon von TrackPoint verfolgt..
+            //Delete trackingPoint
+            trackingPoints.erase(trackingPoints.begin() + i);
+            i--;
+        }
+        else {
+            trackingPoints[i].update(m_blobs[nearestID].centroid); 
+        }
     }
 
-    */
+
     
     
     
@@ -180,7 +199,7 @@ void testApp::update(){
 	for (int i=0; i<ln; i++) {
 		// pass trackingpoint coordinates
 		// how to find tracking point?â
-        structures[i].update(mouseX, mouseY);
+        structures[i].update((float) mouseX, (float) mouseY);
 	}
        
     //Tracking
