@@ -88,7 +88,6 @@ void testApp::update(){
 	}
 
     /*
-     
     /////////////////////////////////////////////////
     // Tracking 
     // blobs
@@ -139,30 +138,10 @@ void testApp::update(){
                 nearestID = n;
             }
         }    
-        
-        int ln_blobIDs = blobIDs.size();
-        bool foundBlobID = false;
-        for (int n = 0; n < ln_blobIDs; n++) {
-            if(blobIDs[n] == nearestID) {
-                foundBlobID = true;
-                break;
-            }
-        }
-        
-        if(foundBlobID) {
-            //Blob wird schon von TrackPoint verfolgt..
-            //Delete trackingPoint
-            trackingPoints.erase(i);
-            i--;
-            
-        }
-        else {
-            trackingPoints[i].update(m_blobs[nearestID].centroid);   
-        }
-        
+        trackingPoints[i].update(m_blobs[nearestID].centroid);
     }
-*/
-    
+
+    */
     
     
     
@@ -197,7 +176,7 @@ void testApp::update(){
 	for (int i=0; i<ln; i++) {
 		// pass trackingpoint coordinates
 		// how to find tracking point?â
-        // structures[i].update(1.0f,1.0f);
+        structures[i].update(mouseX, mouseY);
 	}
        
     //Tracking
@@ -253,7 +232,7 @@ void testApp::draw(){
     ofRectangle screenRect;
     screenRect.set(scStart, scHeight-hoehe, breite, hoehe);
 
-	//if(setupMode) {
+	if(setupMode) {
         //Draw Camera & Blobs
         ofSetHexColor(0xffffff);
 
@@ -270,7 +249,7 @@ void testApp::draw(){
         char reportStr[1024];
         sprintf(reportStr, "bg subtraction and blob detection\nthreshold %i \nnum blobs found %i, fps: %f", threshold, contourFinder.nBlobs, ofGetFrameRate());
         ofDrawBitmapString(reportStr, 20, 600);
-    //}
+    }
     
     //Streifen
     
@@ -343,7 +322,7 @@ void testApp::keyPressed(int key){
             break;
 		case 'p':
             //startTracking = true;
-			createStructure(200, 600, 30);
+			createStructure(200, 600, 70);
 			break;
         case ' ':
             savePic = true;
