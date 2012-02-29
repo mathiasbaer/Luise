@@ -87,6 +87,39 @@ void testApp::update(){
 		contourFinder.findContours(grayDiff, 20, (340*240)/3, 10, true);	// find holes
 	}
 
+    //Tracking
+    lastBlobs
+    
+    
+    int nb_counter = 0;
+	
+	n_blobs.clear();
+	
+	for (int i = 0; i < bFinder.nBlobs; i++) {
+		ofxCvBlob tmpBlob = bFinder.blobs[i];
+		
+		bool newblob = true;
+		for (int a=0; a< m_blobs.size(); ++a) {
+			if(ABS(m_blobs[a].centroid.x-tmpBlob.centroid.x)<20 
+			   && ABS(m_blobs[i].centroid.y-tmpBlob.centroid.y)<20 ) {
+				newblob = false;
+			}	
+		}
+		if(newblob == true) {
+			n_blobs.push_back(tmpBlob);
+		}
+	}
+	
+	m_blobs.clear();
+	
+	for (int i = 0; i< bFinder.nBlobs; i++) {
+		ofxCvBlob tmpBlob = bFinder.blobs[i];
+		m_blobs.push_back(tmpBlob);
+	}
+    
+    
+    
+    
     if(savePic) { allDiff = grayImage; savePic = false; }
     
     /*

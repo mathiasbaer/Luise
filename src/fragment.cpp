@@ -165,7 +165,7 @@ void Fragment::draw() {
                     float op = (1-dist/100);
                     if (op>opacity) op = opacity;
                     stroke(fillColor, op*250);
-                    line(0,0,p.x,p.y);
+                    line(0,0,p.x,p.y); 
                 }
             }
         }
