@@ -29,6 +29,7 @@
 		23505DBE14FBB88D009A4B03 /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23505DA714FBB88D009A4B03 /* ofxXmlSettings.cpp */; };
 		23C5B06414FC05BD00FE80C6 /* displayObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C5B06314FC05BD00FE80C6 /* displayObject.cpp */; };
 		23C5B07314FC14C700FE80C6 /* fragment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C5B07214FC14C700FE80C6 /* fragment.cpp */; };
+		990C105214FE7E17004DA0F7 /* TrackingPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 990C105114FE7E17004DA0F7 /* TrackingPoint.cpp */; };
 		9949C6B014FC274500371963 /* ofxCvColorImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9949C69914FC274500371963 /* ofxCvColorImage.cpp */; };
 		9949C6B114FC274500371963 /* ofxCvContourFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9949C69C14FC274500371963 /* ofxCvContourFinder.cpp */; };
 		9949C6B214FC274500371963 /* ofxCvFloatImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9949C69E14FC274500371963 /* ofxCvFloatImage.cpp */; };
@@ -142,6 +143,8 @@
 		23C5B07114FC14BD00FE80C6 /* fragment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fragment.h; sourceTree = "<group>"; };
 		23C5B07214FC14C700FE80C6 /* fragment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fragment.cpp; sourceTree = "<group>"; };
 		23C5B07514FC178D00FE80C6 /* LFO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFO.h; sourceTree = "<group>"; };
+		990C105014FE7E17004DA0F7 /* TrackingPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackingPoint.h; sourceTree = "<group>"; };
+		990C105114FE7E17004DA0F7 /* TrackingPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackingPoint.cpp; sourceTree = "<group>"; };
 		9949C69814FC274500371963 /* ofxCvBlob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxCvBlob.h; path = ../../../addons/ofxOpenCv/src/ofxCvBlob.h; sourceTree = SOURCE_ROOT; };
 		9949C69914FC274500371963 /* ofxCvColorImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxCvColorImage.cpp; path = ../../../addons/ofxOpenCv/src/ofxCvColorImage.cpp; sourceTree = SOURCE_ROOT; };
 		9949C69A14FC274500371963 /* ofxCvColorImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxCvColorImage.h; path = ../../../addons/ofxOpenCv/src/ofxCvColorImage.h; sourceTree = SOURCE_ROOT; };
@@ -441,6 +444,8 @@
 				99F0C68814FD3AFB00DA1372 /* Structure.cpp */,
 				99F0C68A14FD3F4100DA1372 /* FocusObject.h */,
 				99F0C68B14FD3F4100DA1372 /* FocusObject.cpp */,
+				990C105014FE7E17004DA0F7 /* TrackingPoint.h */,
+				990C105114FE7E17004DA0F7 /* TrackingPoint.cpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -571,6 +576,7 @@
 				23C5B07314FC14C700FE80C6 /* fragment.cpp in Sources */,
 				99F0C68914FD3AFB00DA1372 /* Structure.cpp in Sources */,
 				99F0C68C14FD3F4100DA1372 /* FocusObject.cpp in Sources */,
+				990C105214FE7E17004DA0F7 /* TrackingPoint.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

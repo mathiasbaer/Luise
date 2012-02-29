@@ -19,7 +19,6 @@ public:
         
         hasTarget       = false;
         isLeader        = false;
-		followsLeader	= false;
         
         childIndex      = 0;
         
@@ -31,8 +30,8 @@ public:
     };    
 
     void checkBoundries();
-    virtual void setTarget() {};
     void clearTarget();
+	void setTarget( DisplayObject* _t );
 	//void setStructure( Structure s );
     void setPosition( float x, float y );
     void setPosition( int x, int y );
@@ -51,7 +50,6 @@ public:
     
     bool            hasTarget;
     bool            isLeader;
-	bool            followsLeader;
     
     // position in structure
     int             childIndex;

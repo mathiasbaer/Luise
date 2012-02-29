@@ -1,6 +1,6 @@
 #include "Structure.h"
 
-void Structure::build( float _posX, float _posY, std::vector<Fragment*> _fs ) {
+void Structure::create( float _posX, float _posY, std::vector<Fragment*> _fs ) {
     
     
 	children = _fs;
@@ -8,22 +8,24 @@ void Structure::build( float _posX, float _posY, std::vector<Fragment*> _fs ) {
     //zufall
     //leader.attach();
     //positionierung
+	
     leader.attach(_posX, _posY);
 	    
 	int vecLength = children.size();
-	
-    for ( int i=0; i<vecLength; i++ ) {
+	for ( int i=0; i<vecLength; i++ ) {
 		
 		Fragment* child = children[i];
 		
-		if (i > 0)
+		if (i > 0) {
 			// pass fragment id because passing a fragment object does not work
             child->setTarget( children[i-1] );
-		else
+		} else {
 			// same as fragment. pass structure id and true for follow leader
-			child->setTarget( &leader, true );
+			child->setTarget( &leader );
+		}
 		
 		child->setPropertiesWithIndex( i );
+		 
     }
     
 }

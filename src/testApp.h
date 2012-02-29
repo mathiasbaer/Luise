@@ -8,10 +8,11 @@
 #include "fragment.h"
 #include "Structure.h"
 //#include "FocusObject.h"
+#include "TrackingPoint.h"
 
 //CONST
 #define RECORDPICTURES 8
-#define FRAGMENTNUMBER 500
+#define FRAGMENTNUMBER 30
 #define CAMWIDTH 320
 #define CAMHIGHT 240
 
@@ -53,12 +54,15 @@ class testApp : public ofBaseApp{
 
         bool speichern;
 		
-        //Fragmente Std Vector class..
+        //Fragmente
         Fragment tmpFragment;
-        std::vector<Fragment> fragments;
+        Fragment fragments[FRAGMENTNUMBER];
 	
 		Structure tmpStructure;
 		std::vector<Structure> structures;
+	
+		TrackingPoint tmpTrackingPoint;
+		std::vector<TrackingPoint> trackingPoints;
         
         //Setup Screen
         bool        setupMode;

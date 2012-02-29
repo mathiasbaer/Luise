@@ -20,43 +20,27 @@ void Fragment::create(float _x, float _y) {
     
 }
 
-void Fragment::setTarget( Fragment * _ti ) {
-   
-	target = _ti;
-    hasTarget = true;
-}
-
-void Fragment::setTarget( Fragment * _ti, bool _leader ) {
-    
-	target = _ti;
-	followsLeader = _leader;
-    hasTarget = true;
-	
-}
-
-void Fragment::setTarget( FocusObject * _ti, bool _leader ) {
-    
-	target = _ti;
-	followsLeader = _leader;
-    hasTarget = true;
-	
-}
-
 void Fragment::update() {
     
     if( hasTarget || opacity > 0 ) {
-        for ( int i=0; i<sizeof(lfos); i++ ) { lfos[i].update(); }
+		
+		
+		iRotation.update();
+        iLength.update();
+		
+//        for ( int i=0; i<sizeof(lfos); i++ ) { lfos[i].update(); }
     }
  
     
     // is in structure
     if( hasTarget ) {
 		
+		//cout << target->po << endl;
 		
         // current fragment
         ofVec2f v0 = position;
         // following this fragment
-        ofVec2f v1 = target->desired;
+		ofVec2f v1 = target->position;
         
         
         // get desired position in structure => v1
@@ -73,6 +57,8 @@ void Fragment::update() {
         targetDistance = d;
         
         if (d>0) {
+			
+			/*
             desired.normalize();
             if (d < 50.0f) desired *= 2*(d/50.0f);
             else desired *= 2;
@@ -82,13 +68,24 @@ void Fragment::update() {
             
             acc += force;
             acc.limit( 2 );
+			*/
+			/*
+			ofVec2f v(0.001, 0.001);
+			acc += v;
+            acc.limit( 0.5 );
+			desired *= acc;
+			*/
+			desired *= 0.05;
+
         }
         else {
             acc.set(0, 0);
         }
         
         vel += acc;
-        position += vel;
+		//position += vel;
+        //position += desired;
+		position += desired;
         
         acc *= 0.2;
         
@@ -99,7 +96,7 @@ void Fragment::update() {
         force.set(0,-1.5);
         force += vel;
         force.limit( 2 );
-     
+		
     }
     // free movement
     else {
@@ -112,8 +109,10 @@ void Fragment::update() {
     }
     
     // reset rotation for next fragment
+	cout << rotation << "---" ;
     rotation -= iRotation.baseValue;
-    
+	cout << rotation << endl;
+	
     length = iLength.value;
     
     checkBoundries();

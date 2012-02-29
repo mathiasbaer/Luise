@@ -24,9 +24,6 @@ public:
     
     
     void create(float _x, float _y);
-    void setTarget( Fragment * _ti );
-    void setTarget( Fragment * _ti, bool _leader );
-    void setTarget( FocusObject * _ti, bool _leader );
     void update();
     void setPropertiesWithIndex( int _i );
     void draw();

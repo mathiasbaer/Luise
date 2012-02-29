@@ -20,6 +20,11 @@ void DisplayObject::clearTarget() {
     
 }
 
+void DisplayObject::setTarget( DisplayObject* _t ) {
+	target = _t;
+	hasTarget = true;
+}
+
 /*
 void DisplayObject::setStructure( Structure s ) {
 

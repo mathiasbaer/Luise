@@ -45,7 +45,7 @@ void testApp::setup(){
     //Create Fragments
     for (int i=0; i<FRAGMENTNUMBER; i++) {
         tmpFragment.create(ofRandomWidth(),ofRandomHeight());
-        fragments.push_back(tmpFragment);
+        fragments[i] = tmpFragment;
     }
 
     
@@ -102,10 +102,16 @@ void testApp::update(){
     
     
     //Update Fragments
-    int ln = fragments.size(); // faster
-    for ( int i=0; i<ln; i++ ) {
+    for ( int i=0; i<FRAGMENTNUMBER; i++ ) {
         fragments[i].update();
     }
+	
+	int ln = structures.size();
+	for (int i=0; i<ln; i++) {
+		// pass trackingpoint coordinates
+		// how to find tracking point?â
+		// structures[i].update(1.0f,1.0f);
+	}
        
 }
 
@@ -179,8 +185,7 @@ void testApp::draw(){
     
     if(!setupMode) {
         //Draw Fragments
-        int ln = fragments.size(); // faster
-        for ( int i=0; i<ln; i++ ) {
+        for ( int i=0; i<FRAGMENTNUMBER; i++ ) {
             fragments[i].draw();
         }
     }
@@ -197,7 +202,7 @@ void testApp::createStructure(float _x, float _y, int _n) {
 		Fragment f = fragments[i];
 		if (!f.hasTarget) tmp.push_back(&fragments[i]);
 	}
-	tmpStructure.build(_x,_y,tmp);
+	tmpStructure.create(_x,_y,tmp);
 	structures.push_back(tmpStructure);
 }
 
@@ -206,7 +211,7 @@ void testApp::createStructure(float _x, float _y, int _n) {
 void testApp::keyPressed(int key){
 
 	switch (key){
-       case 's':
+        case 's':
             vidGrabber.videoSettings();
             break;
         case 'f':
@@ -223,6 +228,10 @@ void testApp::keyPressed(int key){
             scStart = 0;
             gui.saveToXML();
             break;
+		case 'p':
+			createStructure(200, 600, 30);
+			break;
+
 	}
 }
 
