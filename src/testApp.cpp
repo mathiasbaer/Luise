@@ -16,6 +16,8 @@ void testApp::setup(){
         arrSavePictures[i].allocate(CAMWIDTH,CAMHIGHT);
     }
     
+    savePic = false;
+    
 	ofSetFrameRate(30);
     
     //Set Screen
@@ -47,6 +49,8 @@ void testApp::setup(){
         tmpFragment.create(ofRandomWidth(),ofRandomHeight());
         fragments[i] = tmpFragment;
     }
+    
+    startTracking = false;
 
     
 }
@@ -83,7 +87,9 @@ void testApp::update(){
 		contourFinder.findContours(grayDiff, 20, (340*240)/3, 10, true);	// find holes
 	}
 
+    if(savePic) { allDiff = grayImage; savePic = false; }
     
+    /*
     //Save Picture
     int picNr = ofGetFrameNum()%RECORDPICTURES;
     arrSavePictures[picNr] = grayImage;
@@ -99,6 +105,8 @@ void testApp::update(){
     }
     
     allDiff = tmpGrayImg;
+     
+     */
     
     
     //Update Fragments
@@ -113,6 +121,25 @@ void testApp::update(){
 		// structures[i].update(1.0f,1.0f);
 	}
        
+    //Tracking
+    if(startTracking) {
+        
+        //blobs
+        if(contourFinder.nBlobs.size() > 0) {
+        
+        }
+        for (int i = 0; i < contourFinder.nBlobs; i++){
+            ofxCvBlob tmpBlob = contourFinder.blobs[i];
+            float blobXMapped = ofMap(tmpBlob.centroid.x, 0, CAMWIDTH, 0, ofGetWidth());
+            float blobYMapped = ofMap(tmpBlob.centroid.y, 0, CAMHIGHT, 0, ofGetHeight());
+  
+
+            
+            
+        }
+    
+    }
+    
 }
 
 //--------------------------------------------------------------
@@ -229,8 +256,14 @@ void testApp::keyPressed(int key){
             gui.saveToXML();
             break;
 		case 'p':
-			createStructure(200, 600, 30);
+            startTracking = true;
+            tmpTrackingPoint.create(0,0);
+            trackingPoints.push_back(tmpTrackingPoint);
+			//createStructure(200, 600, 30);
 			break;
+        case ' ':
+            savePic = true;
+            break;
 
 	}
 }

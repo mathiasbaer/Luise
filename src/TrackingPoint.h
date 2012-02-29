@@ -12,7 +12,7 @@ public:
         
     }
 	
-	void create();
+	void create(float _x, float _y);
 	void update(float _x, float _y);
 	
 };

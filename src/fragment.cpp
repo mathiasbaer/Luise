@@ -189,7 +189,12 @@ void Fragment::draw() {
     }
     
 //    noStroke();
-    ofSetColor(fillColor,50);
+    
+    if(hasTarget)
+        ofSetColor(255,0,0,190);
+    else
+        ofSetColor(fillColor,50);
+    
     ofEllipse(0,0,5,5);
     
     ofSetColor(fillColor);

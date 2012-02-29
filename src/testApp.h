@@ -12,7 +12,7 @@
 
 //CONST
 #define RECORDPICTURES 8
-#define FRAGMENTNUMBER 30
+#define FRAGMENTNUMBER 1000
 #define CAMWIDTH 320
 #define CAMHIGHT 240
 
@@ -53,7 +53,11 @@ class testApp : public ofBaseApp{
         ofxCvGrayscaleImage 	allDiff;
 
         bool speichern;
-		
+        bool savePic;
+        bool startTracking;
+        std::vector<ofPoint> lastBlobs;
+    
+    
         //Fragmente
         Fragment tmpFragment;
         Fragment fragments[FRAGMENTNUMBER];
