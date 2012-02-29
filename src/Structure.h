@@ -12,7 +12,7 @@ class Structure {
 public:
     
 	Structure() {    
-		
+		leader = new FocusObject();
     }
 	
     // seperate create and build functions if existing
@@ -24,7 +24,8 @@ public:
 	void update(float _x, float _y);
 	void draw();
     
-	FocusObject leader;
+	
+	FocusObject * leader;
 	std::vector<Fragment*> children;
 	
 private:

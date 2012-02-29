@@ -15,5 +15,6 @@ void FocusObject::update(float _x, float _y) {
 }
 
 void FocusObject::draw() {
-
+	ofSetColor(255, 0, 0);
+	ofEllipse(position.x,position.y,10,10);
 }

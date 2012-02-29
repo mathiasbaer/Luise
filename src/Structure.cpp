@@ -5,7 +5,7 @@ void Structure::create( float _posX, float _posY, std::vector<Fragment*> _fs ) {
     
 	children = _fs;
 	
-    leader.attach(_posX, _posY);
+    leader->attach(_posX, _posY);
 	
 	setBindings();
     
@@ -23,7 +23,7 @@ void Structure::setBindings() {
             child->setTarget( children[i-1] );
 		} else {
 			// same as fragment. pass structure id and true for follow leader
-			child->setTarget( &leader );
+			child->setTarget( leader );
 		}
 		child->setPropertiesWithIndex( i );
     }
@@ -39,6 +39,8 @@ void Structure::addChildren( std::vector<Fragment*> _fs ) {
 }
 
 void Structure::draw() {
+	
+	leader->draw();
 	
 	int ln = children.size();
 	
@@ -61,7 +63,7 @@ void Structure::draw() {
 }
 
 void Structure::update(float _x, float _y) {
-	leader.update(_x, _y);
+	leader->update(_x, _y);
 }
 
 void Structure::destroy() {
