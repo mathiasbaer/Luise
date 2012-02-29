@@ -21,7 +21,29 @@ void Fragment::create(float _x, float _y, int _id) {
     
 }
 
-void Fragment::update(std::vector<Fragment> _fragments) {
+void Fragment::setTarget( Fragment * _ti ) {
+   
+	target = _ti;
+    hasTarget = true;
+}
+
+void Fragment::setTarget( Fragment * _ti, bool _leader ) {
+    
+	target = _ti;
+	followsLeader = _leader;
+    hasTarget = true;
+	
+}
+
+void Fragment::setTarget( FocusObject * _ti, bool _leader ) {
+    
+	target = _ti;
+	followsLeader = _leader;
+    hasTarget = true;
+	
+}
+
+void Fragment::update() {
     
     if( hasTarget || opacity > 0 ) {
         for ( int i=0; i<sizeof(lfos); i++ ) { lfos[i].update(); }
@@ -30,7 +52,7 @@ void Fragment::update(std::vector<Fragment> _fragments) {
     
     // is in structure
     if( hasTarget ) {
-		Fragment target = _fragments[targetID];
+		//Fragment target = _fragments[targetID];
 		
 		/*
         // current fragment

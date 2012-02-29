@@ -24,6 +24,8 @@ void testApp::setup(){
     
     
     //GUI
+    //gui.addPage("setup");
+        
     gui.addTitle("screen settings");
 	gui.addSlider("screen start", scStart, -2000, 2000); 
 	gui.addSlider("screen end", scStop, -2000, 2000); 
@@ -102,7 +104,7 @@ void testApp::update(){
     //Update Fragments
     int ln = fragments.size(); // faster
     for ( int i=0; i<ln; i++ ) {
-        fragments[i].update(fragments);
+        fragments[i].update();
     }
        
 }
@@ -202,6 +204,10 @@ void testApp::keyPressed(int key){
             break;
         case 'w':
             speichern = true;
+            break;
+        case 'u':
+            scStart = 0;
+            gui.saveToXML();
             break;
 	}
 }

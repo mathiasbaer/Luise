@@ -2,7 +2,6 @@
 #define schirn_foyer_displayObject_h
 
 #include "ofMain.h"
-//#include "Structure.h"
 
 class DisplayObject {
  
@@ -32,32 +31,30 @@ public:
     };    
 
     void checkBoundries();
-    void setTarget( int _ti );
-	void setTarget( int _ti, bool _leader );
+    virtual void setTarget() {};
     void clearTarget();
 	//void setStructure( Structure s );
     void setPosition( float x, float y );
     void setPosition( int x, int y );
     
     // for graphic in structure mode
-    float       length; 
-    float       rotation;
-    float       targetDistance;
-    float       speed;
-    float       friction;
-    float       easing;
-    float       offsetToTarget;
-    ofVec2f     position, desired, vel, acc, force;
+    float           length; 
+    float           rotation;
+    float           targetDistance;
+    float           speed;
+    float           friction;
+    float           easing;
+    float           offsetToTarget;
+    ofVec2f         position, desired, vel, acc, force;
 	
-	//DisplayObject target;
-	int			targetID;
+	DisplayObject*	target;
     
-    bool        hasTarget;
-    bool        isLeader;
-	bool		followsLeader;
+    bool            hasTarget;
+    bool            isLeader;
+	bool            followsLeader;
     
     // position in structure
-    int childIndex;
+    int             childIndex;
     
     //Structure structure;
     
