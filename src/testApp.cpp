@@ -87,35 +87,55 @@ void testApp::update(){
 		contourFinder.findContours(grayDiff, 20, (340*240)/3, 10, true);	// find holes
 	}
 
-    //Tracking
-    lastBlobs
     
-    
-    int nb_counter = 0;
-	
+    /////////////////////////////////////////////////
+    // Tracking 
+    // blobs
+    //////////////
 	n_blobs.clear();
 	
-	for (int i = 0; i < bFinder.nBlobs; i++) {
-		ofxCvBlob tmpBlob = bFinder.blobs[i];
-		
+	for (int i = 0; i < contourFinder.nBlobs; i++) {
+		ofxCvBlob tmpBlob = contourFinder.blobs[i];        
+        
 		bool newblob = true;
 		for (int a=0; a< m_blobs.size(); ++a) {
-			if(ABS(m_blobs[a].centroid.x-tmpBlob.centroid.x)<20 
-			   && ABS(m_blobs[i].centroid.y-tmpBlob.centroid.y)<20 ) {
+			if(ABS(m_blobs[a].centroid.x-tmpBlob.centroid.x) < 40 && ABS(m_blobs[i].centroid.y-tmpBlob.centroid.y) < 40 ) {
 				newblob = false;
 			}	
 		}
 		if(newblob == true) {
 			n_blobs.push_back(tmpBlob);
+            // CREATE TRACKINGPOINT
+            tmpTrackingPoint.create(tmpBlob.centroid.x,tmpBlob.centroid.y);
+            trackingPoints.push_back(tmpTrackingPoint);
 		}
 	}
 	
 	m_blobs.clear();
 	
-	for (int i = 0; i< bFinder.nBlobs; i++) {
-		ofxCvBlob tmpBlob = bFinder.blobs[i];
+	for (int i = 0; i< contourFinder.nBlobs; i++) {
+		ofxCvBlob tmpBlob = contourFinder.blobs[i];
 		m_blobs.push_back(tmpBlob);
 	}
+    
+    
+    /////////////////////////////////////////////////
+    // Tracking 
+    // trackingpoints
+    //////////////
+    
+    int ln_tp = trackingPoints.size();
+    for (int i = 0; i<ln_tp; i++) {
+        int ln_mBlobs = m_blobs.size();
+       // int nearest
+        for (int n = 0; n < ln_mBlobs; n++) {
+            //Check Abstand zwischen Blob und TP
+            float distance = trackingPoints[i].checkDist(m_blobs[i].centroid);
+           //if() {
+           // }
+            
+        }    
+    }
     
     
     
@@ -158,9 +178,9 @@ void testApp::update(){
     if(startTracking) {
         
         //blobs
-        if(contourFinder.nBlobs.size() > 0) {
+        //if(contourFinder.nBlobs.size() > 0) {
         
-        }
+        //}
         for (int i = 0; i < contourFinder.nBlobs; i++){
             ofxCvBlob tmpBlob = contourFinder.blobs[i];
             float blobXMapped = ofMap(tmpBlob.centroid.x, 0, CAMWIDTH, 0, ofGetWidth());
@@ -290,8 +310,6 @@ void testApp::keyPressed(int key){
             break;
 		case 'p':
             startTracking = true;
-            tmpTrackingPoint.create(0,0);
-            trackingPoints.push_back(tmpTrackingPoint);
 			//createStructure(200, 600, 30);
 			break;
         case ' ':

@@ -55,7 +55,9 @@ class testApp : public ofBaseApp{
         bool speichern;
         bool savePic;
         bool startTracking;
-        std::vector<ofPoint> lastBlobs;
+    
+        vector <ofxCvBlob> m_blobs; // Mittelpunkte vom Blobs
+        vector <ofxCvBlob> n_blobs;
     
     
         //Fragmente
