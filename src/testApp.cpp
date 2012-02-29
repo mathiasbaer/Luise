@@ -44,7 +44,7 @@ void testApp::setup(){
     
     //Create Fragments
     for (int i=0; i<FRAGMENTNUMBER; i++) {
-        f.create(ofRandomWidth(),ofRandomHeight(), i);
+        f.create(ofRandomWidth(),ofRandomHeight());
         fragments.push_back(f);
     }
 
