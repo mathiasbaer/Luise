@@ -71,9 +71,10 @@ void Fragment::update() {
 			*/
 			
 			ofVec2f v;
-			v.set(0.001, 0.001);
+			v.set(1,1);
+			v /= 3000;
 			acc += v;
-            acc.limit( 0.5 );
+            acc.limit( 0.1 );
 			desired *= acc;
 			
 			//desired *= 0.05;
