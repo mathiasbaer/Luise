@@ -23,4 +23,11 @@ void Structure::build( float _posX, float _posY, int _size, std::vector<Fragment
 }
 
 void Structure::destroy() {
+    
+    //leader = null;
+    //for ( int i=0; i<children.length; i++ ) {
+    //    children[i].clearTarget();
+    //} 
+    
+    
 }

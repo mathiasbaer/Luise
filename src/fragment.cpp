@@ -52,55 +52,54 @@ void Fragment::update() {
     
     // is in structure
     if( hasTarget ) {
-		//Fragment target = _fragments[targetID];
 		
-		/*
+		
         // current fragment
         ofVec2f v0 = position;
         // following this fragment
-        ofVec2f v1 = target.desired;
+        ofVec2f v1 = target->desired;
+        
         
         // get desired position in structure => v1
-        rotation = iRotation.value + target.rotation;
+        rotation = iRotation.value + target->rotation;
         ofVec2f offset;
 		offset.set( cos(rotation), sin(rotation) );
-        offset.mult( offsetToTarget );
-        v1.add( offset );
+        offset *= offsetToTarget;
+        v1 += offset;
         
         
-        desired = ofVec2f.sub(v1, v0);
+        desired = v1 - v0;
         
-        float d = desired.mag();
+        float d = desired.length();
         targetDistance = d;
         
         if (d>0) {
             desired.normalize();
-            if (d < 50.0f) desired.mult(2*(d/50.0f));
-            else desired.mult( 2 );
+            if (d < 50.0f) desired *= 2*(d/50.0f);
+            else desired *= 2;
             
-            force = PVector.sub(desired,vel);
-            force.mult( 0.05 );
+            force = desired - vel;
+            force *= 0.05;
             
-            acc.add( force );
+            acc += force;
             acc.limit( 2 );
         }
         else {
-            acc = new PVector( 0, 0 );
+            acc.set(0, 0);
         }
         
-        vel.add(acc);
-        position.add(vel);
+        vel += acc;
+        position += vel;
         
-        acc.mult( 0.2 );
+        acc *= 0.2;
         
         // set position in structure as desired for next fragment
-        desired = v1.get();
+        desired = v1;
         
         // set force to move fragment up if target is cleared next frame
-        force = new PVector(0,-1.5);
-        force.add(vel);
+        force.set(0,-1.5);
+        force += vel;
         force.limit( 2 );
-		 */
      
     }
     // free movement
