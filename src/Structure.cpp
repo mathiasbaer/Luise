@@ -4,13 +4,15 @@ void Structure::create( float _posX, float _posY, std::vector<Fragment*> _fs ) {
     
     
 	children = _fs;
-        
-    //zufall
-    //leader.attach();
-    //positionierung
 	
     leader.attach(_posX, _posY);
-	    
+	
+	setBindings();
+    
+}
+
+void Structure::setBindings() {
+	
 	int vecLength = children.size();
 	for ( int i=0; i<vecLength; i++ ) {
 		
@@ -25,9 +27,16 @@ void Structure::create( float _posX, float _posY, std::vector<Fragment*> _fs ) {
 		}
 		
 		child->setPropertiesWithIndex( i );
-		 
     }
-    
+}
+
+void Structure::addChildren( std::vector<Fragment*> _fs ) {
+	
+	int ln = _fs.size();
+	for (int i=0; i<ln; i++) {
+		children.push_back(_fs[i]);
+	}
+	setBindings();
 }
 
 void Structure::update(float _x, float _y) {

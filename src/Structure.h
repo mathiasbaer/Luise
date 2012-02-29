@@ -19,12 +19,15 @@ public:
 	// structure needs to be rebuild or should have no children
 	
 	void create( float _posX, float _posY, std::vector<Fragment*> _fs );
+	void addChildren( std::vector<Fragment*> _fs );
 	void destroy();
 	void update(float _x, float _y);
     
 	FocusObject leader;
 	std::vector<Fragment*> children;
 	
+private:
+	void setBindings();
 };
 
 
