@@ -87,7 +87,7 @@ void testApp::update(){
 		contourFinder.findContours(grayDiff, 20, (340*240)/3, 10, true);	// find holes
 	}
 
-    
+    /*
     /////////////////////////////////////////////////
     // Tracking 
     // blobs
@@ -127,7 +127,8 @@ void testApp::update(){
     int ln_tp = trackingPoints.size();
     for (int i = 0; i<ln_tp; i++) {
         int ln_mBlobs = m_blobs.size();
-       // int nearest
+        float nearest;
+        int nearestID;
         for (int n = 0; n < ln_mBlobs; n++) {
             //Check Abstand zwischen Blob und TP
             float distance = trackingPoints[i].checkDist(m_blobs[i].centroid);
@@ -137,7 +138,7 @@ void testApp::update(){
         }    
     }
     
-    
+    */
     
     
     if(savePic) { allDiff = grayImage; savePic = false; }
@@ -309,8 +310,8 @@ void testApp::keyPressed(int key){
             gui.saveToXML();
             break;
 		case 'p':
-            startTracking = true;
-			//createStructure(200, 600, 30);
+            //startTracking = true;
+			createStructure(200, 600, 30);
 			break;
         case ' ':
             savePic = true;
