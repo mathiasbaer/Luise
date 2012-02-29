@@ -3,6 +3,9 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 
+    ofEnableSmoothing();
+    ofEnableAlphaBlending();
+    
     vidGrabber.setVerbose(true);
     vidGrabber.initGrabber(CAMWIDTH,CAMHIGHT);
 
@@ -51,6 +54,7 @@ void testApp::setup(){
     }
     
     startTracking = false;
+
 
     
 }
