@@ -179,13 +179,13 @@ void Fragment::draw() {
          rect(-abs(d.x)/2,-length,abs(d.x),length);
          */
         
-//        stroke(c, opacity*255/4);
-//        strokeWeight(4);
-//        line(-length*3,0, length/2,0);
+        ofSetColor(c, opacity*255/4);
+        ofSetLineWidth(4);
+        ofLine(-length*3,0, length/2,0);
         
-//        stroke(c, opacity*255/1.5);
-//        strokeWeight(2);
-//        line(-length/2,0, length/2,0);
+        ofSetColor(c, opacity*255/1.5);
+        ofSetLineWidth(2);
+        ofLine(-length/2,0, length/2,0);
     }
     
 //    noStroke();
