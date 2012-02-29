@@ -8,7 +8,7 @@ void FocusObject::attach(float _x, float _y) {
     position.set(_x,_y);
 }
 
-void FocusObject::update() {
+void FocusObject::update(float _x, float _y) {
 
 }
 

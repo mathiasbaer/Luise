@@ -1,28 +1,35 @@
 #include "Structure.h"
 
-void Structure::build( float _posX, float _posY, int _size, std::vector<Fragment> *_fs ) {
+void Structure::build( float _posX, float _posY, std::vector<Fragment*> _fs ) {
     
     
-    std::vector<Fragment> *children = _fs;
+	children = _fs;
         
     //zufall
-    leader.attach();
+    //leader.attach();
     //positionierung
     leader.attach(_posX, _posY);
-    
-    for ( int i=0; i<_size; i++ ) {
-		Fragment child = children->at(i);
+	    
+	int vecLength = children.size();
+	
+    for ( int i=0; i<vecLength; i++ ) {
+		
+		Fragment* child = children[i];
 		
 		if (i > 0)
 			// pass fragment id because passing a fragment object does not work
-            child.setTarget( &children->at(i-1) );
+            child->setTarget( children[i-1] );
 		else
 			// same as fragment. pass structure id and true for follow leader
-			child.setTarget( &leader, true );
+			child->setTarget( &leader, true );
 		
-		child.setPropertiesWithIndex( i );
+		child->setPropertiesWithIndex( i );
     }
     
+}
+
+void Structure::update(float _x, float _y) {
+	leader.update(_x, _y);
 }
 
 void Structure::destroy() {

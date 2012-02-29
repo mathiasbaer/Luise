@@ -15,7 +15,7 @@ public:
    
 	void attach();
     void attach(float _x, float _y);
-	void update();
+	void update(float _x, float _y);
 	void draw();
 	
 };

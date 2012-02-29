@@ -32,6 +32,7 @@ class testApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);		
+		void createStructure(float _x, float _y, int _n);
     
         //2 Bilder Addieren
         unsigned char*  maxImage( ofxCvGrayscaleImage& mom, ofxCvGrayscaleImage& dad );
@@ -53,11 +54,11 @@ class testApp : public ofBaseApp{
         bool speichern;
 		
         //Fragmente Std Vector class..
-        Fragment f;
+        Fragment tmpFragment;
         std::vector<Fragment> fragments;
 	
-		//Structure structure;
-		//std::vector<Structure> structures;
+		Structure tmpStructure;
+		std::vector<Structure> structures;
         
         //Setup Screen
         bool        setupMode;

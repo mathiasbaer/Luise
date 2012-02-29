@@ -44,8 +44,8 @@ void testApp::setup(){
     
     //Create Fragments
     for (int i=0; i<FRAGMENTNUMBER; i++) {
-        f.create(ofRandomWidth(),ofRandomHeight());
-        fragments.push_back(f);
+        tmpFragment.create(ofRandomWidth(),ofRandomHeight());
+        fragments.push_back(tmpFragment);
     }
 
     
@@ -188,6 +188,20 @@ void testApp::draw(){
 
 }
 
+
+void testApp::createStructure(float _x, float _y, int _n) {
+	
+	std::vector<Fragment*> tmp;
+	
+	for (int i=0; i<_n; i++) {
+		Fragment f = fragments[i];
+		if (!f.hasTarget) tmp.push_back(&fragments[i]);
+	}
+	tmpStructure.build(_x,_y,tmp);
+	structures.push_back(tmpStructure);
+}
+
+
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
 
@@ -211,6 +225,7 @@ void testApp::keyPressed(int key){
             break;
 	}
 }
+
 
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){

@@ -17,11 +17,13 @@ public:
 	
     // seperate create and build functions if existing
 	// structure needs to be rebuild or should have no children
-	void build( float _posX, float _posY, int _size, std::vector<Fragment> *_fs );
+	
+	void build( float _posX, float _posY, std::vector<Fragment*> _fs );
 	void destroy();
+	void update(float _x, float _y);
     
 	FocusObject leader;
-	std::vector<Fragment> *children;
+	std::vector<Fragment*> children;
 	
 };
 
