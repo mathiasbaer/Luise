@@ -12,9 +12,11 @@ public:
         
     }
 	
-	void    create(float _x, float _y);
-	void    update(float _x, float _y);
+	void    create(ofVec2f _pos);
+	void    update(ofVec2f _pos);
     float   checkDist(ofVec2f _blobPos);
+    
+    
 	
 };
 

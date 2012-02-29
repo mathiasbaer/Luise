@@ -1,13 +1,13 @@
 #include "TrackingPoint.h"
 
-void TrackingPoint::create(float _x, float _y) {
-	position.set(_x,_y);
+void TrackingPoint::create(ofVec2f _pos) {
+	position = _pos;
 }
 
-void TrackingPoint::update(float _x, float _y) {
-	position.set(_x,_y);
+void TrackingPoint::update(ofVec2f _pos) {
+	position = _pos;
 }
 
 float   TrackingPoint::checkDist(ofVec2f _blobPos) {
- //
+    return position.distance(_blobPos);
 }

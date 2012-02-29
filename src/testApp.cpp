@@ -99,14 +99,14 @@ void testApp::update(){
         
 		bool newblob = true;
 		for (int a=0; a< m_blobs.size(); ++a) {
-			if(ABS(m_blobs[a].centroid.x-tmpBlob.centroid.x) < 40 && ABS(m_blobs[i].centroid.y-tmpBlob.centroid.y) < 40 ) {
+            if(m_blobs[a].centroid.distance(tmpBlob.centroid) < 40) {
 				newblob = false;
 			}	
 		}
 		if(newblob == true) {
 			n_blobs.push_back(tmpBlob);
             // CREATE TRACKINGPOINT
-            tmpTrackingPoint.create(tmpBlob.centroid.x,tmpBlob.centroid.y);
+            tmpTrackingPoint.create(tmpBlob.centroid);
             trackingPoints.push_back(tmpTrackingPoint);
 		}
 	}
@@ -124,6 +124,7 @@ void testApp::update(){
     // trackingpoints
     //////////////
     
+    vector<int>blobIDs;
     int ln_tp = trackingPoints.size();
     for (int i = 0; i<ln_tp; i++) {
         int ln_mBlobs = m_blobs.size();
@@ -132,13 +133,16 @@ void testApp::update(){
         for (int n = 0; n < ln_mBlobs; n++) {
             //Check Abstand zwischen Blob und TP
             float distance = trackingPoints[i].checkDist(m_blobs[i].centroid);
-           //if() {
-           // }
-            
+            if(distance <= nearest) {
+                distance = nearest;
+                nearestID = n;
+            }
         }    
+        trackingPoints[i].update(m_blobs[nearestID].centroid);
     }
-    
+
     */
+    
     
     
     if(savePic) { allDiff = grayImage; savePic = false; }
@@ -172,7 +176,7 @@ void testApp::update(){
 	for (int i=0; i<ln; i++) {
 		// pass trackingpoint coordinates
 		// how to find tracking point?â
-		// structures[i].update(1.0f,1.0f);
+        // structures[i].update(1.0f,1.0f);
 	}
        
     //Tracking
@@ -249,6 +253,7 @@ void testApp::draw(){
     
     //Streifen
     
+    /*
     ofSetColor(255, 0, 0, 50);
     for (int i = 0; i < contourFinder.nBlobs; i++){
         ofxCvBlob tmpBlob = contourFinder.blobs[i];
@@ -257,7 +262,13 @@ void testApp::draw(){
         
         ofFill();
         ofRect(blobXMapped, 0, 20, scHeight-blobTopMapped);
-    }
+    }*/
+    
+    
+    int ln = structures.size();
+	for (int i=0; i<ln; i++) {
+        structures[i].draw();
+	}
 
     
     //GUI
