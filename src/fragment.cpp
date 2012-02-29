@@ -69,25 +69,25 @@ void Fragment::update() {
             acc += force;
             acc.limit( 2 );
 			*/
-			/*
-			ofVec2f v(0.001, 0.001);
+			
+			ofVec2f v;
+			v.set(0.001, 0.001);
 			acc += v;
             acc.limit( 0.5 );
 			desired *= acc;
-			*/
-			desired *= 0.05;
+			
+			//desired *= 0.05;
 
         }
         else {
             acc.set(0, 0);
         }
         
-        vel += acc;
-		//position += vel;
-        //position += desired;
+        //vel += acc;
 		position += desired;
+		//position += desired;
         
-        acc *= 0.2;
+        //acc *= 0.2;
         
         // set position in structure as desired for next fragment
         desired = v1;
