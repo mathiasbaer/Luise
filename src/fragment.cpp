@@ -1,9 +1,8 @@
 #include "fragment.h"
 
 
-void Fragment::create(float _x, float _y, int _id) {
-   
-    fragID = _id;
+void Fragment::create(float _x, float _y) {
+    
     fillColor.set(200,230,60);
     
     iRotation.setRange(PI/20);

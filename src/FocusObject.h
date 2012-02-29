@@ -11,10 +11,10 @@ public:
     
     FocusObject(): DisplayObject() {
         isLeader = true;
-		position.set(ofRandomWidth(), 0);
     }
    
-	void create();
+	void attach();
+    void attach(float _x, float _y);
 	void update();
 	void draw();
 	

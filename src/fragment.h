@@ -23,7 +23,7 @@ public:
     // x and y in relation to rotation if in structure mode
     
     
-    void create(float _x, float _y, int _id);
+    void create(float _x, float _y);
     void setTarget( Fragment * _ti );
     void setTarget( Fragment * _ti, bool _leader );
     void setTarget( FocusObject * _ti, bool _leader );
@@ -37,7 +37,6 @@ public:
     
     // appearance
     float opacity;
-	int fragID;
     
     
     

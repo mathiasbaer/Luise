@@ -5,7 +5,10 @@ void Structure::build( float _posX, float _posY, int _size, std::vector<Fragment
     
     std::vector<Fragment> *children = _fs;
         
-    leader.create();
+    //zufall
+    leader.attach();
+    //positionierung
+    leader.attach(_posX, _posY);
     
     for ( int i=0; i<_size; i++ ) {
 		Fragment child = children->at(i);
