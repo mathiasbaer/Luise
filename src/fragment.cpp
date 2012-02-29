@@ -74,7 +74,7 @@ void Fragment::update() {
 			v.set(1,1);
 			v /= 3000;
 			acc += v;
-            acc.limit( 0.1 );
+            acc.limit( 0.05 );
 			desired *= acc;
 			
 			//desired *= 0.05;
