@@ -361,9 +361,9 @@ void testApp::keyReleased(int key){
 //--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y ){
 
-        //objekt in liste erstellen
+    //objekt in liste erstellen
     //vieleobjekte.push_back(DisplayObject());
-        //objekt loschen
+    //objekt loschen
     //vieleobjekte.pop_back();
 
 
