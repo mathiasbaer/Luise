@@ -14,7 +14,7 @@ void testApp::setup(){
     
     //Videoinput & Tracking
     vidGrabber.setVerbose(true);
-	vidGrabber.setDeviceID(3);
+	//vidGrabber.setDeviceID(3);
     vidGrabber.initGrabber(CAMWIDTH,CAMHEIGHT);
     
     mColorImg.allocate(CAMWIDTH,CAMHEIGHT);
@@ -172,32 +172,75 @@ void testApp::update(){
     
     
     
+    /////////////////////////////////////////////////
+    // Structurs ////////////////////////////////////
+    /////////////////////////////////////////////////
     
-    //Build Structurs
-    int ln_tp = trackingPoints.size();
-	cout << ln_tp << endl;
-    for (int i = 0; i<ln_tp; i++) {        
-        if(!trackingPoints[i].hasStructure) {
-            //struktur erstellen
-            if(structures.size() < STRUCTURENUMBER && structures.size() < ln_tp ) 
-				createStructure(trackingPoints[i].mMapPos, ofRandom(50,80));
-        }
-    }
-    
+    int numberOfTP = trackingPoints.size();
     //Reset Verbindungen zwischen Trackingpoints & Structure
-    for (int i = 0; i<ln_tp; i++) {    
+    for (int i = 0; i<numberOfTP; i++) {    
         trackingPoints[i].hasStructure = false;
     }
 	
-	
-    int ln = structures.size();
-	for (int i=0; i<ln; i++) {
-		// pass trackingpoint coordinates
-		// how to find tracking point?â
-        //structures[i].update((float) mouseX, (float) mouseY);
-        structures[i].update( &trackingPoints );
-	}
+	for (int i=0; i<structures.size(); i++) {
+        
+        //Wenn die Structur auf DoDelete steht -> lšschen
+        if (structures[i].mDoDelete) {
+            structures[i].destroy();
+            structures.erase(structures.begin() + i);
+            i--;
+            continue;
+        }
+        
+        //Keine TrackingPunkte vorhanden
+        if(numberOfTP == 0) {
+            structures[i].setTrackingPoint(false);
+            structures[i].update();
+            continue;
+        } 
+        
+        //Trackingpoints Suchen
+        float nearest = 0;
+        int nearestID = -1;
+        for (int n = 0; n < trackingPoints.size(); n++) {
+            //Abstand Trackingpunkt <-> Struktur
+            
+            if(trackingPoints[n].hasStructure) { continue; }
+            
+            float distance = trackingPoints[n].checkDist(structures[i].mTrackingPointPosition);
+            if( n == 0 ) {
+                nearest = distance;
+                nearestID = n;
+            } else {
+                if( distance <= nearest ) {
+                    nearest = distance;
+                    nearestID = n;               
+                }
+            }   
+        }
+        
+        if (nearestID == -1) {
+            //keine freien TrackingPoints mehr...
+            structures[i].setTrackingPoint(false);
+        }
+        else {
+            //TrackingPosition Ÿbergeben
+            trackingPoints[nearestID].hasStructure = true;
+            structures[i].setTrackingPoint(true, trackingPoints[nearestID].mMapPos);
+            
+        }
+        
+        //Structuren Update
+        structures[i].update();
+        
+    }
     
+    //Structuren erstellen wenn TP ohne Structur
+    for (int n = 0; n < trackingPoints.size(); n++) {
+        if (!trackingPoints[n].hasStructure) {
+            createStructure(trackingPoints[n].mMapPos, ofRandom(50,70));
+        }
+    }
     
     //Update Fragments
     for ( int i=0; i<FRAGMENTNUMBER; i++ ) {
@@ -287,6 +330,7 @@ void testApp::draw(){
     int ln_tp = trackingPoints.size();
     for (int i = 0; i<ln_tp; i++) {
         trackingPoints[i].draw();
+        
     }
  
 

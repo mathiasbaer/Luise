@@ -2,11 +2,12 @@
 
 void Structure::create( float _posX, float _posY, std::vector<Fragment*> _fs ) {
     
+    mHasTrackingPoint = true;
+    mTrackingPointPosition.set(_posX, _posY);
+    
 	children = _fs;
 	leader.attach(_posX, _posY);
 	setBindings();
-	
-    
     
 }
 
@@ -62,60 +63,45 @@ void Structure::draw() {
 	}
 }
 
+void Structure::update() {
+    
+    if(!mHasTrackingPoint) {
+        float timeDiff = ofGetElapsedTimef() - mlostTime;
+        if(timeDiff > 3) { mDoDelete = true; }
+    } else {
+        leader.update(mTrackingPointPosition.x, mTrackingPointPosition.y);
+    }
+}
+
 void Structure::update(float _x, float _y) {
 	leader.update(_x, _y);
 }
 
-void Structure::update(std::vector<TrackingPoint> *_tpList) {
-   
-    std::vector<TrackingPoint> * trackingPoints = _tpList;
-   
-    ofVec2f leaderPosition = leader.position;
-    
-    int ln = trackingPoints->size();
-    
-    //Wenn keine Trackingpunkte vorhanden -> Kein Update!!
-    if( ln == 0 ) return;
-
-    float nearest = 0;
-    int nearestID = 0;
-    bool tpWithoutStructure = false;
-    for (int i = 0; i < ln; i++) {
-        if( !trackingPoints->at(i).hasStructure ) {
-              
-            tpWithoutStructure = true;
-            //Abstand Trackingpunkt <-> Struktur
-            float distance = leaderPosition.distance(trackingPoints->at(i).mMapPos);
-            if( i == 0 ) {
-                nearest = distance;
-                nearestID = i;
-            } else {
-                if( distance <= nearest ) {
-                    nearest = distance;
-                    nearestID = i;               
-                }
-            }   
-        }
+void Structure::setTrackingPoint(bool _hasTrackingPoint) {
+    //Losttime setzen wenn kein Trackingpoint mehr
+    if(!_hasTrackingPoint) { 
+        if(mlostTime == 0) { mlostTime = ofGetElapsedTimef(); }
     }
+    else { mlostTime = 0; }
     
-    //Wenn keine Freien Trackingpunkte vorhanden -> kein update!
-    if( !tpWithoutStructure ) return;
-    
-    //Trackingpoint Informieren
-    trackingPoints->at(nearestID).hasStructure = true;
-    
-    //Leader update
-    ofVec2f newTrackPos = trackingPoints->at(nearestID).mMapPos;
-    leader.update(newTrackPos.x, newTrackPos.y);
-    cout << " new id" << &leader << endl;
-	
-    trackingPoints = NULL;
+    mHasTrackingPoint = _hasTrackingPoint;
+}
 
+void Structure::setTrackingPoint(bool _hasTrackingPoint, ofVec2f _pos) {
+    //Losttime setzen wenn kein Trackingpoint mehr
+    if(!_hasTrackingPoint) { 
+        if(mlostTime == 0) { mlostTime = ofGetElapsedTimef(); }
+    }
+    else { mlostTime = 0; }
+    
+    mHasTrackingPoint = _hasTrackingPoint;
+    mTrackingPointPosition = _pos;
 }
 
 void Structure::destroy() {
     
-    //for ( int i=0; i<children.length; i++ ) {
-    //    children[i].clearTarget();
-    //} 
+    for ( int i=0; i<children.size(); i++ ) {
+        children[i]->clearTarget();
+    } 
+    
 }

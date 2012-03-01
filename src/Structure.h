@@ -13,7 +13,10 @@ class Structure {
 public:
     
 	Structure() {    
-        cout << "adresse leader bei constructor: " << &leader << endl;
+        mHasTrackingPoint = false;
+        mTrackingPointPosition = ofVec2f(0,0);
+        mDoDelete = false;
+        mlostTime = 0;
     }
 	
     // seperate create and build functions if existing
@@ -22,13 +25,19 @@ public:
 	void create( float _posX, float _posY, std::vector<Fragment*> _fs );
 	void addChildren( std::vector<Fragment*> _fs );
 	void destroy();
-	//void update(float _x, float _y);
-    void update(std::vector<TrackingPoint> * _tpList);
+    void update();
 	void update(float _x, float _y);
+    void setTrackingPoint(bool _hasTrackingPoint); 
+    void setTrackingPoint(bool _hasTrackingPoint, ofVec2f _pos);
 	void draw();
+    
     
     FocusObject leader;
 	std::vector<Fragment*> children;
+    bool mDoDelete;
+    bool mHasTrackingPoint;
+    ofVec2f mTrackingPointPosition;
+    float mlostTime;
      
 	
 private:
