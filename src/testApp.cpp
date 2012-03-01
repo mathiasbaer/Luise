@@ -237,7 +237,7 @@ void testApp::update(){
     
     //Structuren erstellen wenn TP ohne Structur
     for (int n = 0; n < trackingPoints.size(); n++) {
-        if (!trackingPoints[n].hasStructure) {
+        if (!trackingPoints[n].hasStructure && structures.size() < trackingPoints.size() ) {
             createStructure(trackingPoints[n].mMapPos, ofRandom(50,70));
         }
     }
@@ -346,7 +346,9 @@ void testApp::createStructure(ofVec2f _pos, int _n) {
 	
 	std::vector<Fragment*> tmp;
 	
-	for (int i=0; i<FRAGMENTNUMBER && tmp.size() < _n; i++) {
+	int s = ofRandom( FRAGMENTNUMBER - _n );
+	
+	for (int i=s; i<FRAGMENTNUMBER && tmp.size() < _n; i++) {
 		//Fragment f = fragments[i];
 		if (!fragments[i].hasTarget) {
 			tmp.push_back(&fragments[i]);
