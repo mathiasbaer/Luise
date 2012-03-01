@@ -6,11 +6,16 @@ void testApp::setup(){
     
     //General Settings
     ofSetFrameRate(30);
-    ofEnableSmoothing();
-    ofEnableAlphaBlending();
+
     
     //Grafik Settings
-    ofBackground(0);
+    ofEnableAlphaBlending();
+    ofEnableSmoothing();
+    ofBackground(0, 0, 0);
+//    ofSetBackgroundAuto(false);
+
+    
+    
     
     //Videoinput & Tracking
     vidGrabber.setVerbose(true);
