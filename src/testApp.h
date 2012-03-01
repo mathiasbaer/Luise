@@ -13,8 +13,9 @@
 //CONST
 #define RECORDPICTURES 8
 #define FRAGMENTNUMBER 500
-#define CAMWIDTH 320
-#define CAMHEIGHT 240
+#define CAMWIDTH 320  //MUSS AUCH IN TRACKINGPOINT.H GE€NDERT WERDEN
+#define CAMHEIGHT 240 //MUSS AUCH IN TRACKINGPOINT.H GE€NDERT WERDEN
+
 
 
 class testApp : public ofBaseApp{
@@ -47,8 +48,6 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);		
 		void createStructure(ofVec2f _pos, int _n);
     
-        //2 Bilder Addieren
-        unsigned char*  maxImage( ofxCvGrayscaleImage& mom, ofxCvGrayscaleImage& dad );
 
         //Camera & Tracking
         ofVideoGrabber          vidGrabber;

@@ -7,6 +7,7 @@ void Structure::create( float _posX, float _posY, std::vector<Fragment*> _fs ) {
     
 	setBindings();
     
+    
 }
 
 void Structure::setBindings() {
@@ -65,6 +66,48 @@ void Structure::draw() {
 //}
 
 void Structure::update(std::vector<TrackingPoint> *_tpList) {
+   
+    std::vector<TrackingPoint> * trackingPoints = _tpList;
+   
+    ofVec2f leaderPosition = leader.position;
+    
+    int ln = trackingPoints->size();
+    
+    //Wenn keine Trackingpunkte vorhanden -> Kein Update!!
+    if( ln == 0 ) return;
+
+    float nearest = 0;
+    int nearestID = 0;
+    bool tpWithoutStructure = false;
+    for (int i = 0; i < ln; i++) {
+        if( !trackingPoints->at(i).hasStructure ) {
+              
+            tpWithoutStructure = true;
+            //Abstand Trackingpunkt <-> Struktur
+            float distance = leaderPosition.distance(trackingPoints->at(i).mMapPos);
+            if( i == 0 ) {
+                nearest = distance;
+                nearestID = i;
+            } else {
+                if( distance <= nearest ) {
+                    nearest = distance;
+                    nearestID = i;               
+                }
+            }   
+        }
+    }
+    
+    //Wenn keine Freien Trackingpunkte vorhanden -> kein update!
+    if( !tpWithoutStructure ) return;
+    
+    //Trackingpoint Informieren
+    trackingPoints->at(nearestID).hasStructure = true;
+    
+    //Leader update
+    ofVec2f newTrackPos = trackingPoints->at(nearestID).mMapPos;
+    leader.update(newTrackPos.x, newTrackPos.y);
+    
+    trackingPoints = NULL;
 
 }
 

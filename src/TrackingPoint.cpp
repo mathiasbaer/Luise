@@ -2,6 +2,11 @@
 
 void TrackingPoint::update(ofVec2f _pos) {
 	position = _pos;
+    
+    //Mapping
+    mMapPos.x = ofMap(position.x, 0, CAMWIDTH, 0, ofGetWidth());
+    mMapPos.y = ofMap(position.y, 0, CAMHEIGHT, 0, ofGetHeight());
+    
 }
 
 float TrackingPoint::checkDist(ofVec2f _blobPos) {

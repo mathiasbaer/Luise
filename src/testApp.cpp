@@ -52,8 +52,6 @@ void testApp::setup(){
 
 //--------------------------------------------------------------
 void testApp::update(){
-
-
     
     vidGrabber.grabFrame();
     
@@ -177,15 +175,14 @@ void testApp::update(){
     int ln_tp = trackingPoints.size();
     for (int i = 0; i<ln_tp; i++) {        
         if(!trackingPoints[i].hasStructure) {
-            cout << "struktur erstellen " << endl;
             //struktur erstellen
-            
-            ofVec2f mappedPosition;
-            mappedPosition.x = ofMap(trackingPoints[i].position.x, 0, CAMWIDTH, 0, ofGetWidth());
-            mappedPosition.y = ofMap(trackingPoints[i].position.y, 0, CAMHEIGHT, 0, ofGetHeight());
-            
-            createStructure(mappedPosition, ofRandom(50-80));
+            createStructure(trackingPoints[i].mMapPos, ofRandom(50-80));
         }
+    }
+    
+    //Reset Verbindungen zwischen Trackingpoints & Structure
+    for (int i = 0; i<ln_tp; i++) {    
+        trackingPoints[i].hasStructure = false;
     }
 	
 	
@@ -198,69 +195,10 @@ void testApp::update(){
 	}
     
     
-   
-    
-    /*
-    //Save Picture
-    int picNr = ofGetFrameNum()%RECORDPICTURES;
-    arrSavePictures[picNr] = grayImage;
-    
-    ofxCvGrayscaleImage 	tmpGrayImg;
-    tmpGrayImg.allocate(CAMWIDTH, CAMHIGHT);
-    tmpGrayImg = grayDiff;
-    
-    for(int i=0;i<RECORDPICTURES;i++) {
-        unsigned char * mergePixels = maxImage(tmpGrayImg,arrSavePictures[i]);
-        tmpGrayImg.setFromPixels(mergePixels, CAMWIDTH, CAMHIGHT);
-        
-    }
-    
-    allDiff = tmpGrayImg;
-     
-     */
-    
-    
     //Update Fragments
     for ( int i=0; i<FRAGMENTNUMBER; i++ ) {
         fragments[i].update();
     }
-	
-
-    
-    /*
-       
-    //Tracking
-    if(startTracking) {
-        
-        //blobs
-        //if(contourFinder.nBlobs.size() > 0) {
-        
-        //}
-        for (int i = 0; i < contourFinder.nBlobs; i++){
-            ofxCvBlob tmpBlob = contourFinder.blobs[i];
-            float blobXMapped = ofMap(tmpBlob.centroid.x, 0, CAMWIDTH, 0, ofGetWidth());
-            float blobYMapped = ofMap(tmpBlob.centroid.y, 0, CAMHIGHT, 0, ofGetHeight());
-    
-        }
-    
-    }
-     */
-    
-}
-
-//--------------------------------------------------------------
-//Die Funktion ist noch nicht optimal, aber funktioniert schon... besser wŠre, wenn man direkt das Bilderarray Ÿbergibt und er alle Bilder addiert...
-unsigned char* testApp::maxImage( ofxCvGrayscaleImage& mom, ofxCvGrayscaleImage& dad ) {
-
-    int totalPixels = mom.width * mom.height;  
-    unsigned char * momPixels = mom.getPixels();  
-    unsigned char * dadPixels = dad.getPixels();  
-    
-    for(int i=0; i<totalPixels; i++) {  
-        momPixels[i] = std::max(momPixels[i],dadPixels[i]);
-    }
-    
-    return momPixels;
 
     
 }
@@ -350,7 +288,10 @@ void testApp::draw(){
 
 
 void testApp::createStructure(ofVec2f _pos, int _n) {
-	
+
+	//////////////////
+    // Sind die Fragments dann nicht irgendwann von den Positionen so geordent, dass sie immer an richtiger stelle stehen?
+    
 	std::vector<Fragment*> tmp;
 	
 	for (int i=0; i<_n; i++) {
@@ -378,6 +319,7 @@ void testApp::keyPressed(int key){
         case 'e':
             gui.toggleDraw();
             setupMode =! setupMode;
+            
             break;
         case 'u':
             scStart = 0;
