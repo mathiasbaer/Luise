@@ -5,6 +5,7 @@
 #include "displayObject.h"
 #include "fragment.h"
 #include "FocusObject.h"
+#include "TrackingPoint.h"
 
 
 class Structure {
@@ -12,7 +13,7 @@ class Structure {
 public:
     
 	Structure() {    
-		leader = new FocusObject();
+        
     }
 	
     // seperate create and build functions if existing
@@ -21,12 +22,13 @@ public:
 	void create( float _posX, float _posY, std::vector<Fragment*> _fs );
 	void addChildren( std::vector<Fragment*> _fs );
 	void destroy();
-	void update(float _x, float _y);
+	//void update(float _x, float _y);
+    void update(std::vector<TrackingPoint> * _tpList);
 	void draw();
     
-	
-	FocusObject * leader;
+    FocusObject leader;
 	std::vector<Fragment*> children;
+     
 	
 private:
 	void setBindings();

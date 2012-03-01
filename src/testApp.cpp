@@ -3,31 +3,25 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 
+    
+    //General Settings
+    ofSetFrameRate(30);
     ofEnableSmoothing();
     ofEnableAlphaBlending();
     
+    //Grafik Settings
+    ofBackground(0);
+    
+    //Videoinput & Tracking
     vidGrabber.setVerbose(true);
-    vidGrabber.initGrabber(CAMWIDTH,CAMHIGHT);
+    vidGrabber.initGrabber(CAMWIDTH,CAMHEIGHT);
+    
+    mColorImg.allocate(CAMWIDTH,CAMHEIGHT);
+    mGrayImage.allocate(CAMWIDTH,CAMHEIGHT);
+    mGrayDiff.allocate(CAMWIDTH,CAMHEIGHT);
+    mSaveBackground.allocate(CAMWIDTH,CAMHEIGHT);
+    
 
-
-    colorImg.allocate(CAMWIDTH,CAMHIGHT);
-	grayImage.allocate(CAMWIDTH,CAMHIGHT);
-	grayDiff.allocate(CAMWIDTH,CAMHIGHT);
-    allDiff.allocate(CAMWIDTH,CAMHIGHT);
-    
-    for (int i=0; i<RECORDPICTURES; i++) {
-        arrSavePictures[i].allocate(CAMWIDTH,CAMHIGHT);
-    }
-    
-    savePic = false;
-    
-	ofSetFrameRate(30);
-    
-    //Set Screen
-    setupMode = true;
-    speichern= false;
-    
-    
     //GUI
     //gui.addPage("setup");
         
@@ -38,22 +32,19 @@ void testApp::setup(){
     
     //VideoSetup
 	gui.addTitle("video settings").setNewColumn(true);
-	gui.addSlider("threshold", threshold, 0, 200);
-    gui.addSlider("blur", blur, 0, 10);
-    gui.addContent("gray diff", grayDiff);
+	gui.addSlider("threshold", mThreshold, 0, 200);
+    gui.addSlider("blur", mBlur, 0, 10);
+    gui.addContent("gray diff", mGrayDiff);
     
-    cout << "load settings from XLM" << endl;
     gui.loadFromXML();
 	gui.show();
     
-    
+
     //Create Fragments
     for (int i=0; i<FRAGMENTNUMBER; i++) {
-        tmpFragment.create(ofRandomWidth(),ofRandomHeight());
-        fragments[i] = tmpFragment;
+        fragments[i].create(ofRandomWidth(),ofRandomHeight());
     }
     
-    startTracking = false;
 
 
     
@@ -61,114 +52,153 @@ void testApp::setup(){
 
 //--------------------------------------------------------------
 void testApp::update(){
+
+
     
-   
-	ofBackground(0);
-
-    bool bNewFrame = false;
-
     vidGrabber.grabFrame();
-	bNewFrame = vidGrabber.isFrameNew();
+    
+    //Neuer Frame?
+    bool bNewFrame = false;
+    bNewFrame = vidGrabber.isFrameNew();
 
-
-	if (bNewFrame){
-
-
-        colorImg.setFromPixels(vidGrabber.getPixels(), CAMWIDTH,CAMHIGHT);
-
-
-        grayImage = colorImg;
-		
-
-		// take the abs value of the difference between background and incoming and then threshold:
-		grayDiff.absDiff(allDiff, grayImage);
-       
-        grayDiff.blur(blur);
-		grayDiff.threshold(threshold);
-  
-		// find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
+    if (bNewFrame){
+        
+        mColorImg.setFromPixels(vidGrabber.getPixels(), CAMWIDTH,CAMHEIGHT);
+        mGrayImage = mColorImg;
+        
+        // take the abs value of the difference between background and incoming and then threshold:
+		mGrayDiff.absDiff(mSaveBackground, mGrayImage);
+        
+        mGrayDiff.blur(mBlur);
+		mGrayDiff.threshold(mThreshold);
+        
+        // find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
 		// also, find holes is set to true so we will get interior contours as well....
-		contourFinder.findContours(grayDiff, 20, (340*240)/3, 10, true);	// find holes
-	}
+		mContourFinder.findContours(mGrayDiff, 20, (340*240)/3, 10, false);	// find holes
+        
+        
+        
+        /////////////////////////////////////////////////
+        // Tracking /////////////////////////////////////
+        /////////////////////////////////////////////////
+        
+        if(mTracking){
+            for (int i = 0; i < mContourFinder.nBlobs; i++) {
+                ofxCvBlob tmpBlob = mContourFinder.blobs[i]; 
+                                
+                bool newBlob = true;
+                for (int a=0; a< mLastBlobs.size(); ++a) {
+                    float distance = mLastBlobs[a].centroid.distance(tmpBlob.centroid);
+                    if(distance <= 20) {
+                        newBlob = false;
+                        break;
+                    }	
+                }
+                
+                if(newBlob) {
+                    //Trackingpoint erstellen
+                    trackingPoints.push_back(TrackingPoint(tmpBlob.centroid));
+                }
+  
+            } //i-schleife
+            
+            //Neue Blobliste erstellen
+            mLastBlobs.clear();
+            
+            for (int i = 0; i< mContourFinder.nBlobs; i++) {
+                mLastBlobs.push_back(mContourFinder.blobs[i]);  
+            }
+                      
+            
+            //TrackingPoints
+            vector<int>blobIDs;
+            
+            if(mLastBlobs.size() == 0) {
+                trackingPoints.clear();
+            } else {
+                
+                //cout << "TP: " << trackingPoints.size() << " // Blobs: " << mLastBlobs.size() << endl;
+                for (int i = 0; i<trackingPoints.size(); i++) {
+                    
+                    float nearest = 0;
+                    int nearestID = 0;
+                    
+                    for (int n = 0; n < mLastBlobs.size(); n++) {
+                        //Check Abstand zwischen Blob und Trackpoint
+                        float distance = trackingPoints[i].checkDist(mLastBlobs[n].centroid);
+                        
+                        if( n == 0 ) {
+                            nearest = distance;
+                            nearestID = n;
+                        } else {
+                            if(distance <= nearest) {
+                                nearest = distance;
+                                nearestID = n;
+                            }
+                        }
+ 
+                    }    
+                    
+                    bool foundBlobID = false;
+                    for (int n = 0; n < blobIDs.size(); n++) {
+                        if(blobIDs[n] == nearestID) {
+                            foundBlobID = true;
+                            n = blobIDs.size();
+                        } 
+                    }
+                    
+                    if(foundBlobID) {
+                        //Blob wird schon von TrackPoint verfolgt..
+                        //Delete trackingPoint
+                        std::vector<TrackingPoint>::iterator iter = trackingPoints.begin() + i;
+                        i--;
+                        trackingPoints.erase(iter);
+                    } else {
+                        blobIDs.push_back(nearestID);
+                        trackingPoints[i].update(mLastBlobs[nearestID].centroid);
+                    }
+                     
+                }
+            } //IF blobs = 0
+        } //mTracking
+    } //bNewFrame
 
-    
-    /////////////////////////////////////////////////
-    // Tracking 
-    // blobs
-    //////////////
-	n_blobs.clear();
-	
-	for (int i = 0; i < contourFinder.nBlobs; i++) {
-		ofxCvBlob tmpBlob = contourFinder.blobs[i];        
-        
-		bool newblob = true;
-		for (int a=0; a< m_blobs.size(); ++a) {
-            if(m_blobs[a].centroid.distance(tmpBlob.centroid) < 40) {
-				newblob = false;
-			}	
-		}
-		if(newblob == true) {
-			n_blobs.push_back(tmpBlob);
-            // CREATE TRACKINGPOINT
-            tmpTrackingPoint.create(tmpBlob.centroid);
-            trackingPoints.push_back(tmpTrackingPoint);
-		}
-	}
-	
-	m_blobs.clear();
-	
-	for (int i = 0; i< contourFinder.nBlobs; i++) {
-		ofxCvBlob tmpBlob = contourFinder.blobs[i];
-		m_blobs.push_back(tmpBlob);
-	}
+
+    //Background Speichern
+    if(mSavePicture) { 
+        mSaveBackground = mGrayImage; 
+        mSavePicture = false;
+    }
     
     
-    /////////////////////////////////////////////////
-    // Tracking 
-    // trackingpoints
-    //////////////
     
-    vector<int>blobIDs;
+    
+    //Build Structurs
     int ln_tp = trackingPoints.size();
-    for (int i = 0; i<ln_tp; i++) {
-        int ln_mBlobs = m_blobs.size();
-        float nearest;
-        int nearestID;
-        for (int n = 0; n < ln_mBlobs; n++) {
-            //Check Abstand zwischen Blob und TP
-            float distance = trackingPoints[i].checkDist(m_blobs[i].centroid);
-            if(distance <= nearest) {
-                distance = nearest;
-                nearestID = n;
-            }
-        }    
-        
-        
-        int ln_blobIDs = blobIDs.size();
-        bool foundBlobID = false;
-        for (int n = 0; n < ln_blobIDs; n++) {
-            if(blobIDs[n] == nearestID) {
-                foundBlobID = true;
-                break;
-            }
-        }
-        
-        if(foundBlobID) {
-            //Blob wird schon von TrackPoint verfolgt..
-            //Delete trackingPoint
-            trackingPoints.erase(trackingPoints.begin() + i);
-            i--;
-        }
-        else {
-            trackingPoints[i].update(m_blobs[nearestID].centroid); 
+    for (int i = 0; i<ln_tp; i++) {        
+        if(!trackingPoints[i].hasStructure) {
+            cout << "struktur erstellen " << endl;
+            //struktur erstellen
+            
+            ofVec2f mappedPosition;
+            mappedPosition.x = ofMap(trackingPoints[i].position.x, 0, CAMWIDTH, 0, ofGetWidth());
+            mappedPosition.y = ofMap(trackingPoints[i].position.y, 0, CAMHEIGHT, 0, ofGetHeight());
+            
+            createStructure(mappedPosition, ofRandom(50-80));
         }
     }
-
-
+	
+	
+    int ln = structures.size();
+	for (int i=0; i<ln; i++) {
+		// pass trackingpoint coordinates
+		// how to find tracking point?â
+        //structures[i].update((float) mouseX, (float) mouseY);
+        structures[i].update( &trackingPoints );
+	}
     
     
-    
-    if(savePic) { allDiff = grayImage; savePic = false; }
+   
     
     /*
     //Save Picture
@@ -195,12 +225,9 @@ void testApp::update(){
         fragments[i].update();
     }
 	
-	int ln = structures.size();
-	for (int i=0; i<ln; i++) {
-		// pass trackingpoint coordinates
-		// how to find tracking point?â
-        structures[i].update((float) mouseX, (float) mouseY);
-	}
+
+    
+    /*
        
     //Tracking
     if(startTracking) {
@@ -213,13 +240,11 @@ void testApp::update(){
             ofxCvBlob tmpBlob = contourFinder.blobs[i];
             float blobXMapped = ofMap(tmpBlob.centroid.x, 0, CAMWIDTH, 0, ofGetWidth());
             float blobYMapped = ofMap(tmpBlob.centroid.y, 0, CAMHIGHT, 0, ofGetHeight());
-  
-
-            
-            
+    
         }
     
     }
+     */
     
 }
 
@@ -248,7 +273,7 @@ void testApp::draw(){
    //allDiff.draw(0, 100);
     
    
-    float ch = CAMHIGHT;
+    float ch = CAMHEIGHT;
     float cw = CAMWIDTH;
     int breite = scStop-scStart;
     int hoehe = (int) ((ch/cw)*breite);
@@ -260,7 +285,7 @@ void testApp::draw(){
         ofSetHexColor(0xffffff);
 
         vidGrabber.draw(screenRect);
-        contourFinder.draw(screenRect);
+        mContourFinder.draw(screenRect);
      
         
         // finally, a report:
@@ -270,7 +295,7 @@ void testApp::draw(){
     
         ofSetHexColor(0xffffff);
         char reportStr[1024];
-        sprintf(reportStr, "bg subtraction and blob detection\nthreshold %i \nnum blobs found %i, fps: %f", threshold, contourFinder.nBlobs, ofGetFrameRate());
+        sprintf(reportStr, "bg subtraction and blob detection\nthreshold %i \nnum blobs found %i, fps: %f", mThreshold, mContourFinder.nBlobs, ofGetFrameRate());
         ofDrawBitmapString(reportStr, 20, 600);
     }
     
@@ -304,12 +329,27 @@ void testApp::draw(){
             fragments[i].draw();
         }
     }
+    
+   
+    
+    ofSetColor(255);
+    mGrayDiff.draw(0, 0);
+    mContourFinder.draw();
+    
+    vidGrabber.draw(400,0);
 
+     
+    //Trackingpoints zeichnen
+    int ln_tp = trackingPoints.size();
+    for (int i = 0; i<ln_tp; i++) {
+        trackingPoints[i].draw();
+    }
+ 
 
 }
 
 
-void testApp::createStructure(float _x, float _y, int _n) {
+void testApp::createStructure(ofVec2f _pos, int _n) {
 	
 	std::vector<Fragment*> tmp;
 	
@@ -317,8 +357,11 @@ void testApp::createStructure(float _x, float _y, int _n) {
 		Fragment f = fragments[i];
 		if (!f.hasTarget) tmp.push_back(&fragments[i]);
 	}
-	tmpStructure.create(_x,_y,tmp);
-	structures.push_back(tmpStructure);
+    
+	//Erst Objekt in Vector erstellen. Objekt wird intern im Vector umkopiert
+	structures.push_back(Structure());
+    //Deswegen erst dannach auf den Vector zugreifen!
+    structures.back().create(_pos.x,_pos.y,tmp);
 }
 
 
@@ -336,19 +379,19 @@ void testApp::keyPressed(int key){
             gui.toggleDraw();
             setupMode =! setupMode;
             break;
-        case 'w':
-            speichern = true;
-            break;
         case 'u':
             scStart = 0;
             gui.saveToXML();
             break;
 		case 'p':
             //startTracking = true;
-			createStructure(200, 600, 70);
+			createStructure(ofVec2f(200, 600), 70);
 			break;
         case ' ':
-            savePic = true;
+            mSavePicture = true;
+            break;
+        case 't':
+            mTracking = !mTracking;
             break;
 
 	}
@@ -362,6 +405,11 @@ void testApp::keyReleased(int key){
 
 //--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y ){
+
+        //objekt in liste erstellen
+    //vieleobjekte.push_back(DisplayObject());
+        //objekt loschen
+    //vieleobjekte.pop_back();
 
 
 }

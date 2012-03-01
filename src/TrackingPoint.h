@@ -8,15 +8,16 @@ class TrackingPoint: public DisplayObject {
     
 public:
     
-    TrackingPoint(): DisplayObject() {
-        
+    TrackingPoint(ofVec2f _pos): DisplayObject() {
+        hasStructure = false;
+        position = _pos;
     }
 	
-	void    create(ofVec2f _pos);
 	void    update(ofVec2f _pos);
     float   checkDist(ofVec2f _blobPos);
+    void    draw();
     
-    
+    bool    hasStructure;
 	
 };
 

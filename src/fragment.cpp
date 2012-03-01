@@ -22,6 +22,11 @@ void Fragment::create(float _x, float _y) {
 
 void Fragment::update() {
     
+    //Fehlerabfang falls kein Pointer gesetzt wurde
+    if (target == NULL) {
+       return; 
+    }
+    
     if( hasTarget || opacity > 0 ) {
 		
 		

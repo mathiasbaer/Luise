@@ -27,12 +27,14 @@ public:
         fillColor.b        = 255;  
         fillColor.a        = 255;  
         
+        //Pointer am Anfang immer auf Null setzten!
+        target              = NULL;
+        
     };    
 
     void checkBoundries();
     void clearTarget();
 	void setTarget( DisplayObject* _t );
-	//void setStructure( Structure s );
     void setPosition( float x, float y );
     void setPosition( int x, int y );
     

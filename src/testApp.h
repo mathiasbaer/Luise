@@ -14,12 +14,24 @@
 #define RECORDPICTURES 8
 #define FRAGMENTNUMBER 500
 #define CAMWIDTH 320
-#define CAMHIGHT 240
+#define CAMHEIGHT 240
 
 
 class testApp : public ofBaseApp{
-
+    
 	public:
+    
+        testApp() {
+            
+            //Videoinput & Tracking
+            mSavePicture = false;
+            mTracking = false;
+            
+            //Set Screen
+            setupMode = true;
+            
+        }
+    
 		void setup();
 		void update();
 		void draw();
@@ -33,51 +45,43 @@ class testApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);		
-		void createStructure(float _x, float _y, int _n);
+		void createStructure(ofVec2f _pos, int _n);
     
         //2 Bilder Addieren
         unsigned char*  maxImage( ofxCvGrayscaleImage& mom, ofxCvGrayscaleImage& dad );
 
-        ofVideoGrabber 		vidGrabber;
+        //Camera & Tracking
+        ofVideoGrabber          vidGrabber;
+        
+        ofxCvColorImage			mColorImg;
+        ofxCvGrayscaleImage 	mGrayImage;
+		ofxCvGrayscaleImage 	mGrayDiff;
+        ofxCvGrayscaleImage 	mSaveBackground;
 
-
-        ofxCvColorImage			colorImg;
-
-        ofxCvGrayscaleImage 	grayImage;
-		ofxCvGrayscaleImage 	grayDiff;
-
-        ofxCvContourFinder 	contourFinder;
-    
-        //Tracking
-        ofxCvGrayscaleImage     arrSavePictures[RECORDPICTURES];
-        ofxCvGrayscaleImage 	allDiff;
-
-        bool speichern;
-        bool savePic;
-        bool startTracking;
-    
-        vector <ofxCvBlob> m_blobs; // Mittelpunkte vom Blobs
-        vector <ofxCvBlob> n_blobs;
+        ofxCvContourFinder      mContourFinder;
     
     
-        //Fragmente
-        Fragment tmpFragment;
+        int         mThreshold;
+        int         mBlur;
+        bool        mSavePicture;
+        bool        mTracking;
+    
+        vector <ofxCvBlob> mLastBlobs;
+        std::vector<TrackingPoint> trackingPoints;
+    
+    
+        //Fragmente & Structuren
         Fragment fragments[FRAGMENTNUMBER];
-	
-		Structure tmpStructure;
 		std::vector<Structure> structures;
 	
-		TrackingPoint tmpTrackingPoint;
-		std::vector<TrackingPoint> trackingPoints;
-        
+
         //Setup Screen
         bool        setupMode;
         int         scStart;
         int         scStop;
         int         scHeight;
 
-        int         threshold;
-        int         blur;
+    
     
 };
 
