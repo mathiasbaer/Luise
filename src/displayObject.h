@@ -29,6 +29,11 @@ public:
         
         //Pointer am Anfang immer auf Null setzten!
         target              = NULL;
+		position.set(0,0);
+		desired.set(0,0);
+		vel.set(0,0);
+		acc.set(0,0);
+		force.set(0,0);
         
     };    
 

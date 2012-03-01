@@ -21,11 +21,7 @@ void Fragment::create(float _x, float _y) {
 }
 
 void Fragment::update() {
-    
-    //Fehlerabfang falls kein Pointer gesetzt wurde
-    if (target == NULL) {
-       return; 
-    }
+   
     
     if( hasTarget || opacity > 0 ) {
 		
@@ -97,6 +93,7 @@ void Fragment::update() {
         
         // set position in structure as desired for next fragment
         desired = v1;
+		
         
         // set force to move fragment up if target is cleared next frame
         force.set(0,-1.5);
