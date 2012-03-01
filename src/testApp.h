@@ -13,6 +13,7 @@
 //CONST
 #define RECORDPICTURES 8
 #define FRAGMENTNUMBER 500
+#define STRUCTURENUMBER 20
 #define CAMWIDTH 320  //MUSS AUCH IN TRACKINGPOINT.H GE€NDERT WERDEN
 #define CAMHEIGHT 240 //MUSS AUCH IN TRACKINGPOINT.H GE€NDERT WERDEN
 
@@ -30,6 +31,8 @@ class testApp : public ofBaseApp{
             
             //Set Screen
             setupMode = true;
+			
+			structures.reserve(STRUCTURENUMBER);
             
         }
     

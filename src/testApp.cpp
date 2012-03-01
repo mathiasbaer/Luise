@@ -14,6 +14,7 @@ void testApp::setup(){
     
     //Videoinput & Tracking
     vidGrabber.setVerbose(true);
+	vidGrabber.setDeviceID(3);
     vidGrabber.initGrabber(CAMWIDTH,CAMHEIGHT);
     
     mColorImg.allocate(CAMWIDTH,CAMHEIGHT);
@@ -34,7 +35,8 @@ void testApp::setup(){
 	gui.addTitle("video settings").setNewColumn(true);
 	gui.addSlider("threshold", mThreshold, 0, 200);
     gui.addSlider("blur", mBlur, 0, 10);
-    gui.addContent("gray diff", mGrayDiff);
+    gui.addContent("kamera", mColorImg);
+	gui.addContent("gray diff", mGrayDiff);
     
     gui.loadFromXML();
 	gui.show();
@@ -173,10 +175,12 @@ void testApp::update(){
     
     //Build Structurs
     int ln_tp = trackingPoints.size();
+	cout << ln_tp << endl;
     for (int i = 0; i<ln_tp; i++) {        
         if(!trackingPoints[i].hasStructure) {
             //struktur erstellen
-            createStructure(trackingPoints[i].mMapPos, ofRandom(50-80));
+            if(structures.size() < STRUCTURENUMBER && structures.size() < ln_tp ) 
+				createStructure(trackingPoints[i].mMapPos, ofRandom(50,80));
         }
     }
     
@@ -265,16 +269,18 @@ void testApp::draw(){
         //Draw Fragments
         for ( int i=0; i<FRAGMENTNUMBER; i++ ) {
             fragments[i].draw();
-        }
-    }
-    
+		}
    
     
-    ofSetColor(255);
-    mGrayDiff.draw(0, 0);
-    mContourFinder.draw();
+	
+		ofSetColor(255);
+		mGrayDiff.draw(0, 0);
+		mContourFinder.draw();
     
-    vidGrabber.draw(400,0);
+		vidGrabber.draw(400,0);
+		
+    }
+    
 
      
     //Trackingpoints zeichnen
@@ -292,17 +298,24 @@ void testApp::createStructure(ofVec2f _pos, int _n) {
 	//////////////////
     // Sind die Fragments dann nicht irgendwann von den Positionen so geordent, dass sie immer an richtiger stelle stehen?
     
+	//cout << "---> create structure" << endl;
+	
 	std::vector<Fragment*> tmp;
 	
-	for (int i=0; i<_n; i++) {
-		Fragment f = fragments[i];
-		if (!f.hasTarget) tmp.push_back(&fragments[i]);
+	for (int i=0; i<FRAGMENTNUMBER && tmp.size() < _n; i++) {
+		//Fragment f = fragments[i];
+		if (!fragments[i].hasTarget) {
+			tmp.push_back(&fragments[i]);
+			//cout << "frag id" << &fragments[i] << endl;
+		}
 	}
-    
+
+	
 	//Erst Objekt in Vector erstellen. Objekt wird intern im Vector umkopiert
 	structures.push_back(Structure());
     //Deswegen erst dannach auf den Vector zugreifen!
     structures.back().create(_pos.x,_pos.y,tmp);
+	
 }
 
 
@@ -327,7 +340,7 @@ void testApp::keyPressed(int key){
             break;
 		case 'p':
             //startTracking = true;
-			createStructure(ofVec2f(200, 600), 70);
+			createStructure(ofVec2f(mouseX, mouseY), 70);
 			break;
         case ' ':
             mSavePicture = true;

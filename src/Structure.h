@@ -13,7 +13,7 @@ class Structure {
 public:
     
 	Structure() {    
-        
+        cout << "adresse leader bei constructor: " << &leader << endl;
     }
 	
     // seperate create and build functions if existing
@@ -24,6 +24,7 @@ public:
 	void destroy();
 	//void update(float _x, float _y);
     void update(std::vector<TrackingPoint> * _tpList);
+	void update(float _x, float _y);
 	void draw();
     
     FocusObject leader;

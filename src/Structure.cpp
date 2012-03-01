@@ -4,8 +4,8 @@ void Structure::create( float _posX, float _posY, std::vector<Fragment*> _fs ) {
     
 	children = _fs;
 	leader.attach(_posX, _posY);
-    
 	setBindings();
+	
     
     
 }
@@ -37,6 +37,7 @@ void Structure::addChildren( std::vector<Fragment*> _fs ) {
 	setBindings();
 }
 
+
 void Structure::draw() {
 	
     leader.draw();
@@ -61,9 +62,9 @@ void Structure::draw() {
 	}
 }
 
-//void Structure::update(float _x, float _y) {
-//	leader.update(_x, _y);
-//}
+void Structure::update(float _x, float _y) {
+	leader.update(_x, _y);
+}
 
 void Structure::update(std::vector<TrackingPoint> *_tpList) {
    
@@ -106,7 +107,8 @@ void Structure::update(std::vector<TrackingPoint> *_tpList) {
     //Leader update
     ofVec2f newTrackPos = trackingPoints->at(nearestID).mMapPos;
     leader.update(newTrackPos.x, newTrackPos.y);
-    
+    cout << " new id" << &leader << endl;
+	
     trackingPoints = NULL;
 
 }
