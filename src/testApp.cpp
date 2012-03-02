@@ -249,6 +249,12 @@ void testApp::update(){
             createStructure(trackingPoints[n].mMapPos, ofRandom(50,70));
         }
     }
+	
+	// upadate attractors
+	for ( int i=0; i<attractors.size(); i++ ) {
+        attractors[i].update();
+    }
+	
     
     //Update Fragments
     for ( int i=0; i<FRAGMENTNUMBER; i++ ) {
@@ -325,6 +331,12 @@ void testApp::draw(){
     
     if(!setupMode) {
         //Draw Fragments
+		
+		// only for testing. not visible
+		for ( int i=0; i<attractors.size(); i++ ) {
+			attractors[i].draw();
+		}
+		
         for ( int i=0; i<FRAGMENTNUMBER; i++ ) {
             fragments[i].draw();
 		}
@@ -383,6 +395,12 @@ void testApp::createStructure(ofVec2f _pos, int _n) {
     //Deswegen erst dannach auf den Vector zugreifen!
     structures.back().create(_pos.x,_pos.y,tmp);
 
+}
+
+
+void testApp::createAttractor() {
+	attractors.push_back(Attractor());
+	attractors.back().create();
 }
 
 

@@ -21,16 +21,16 @@ void Fragment::create(float _x, float _y) {
 }
 
 void Fragment::update() {
+	
+	lastPosition0 = position;
+	lastPosition1 = lastPosition0;
    
     
     if( hasTarget || opacity > 0 ) {
 		
-		
 		iRotation.update();
         iLength.update();
-		
-//        for ( int i=0; i<sizeof(lfos); i++ ) { lfos[i].update(); }
-    }
+	}
  
     
     // is in structure
@@ -97,8 +97,8 @@ void Fragment::update() {
         
         // set force to move fragment up if target is cleared next frame
         force.set(0,-1.5);
-        force += vel;
-        force.limit( 2 );
+        //force += vel;
+        //force.limit( 2 );
 		
     }
     // free movement
@@ -127,7 +127,7 @@ void Fragment::setPropertiesWithIndex( int _i ) {
 
 void Fragment::draw() {
     glPushMatrix();
-    glTranslated(position.x, position.y,0);
+    //glTranslated(position.x, position.y,0);
     
     if (hasTarget) {
         if (opacity < 1) opacity += 0.01;
@@ -172,15 +172,26 @@ void Fragment::draw() {
     
 //    noStroke();
     
-    if(hasTarget)
+    if(hasTarget) {
         ofSetColor(255,0,0,190);
-    else
+	
+		//tail
+		ofSetLineWidth(lastPosition0.distance(lastPosition1)/5);
+		ofLine(lastPosition0.x, lastPosition0.y,
+			   lastPosition1.x, lastPosition1.y);
+		
+		ofSetLineWidth(position.distance(lastPosition0)/5);
+		ofLine(position.x, position.y,
+			   lastPosition0.x, lastPosition0.y);
+	} else {
         ofSetColor(fillColor,50);
-    
-    ofEllipse(0,0,5,5);
+	}
+	
+	    
+    ofEllipse(position.x,position.y,5,5);
     
     ofSetColor(fillColor);
-    ofEllipse(0,0,2,2);
+    ofEllipse(position.x,position.y,2,2);
     glPopMatrix();
 }
 

@@ -10,6 +10,7 @@
 #include "TrackingPoint.h"
 #include "ImageList.h"
 #include "GraphicsContainer.h"
+#include "Attractor.h"
 
 //CONST
 #define RECORDPICTURES 8
@@ -51,8 +52,10 @@ class testApp : public ofBaseApp{
 		void mouseReleased(int x, int y, int button);
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);		
+		void gotMessage(ofMessage msg);
+	
 		void createStructure(ofVec2f _pos, int _n);
+		void createAttractor();
     
 
         //Camera & Tracking
@@ -84,6 +87,8 @@ class testApp : public ofBaseApp{
         //Fragmente & Structuren
         Fragment fragments[FRAGMENTNUMBER];
 		std::vector<Structure> structures;
+	
+		std::vector<Attractor> attractors;
 	
 
         //Setup Screen
