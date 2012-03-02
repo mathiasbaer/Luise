@@ -10,11 +10,9 @@ void testApp::setup(){
     
     //Grafik Settings
     ofEnableAlphaBlending();
-    ofEnableSmoothing();
+    //ofEnableSmoothing();
     ofBackground(0, 0, 0);
-//    ofSetBackgroundAuto(false);
-
-    
+    ofSetBackgroundAuto(false);
     
     
     //Videoinput & Tracking
@@ -27,7 +25,7 @@ void testApp::setup(){
     mGrayDiff.allocate(CAMWIDTH,CAMHEIGHT);
     mSaveBackground.allocate(CAMWIDTH,CAMHEIGHT);
     
-
+/*
     //GUI
     //gui.addPage("setup");
         
@@ -45,7 +43,7 @@ void testApp::setup(){
     
     gui.loadFromXML();
 	gui.show();
-    
+*/
 
     //Create Fragments
     for (int i=0; i<FRAGMENTNUMBER; i++) {
@@ -258,32 +256,34 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 
-    ofSetHexColor(0xffffff);
-
-   //allDiff.draw(0, 100);
+    ofSetColor(0,0,0,50);
+    ofRect(0, 0, ofGetWidth(), ofGetHeight());
     
-   
+    
     float ch = CAMHEIGHT;
     float cw = CAMWIDTH;
     int breite = scStop-scStart;
     int hoehe = (int) ((ch/cw)*breite);
     ofRectangle screenRect;
     screenRect.set(scStart, scHeight-hoehe, breite, hoehe);
+   
 
-	if(setupMode) {
+	
+
+    if(setupMode) {
+
         //Draw Camera & Blobs
-        ofSetHexColor(0xffffff);
-
+        ofSetColor(255,255,255);
+        
         vidGrabber.draw(screenRect);
         mContourFinder.draw(screenRect);
-     
         
         // finally, a report:
 
         ofSetColor(0,255,0);
         ofDrawBitmapString("press s: kamerasetup\npress f: toggle fullscreen", 20, 650);
     
-        ofSetHexColor(0xffffff);
+        ofSetColor(255,255,255);
         char reportStr[1024];
         sprintf(reportStr, "bg subtraction and blob detection\nthreshold %i \nnum blobs found %i, fps: %f", mThreshold, mContourFinder.nBlobs, ofGetFrameRate());
         ofDrawBitmapString(reportStr, 20, 600);
@@ -303,6 +303,7 @@ void testApp::draw(){
     }*/
     
     
+   
     int ln = structures.size();
 	for (int i=0; i<ln; i++) {
         structures[i].draw();
@@ -310,7 +311,7 @@ void testApp::draw(){
 
     
     //GUI
-    gui.draw();
+    //gui.draw();
     
     
     if(!setupMode) {
@@ -336,9 +337,8 @@ void testApp::draw(){
     for (int i = 0; i<ln_tp; i++) {
         trackingPoints[i].draw();
         
-    }
- 
-
+    }    
+    
 }
 
 
@@ -366,7 +366,7 @@ void testApp::createStructure(ofVec2f _pos, int _n) {
 	structures.push_back(Structure());
     //Deswegen erst dannach auf den Vector zugreifen!
     structures.back().create(_pos.x,_pos.y,tmp);
-	
+
 }
 
 
@@ -381,13 +381,13 @@ void testApp::keyPressed(int key){
             ofToggleFullscreen();
             break;
         case 'e':
-            gui.toggleDraw();
+            //gui.toggleDraw();
             setupMode =! setupMode;
             
             break;
         case 'u':
             scStart = 0;
-            gui.saveToXML();
+            //gui.saveToXML();
             break;
 		case 'p':
             //startTracking = true;

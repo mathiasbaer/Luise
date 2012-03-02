@@ -7,7 +7,6 @@
 #include "displayObject.h"
 #include "fragment.h"
 #include "Structure.h"
-//#include "FocusObject.h"
 #include "TrackingPoint.h"
 
 //CONST
