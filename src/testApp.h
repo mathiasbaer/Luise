@@ -8,6 +8,7 @@
 #include "fragment.h"
 #include "Structure.h"
 #include "TrackingPoint.h"
+#include "ImageList.h"
 
 //CONST
 #define RECORDPICTURES 8
@@ -30,6 +31,8 @@ class testApp : public ofBaseApp{
             
             //Set Screen
             setupMode = true;
+			
+			drawBuffer = false;
 			
 			structures.reserve(STRUCTURENUMBER);
             
@@ -69,7 +72,12 @@ class testApp : public ofBaseApp{
     
         vector <ofxCvBlob> mLastBlobs;
         std::vector<TrackingPoint> trackingPoints;
-    
+		
+		ImageList imageList;
+		
+		ofImage image;
+		ofFbo buffer;
+		bool drawBuffer;
     
         //Fragmente & Structuren
         Fragment fragments[FRAGMENTNUMBER];

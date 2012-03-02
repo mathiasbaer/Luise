@@ -25,6 +25,12 @@ void testApp::setup(){
     mGrayDiff.allocate(CAMWIDTH,CAMHEIGHT);
     mSaveBackground.allocate(CAMWIDTH,CAMHEIGHT);
     
+	imageList.create();
+	
+	// buffer code
+	buffer.allocate(1024,768);
+	
+	
 /*
     //GUI
     //gui.addPage("setup");
@@ -259,7 +265,6 @@ void testApp::draw(){
     ofSetColor(0,0,0,50);
     ofRect(0, 0, ofGetWidth(), ofGetHeight());
     
-    
     float ch = CAMHEIGHT;
     float cw = CAMWIDTH;
     int breite = scStop-scStart;
@@ -337,9 +342,18 @@ void testApp::draw(){
     for (int i = 0; i<ln_tp; i++) {
         trackingPoints[i].draw();
         
-    }    
+    }
     
+	ofEnableBlendMode(OF_BLENDMODE_SCREEN);
+	buffer.begin();
+	image.draw(ofRandom(1000), ofRandom(100));
+	buffer.end();
+	//buffer.draw(0,0);
+	ofDisableBlendMode();
 }
+
+
+
 
 
 void testApp::createStructure(ofVec2f _pos, int _n) {
@@ -428,7 +442,8 @@ void testApp::mouseDragged(int x, int y, int button){
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
 
-
+	image = imageList.getRandom();
+	drawBuffer = true;
 }
 
 //--------------------------------------------------------------

@@ -37,6 +37,7 @@
 		9949C6B414FC274500371963 /* ofxCvImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9949C6A214FC274500371963 /* ofxCvImage.cpp */; };
 		9949C6B514FC274500371963 /* ofxCvHaarFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9949C6A414FC274500371963 /* ofxCvHaarFinder.cpp */; };
 		9949C6B614FC274500371963 /* ofxCvShortImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9949C6A714FC274500371963 /* ofxCvShortImage.cpp */; };
+		994C58B91500E51100A0CE49 /* ImageList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 994C58B81500E51100A0CE49 /* ImageList.cpp */; };
 		99F0C68914FD3AFB00DA1372 /* Structure.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99F0C68814FD3AFB00DA1372 /* Structure.cpp */; };
 		99F0C68C14FD3F4100DA1372 /* FocusObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99F0C68B14FD3F4100DA1372 /* FocusObject.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
@@ -163,6 +164,8 @@
 		9949C6A714FC274500371963 /* ofxCvShortImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxCvShortImage.cpp; path = ../../../addons/ofxOpenCv/src/ofxCvShortImage.cpp; sourceTree = SOURCE_ROOT; };
 		9949C6A814FC274500371963 /* ofxCvShortImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxCvShortImage.h; path = ../../../addons/ofxOpenCv/src/ofxCvShortImage.h; sourceTree = SOURCE_ROOT; };
 		9949C6A914FC274500371963 /* ofxOpenCv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxOpenCv.h; path = ../../../addons/ofxOpenCv/src/ofxOpenCv.h; sourceTree = SOURCE_ROOT; };
+		994C58B71500E51100A0CE49 /* ImageList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageList.h; sourceTree = "<group>"; };
+		994C58B81500E51100A0CE49 /* ImageList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageList.cpp; sourceTree = "<group>"; };
 		99F0C68714FD3AFB00DA1372 /* Structure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Structure.h; sourceTree = "<group>"; };
 		99F0C68814FD3AFB00DA1372 /* Structure.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Structure.cpp; sourceTree = "<group>"; };
 		99F0C68A14FD3F4100DA1372 /* FocusObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FocusObject.h; sourceTree = "<group>"; };
@@ -446,6 +449,8 @@
 				99F0C68B14FD3F4100DA1372 /* FocusObject.cpp */,
 				990C105014FE7E17004DA0F7 /* TrackingPoint.h */,
 				990C105114FE7E17004DA0F7 /* TrackingPoint.cpp */,
+				994C58B71500E51100A0CE49 /* ImageList.h */,
+				994C58B81500E51100A0CE49 /* ImageList.cpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -577,6 +582,7 @@
 				99F0C68914FD3AFB00DA1372 /* Structure.cpp in Sources */,
 				99F0C68C14FD3F4100DA1372 /* FocusObject.cpp in Sources */,
 				990C105214FE7E17004DA0F7 /* TrackingPoint.cpp in Sources */,
+				994C58B91500E51100A0CE49 /* ImageList.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
