@@ -22,9 +22,9 @@ public:
         
         childIndex      = 0;
         
-        fillColor.r        = 255;
-        fillColor.g        = 255;  
-        fillColor.b        = 255;  
+        fillColor.r        = 200;
+        fillColor.g        = 230;  
+        fillColor.b        = 60;  
         fillColor.a        = 255;  
         
         //Pointer am Anfang immer auf Null setzten!
