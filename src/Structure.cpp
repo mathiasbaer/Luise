@@ -56,9 +56,9 @@ void Structure::draw() {
 			
 			float dist = f0->position.distance(f1->position);
 			
-			if (dist<100 && f0->opacity < 0.8) {
+			if (dist<100 && f0->opacityActive < 0.8) {
 				float op = (1-dist/100);
-				if (op>f0->opacity) op = f0->opacity;
+				if (op>f0->opacityActive) op = f0->opacityActive;
 				ofSetColor(f0->fillColor, op*100);
 				ofLine(f0->position.x,f0->position.y,f1->position.x,f1->position.y); 
 			}

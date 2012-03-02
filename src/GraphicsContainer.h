@@ -13,10 +13,13 @@ public:
 		maxSteps = 50;
 		position = ofVec2f( ofGetWidth()/2, ofGetHeight()/2 );
 		canDraw = false;
+		
+		blockTime = 1;
+		elapsedTime = 0;
     }
 	
 	void create();
-	void init();
+	void init(ofImage _image, float _x, float _y);
 	void update();
 	void draw();
 	void setImage( ofImage _image );
@@ -27,6 +30,9 @@ public:
 	
 	int steps;
 	int maxSteps;
+	
+	float blockTime;
+	float elapsedTime;
 	
 	bool canDraw;
 	

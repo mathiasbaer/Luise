@@ -5,13 +5,18 @@ void Fragment::create(float _x, float _y) {
     
     fillColor.set(200,230,60);
     
-    iRotation.setRange(PI/20);
+    iRotation.setRange(PI/5);
     iRotation.baseValue = -PI/2;
     iRotation.speed = 0.01;
     
     iLength.setRange(100.0);
     iLength.minValue = 20.0;
     iLength.speed = 0.02;
+	
+	iOpacity.setRange(3);
+	iOpacity.minValue = -2;
+	iOpacity.speed = 0.02;
+	iOpacity.radians = ofRandom(PI*2);
     
     // for free movement
     speed = 0.5;
@@ -20,18 +25,40 @@ void Fragment::create(float _x, float _y) {
     
 }
 
+int Fragment::findAttractor( std::vector<Attractor> _atts ) {
+	
+	int idx = -1;
+	
+	for (int i=0; i<_atts.size(); i++) {
+		Attractor att = _atts[i];
+		float dst = position.distance(att.position);
+		if (dst < 100) {
+			pull = att.position - position;
+			pull /= 40;
+			pull.limit(3);
+			idx = i;
+			break;
+		}
+	}
+	return idx;
+}
+
 void Fragment::update() {
 	
 	lastPosition1.set(lastPosition0);
 	lastPosition0.set(position);
    
-    if( hasTarget || opacity > 0 ) {
+    if( hasTarget || opacityActive > 0 ) {
 		
 		iRotation.update();
         iLength.update();
 	}
- 
-    
+	
+	iOpacity.update();
+	opacityBase = iOpacity.value;
+	if (opacityBase < 0) opacityBase = 0;
+    opacityBase *= 255;
+	
     // is in structure
     if( hasTarget ) {
 		
@@ -106,22 +133,23 @@ void Fragment::update() {
     else {
 		
 		rotation = atan2( vel.y, vel.x ) + ofRandom(-PI/10, PI/10);
-		/*
-		if (opacity > 0) {
-			if ( rotation < 0 && rotation > -PI/2 ) {
-				rotation - PI/10;
-			}
-			else if ( rotation > ) {
-				
-			}
-		}
-		*/
 		
         vel.set(cos(rotation) * speed, sin(rotation) * speed);
-        if (opacity > 0) { vel += force; }
+        if (opacityActive > 0) { vel += force; }
+		if (pull.length() > 0.1) {
+			vel += pull;
+			//opacity = ofMap(pull.length(), 0, 100, opacityBase, 255, false);
+			opacity = 255;
+		}
+		else {
+			pull *= 0;
+			opacity = opacityBase;
+		}
         position += vel;
         force *= 0.99f;
 		if (force.length()<0.1) { force *= 0; };
+		pull *= 0.8;
+		
     }
     
     // reset rotation for next fragment
@@ -145,14 +173,14 @@ void Fragment::draw() {
     //glTranslated(position.x, position.y,0);
     
     if (hasTarget) {
-        if (opacity < 1) opacity += 0.01;
-        if (targetDistance > 150 && opacity < 0.9) opacity = 0;
+        if (opacityActive < 1) opacityActive += 0.01;
+        if (targetDistance > 150 && opacityActive < 0.9) opacityActive = 0;
     }
     else {
-        if (opacity > 0.01) opacity *= 0.99;
-        else opacity = 0;
+        if (opacityActive > 0.01) opacityActive *= 0.99;
+        else opacityActive = 0;
     }
-    if (opacity > 0) {
+    if (opacityActive > 0) {
         
         ofColor c = fillColor;
 
@@ -161,7 +189,7 @@ void Fragment::draw() {
         /*
          if ( d.mag() < 100 ) {
          float op = 1 - d.mag()/100;
-         if (op>opacity) op = opacity;
+         if (op>opacityActive) op = opacityActive;
          stroke(fillColor, op*250);
          strokeWeight(30);
          line(0,0, target.position.x - position.x, target.position.y - position.y);
@@ -177,11 +205,11 @@ void Fragment::draw() {
 		glPushMatrix();
 		glTranslated(position.x, position.y, 0);
 		
-        ofSetColor(c, opacity*255/4);
+        ofSetColor(c, opacityActive*255/4);
         ofSetLineWidth(4);
         ofLine(0,-length*3, 0,length/2);
         
-        ofSetColor(c, opacity*255/1.5);
+        ofSetColor(c, opacityActive*255/1.5);
         ofSetLineWidth(2);
         ofLine(0,-length/2, 0,length/2);
 		
@@ -191,7 +219,7 @@ void Fragment::draw() {
 //    noStroke();
     
     if(hasTarget) {
-        ofSetColor(fillColor,100);
+        ofSetColor(fillColor,opacityActive);
 	
 		//tail
 		
@@ -203,13 +231,13 @@ void Fragment::draw() {
 		ofLine(position.x, position.y,
 			   lastPosition0.x, lastPosition0.y);
 	} else {
-        ofSetColor(fillColor,50);
+        ofSetColor(fillColor,opacity/2);
 	}
 	
 	    
     ofEllipse(position.x,position.y,5,5);
     
-    ofSetColor(fillColor);
+    ofSetColor(fillColor,opacity);
     ofEllipse(position.x,position.y,2,2);
 	
     glPopMatrix();

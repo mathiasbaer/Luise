@@ -3,14 +3,20 @@
 
 void GraphicsContainer::create() {
 	buffer.allocate(ofGetWidth(),ofGetHeight());
-	init();
 }
 
-void GraphicsContainer::init() {
-	steps = 0;
-	clear();
-	rotation = ofRandom(PI*2);
-	speed = 5;
+void GraphicsContainer::init( ofImage _img, float _x, float _y) {
+	
+	if ( ofGetElapsedTimef() - elapsedTime > blockTime ) {
+		steps = 0;
+		clear();
+		rotation = ofRandom(PI*2);
+		speed = 5;
+		setImage( _img );
+		setPosition( _x,_y);
+	}
+	
+	elapsedTime = ofGetElapsedTimef();
 }
 
 void GraphicsContainer::setPosition( float x, float y ) {
@@ -30,7 +36,6 @@ void GraphicsContainer::clear() {
 void GraphicsContainer::setImage( ofImage _image ) {
 	image = _image;
 	canDraw = true;
-	init();
 }
 
 void GraphicsContainer::update() {
@@ -62,26 +67,27 @@ void GraphicsContainer::draw() {
 		
 		
 		// add image to buffer
-		if (steps < maxSteps && speed > 0.1) {
-			buffer.begin();
+		if (steps < maxSteps /*&& speed > 0.1*/) {
+			//buffer.begin();
 				ofEnableBlendMode(OF_BLENDMODE_SCREEN);
 				//ofEnableAlphaBlending();
 			
-					//ofSetColor(0, 0, 0, 100);
+					//ofSetColor(255, 255, 255, 100);
 					//ofRect(0, 0, ofGetWidth()-300, ofGetHeight());
 					image.draw(position.x, position.y);
 			
 				//ofDisableAlphaBlending();
 				ofDisableBlendMode();
-			buffer.end();
+			//buffer.end();
 		}
 			
 		
 		// draw final buffer image
 		ofEnableBlendMode(OF_BLENDMODE_SCREEN);
 		//ofEnableAlphaBlending();
-		
-			buffer.draw(0,0,ofGetWidth(),ofGetHeight());
+			
+			//ofSetColor(255, 255, 255, 20);
+			//buffer.draw(0,0,ofGetWidth(),ofGetHeight());
 		
 		//ofDisableAlphaBlending();
 		ofDisableBlendMode();

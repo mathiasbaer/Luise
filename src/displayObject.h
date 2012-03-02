@@ -36,6 +36,7 @@ public:
 		force.set(0,0);
 		lastPosition0.set(0,0);
 		lastPosition1.set(0,0);
+		pull.set(0,0);
         
     };    
 
@@ -54,7 +55,7 @@ public:
     float           friction;
     float           easing;
     float           offsetToTarget;
-    ofVec2f         position, desired, vel, acc, force, lastPosition0, lastPosition1;
+    ofVec2f         position, desired, vel, acc, force, lastPosition0, lastPosition1, pull;
 	
 	DisplayObject*	target;
     

@@ -254,15 +254,22 @@ void testApp::update(){
         }
     }
 	
-	// upadate attractors
-	for ( int i=0; i<attractors.size(); i++ ) {
-        attractors[i].update();
-    }
-	
+		
     
     //Update Fragments
     for ( int i=0; i<FRAGMENTNUMBER; i++ ) {
-        fragments[i].update();
+		int attIdx = fragments[i].findAttractor( attractors );
+		if ( attIdx > -1 ) attractors[attIdx].satellites++;
+		fragments[i].update();
+    }
+	
+	// upadate attractors
+	for ( int i=0; i<attractors.size(); i++ ) {
+        attractors[i].update();
+		Attractor a = attractors[i];
+		if (a.hasEnough) {
+			changeGraphic( a.position.x, a.position.y );
+		}
     }
 	
 	
@@ -343,7 +350,7 @@ void testApp::draw(){
 		
 		// only for testing. not visible
 		for ( int i=0; i<attractors.size(); i++ ) {
-			attractors[i].draw();
+			//attractors[i].draw();
 		}
 		
         for ( int i=0; i<FRAGMENTNUMBER; i++ ) {
@@ -368,14 +375,6 @@ void testApp::draw(){
         trackingPoints[i].draw();
         
     }
-	
-	for (int i = 0; i<attractors.size(); i++) {
-        attractors[i].draw();
-        
-    }
-	
-	
-	
 
 	// GrafphicsContainer
 	graphic.draw();
@@ -425,6 +424,11 @@ void testApp::createStructure(ofVec2f _pos, int _n) {
 void testApp::createAttractor() {
 	attractors.push_back(Attractor());
 	attractors.back().create();
+}
+
+void testApp::changeGraphic( float _x, float _y ) {
+	
+	graphic.init(imageList.getRandom(),_x, _y);
 }
 
 
@@ -488,11 +492,7 @@ void testApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
-
-	graphic.setImage(imageList.getRandom());
-	graphic.setPosition(mouseX, mouseY);
-	
-	drawBuffer = true;
+	changeGraphic( mouseX, mouseY );
 }
 
 //--------------------------------------------------------------

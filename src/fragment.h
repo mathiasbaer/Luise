@@ -5,6 +5,7 @@
 #include "displayObject.h"
 #include "FocusObject.h"
 #include "LFO.h"
+#include "Attractor.h"
 
 class Fragment: public DisplayObject {
     
@@ -12,10 +13,9 @@ public:
     
     Fragment(): DisplayObject() {
         
-        lfos[0] = iRotation;
-        lfos[1] = iLength;
-        
-        opacity     = 0;
+        opacityActive     = 0;
+		opacityBase		  = 0;
+		opacity			  = opacityBase;
         
     }
     
@@ -25,15 +25,18 @@ public:
     
     void create(float _x, float _y);
     void update();
+	int  findAttractor( std::vector<Attractor> _atts );
     void setPropertiesWithIndex( int _i );
     void draw();
     
     LFO iRotation;
     LFO iLength;
-    LFO lfos[2];
+	LFO iOpacity;
     
     // appearance
-    float opacity;
+    float opacityActive;
+	float opacity;
+	float opacityBase;
     
     
     
