@@ -351,7 +351,7 @@ void testApp::draw(){
 	
 
 	// GrafphicsContainer
-	if (drawBuffer) graphic.draw();
+	graphic.draw();
 }
 
 

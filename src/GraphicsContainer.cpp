@@ -29,6 +29,7 @@ void GraphicsContainer::clear() {
 
 void GraphicsContainer::setImage( ofImage _image ) {
 	image = _image;
+	canDraw = true;
 	init();
 }
 
@@ -45,39 +46,42 @@ void GraphicsContainer::draw() {
 	 * fade out buffer image slowly. semi transparent clear not working
 	 */
 	
-	buffer.begin();
-	//ofEnableAlphaBlending();
-	//ofSetColor(0, 0, 0, 100);
-	//ofRect(0, 0, ofGetWidth()-300, ofGetHeight());
-	//ofClear(0, 0, 0, 127);
-	//ofDisableAlphaBlending();
-	buffer.end();
+	if (canDraw) {
 	
-	
-	// add image to buffer
-	if (steps < maxSteps) {
 		buffer.begin();
-			//ofEnableAlphaBlending();
-			ofEnableBlendMode(OF_BLENDMODE_SCREEN);
-		
-				//ofSetColor(0, 0, 0, 100);
-				//ofRect(0, 0, ofGetWidth()-300, ofGetHeight());
-				image.draw(position.x, position.y);
-		
-			//ofDisableAlphaBlending();
-			ofDisableBlendMode();
+		//ofEnableAlphaBlending();
+		//ofSetColor(0, 0, 0, 100);
+		//ofRect(0, 0, ofGetWidth()-300, ofGetHeight());
+		//ofClear(0, 0, 0, 127);
+		//ofDisableAlphaBlending();
 		buffer.end();
-	}
 		
-	
-	// draw final buffer image
-	ofEnableBlendMode(OF_BLENDMODE_SCREEN);
-	//ofEnableAlphaBlending();
-	
-		buffer.draw(0,0,ofGetWidth(),ofGetHeight());
-	
-	//ofDisableAlphaBlending();
-	ofDisableBlendMode();
-	
-	steps++;
+		
+		// add image to buffer
+		if (steps < maxSteps) {
+			buffer.begin();
+				//ofEnableAlphaBlending();
+				ofEnableBlendMode(OF_BLENDMODE_SCREEN);
+			
+					//ofSetColor(0, 0, 0, 100);
+					//ofRect(0, 0, ofGetWidth()-300, ofGetHeight());
+					image.draw(position.x, position.y);
+			
+				//ofDisableAlphaBlending();
+				ofDisableBlendMode();
+			buffer.end();
+		}
+			
+		
+		// draw final buffer image
+		ofEnableBlendMode(OF_BLENDMODE_SCREEN);
+		//ofEnableAlphaBlending();
+		
+			buffer.draw(0,0,ofGetWidth(),ofGetHeight());
+		
+		//ofDisableAlphaBlending();
+		ofDisableBlendMode();
+		
+		steps++;
+	}
 }

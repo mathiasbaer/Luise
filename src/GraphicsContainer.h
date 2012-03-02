@@ -12,6 +12,7 @@ public:
 		steps = 0;
 		maxSteps = 50;
 		position = ofVec2f( ofGetWidth()/2, ofGetHeight()/2 );
+		canDraw = false;
     }
 	
 	void create();
@@ -26,6 +27,8 @@ public:
 	
 	int steps;
 	int maxSteps;
+	
+	bool canDraw;
 	
 	ofImage image;
 	ofFbo buffer;
