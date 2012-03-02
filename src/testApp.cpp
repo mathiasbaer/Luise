@@ -17,7 +17,7 @@ void testApp::setup(){
     
     //Videoinput & Tracking
     vidGrabber.setVerbose(true);
-	//vidGrabber.setDeviceID(3);
+	vidGrabber.setDeviceID(3);
     vidGrabber.initGrabber(CAMWIDTH,CAMHEIGHT);
     
     mColorImg.allocate(CAMWIDTH,CAMHEIGHT);
@@ -28,6 +28,10 @@ void testApp::setup(){
 	imageList.create();
 	
 	graphic.create();
+	
+	background.loadImage("images/Bildschirmfoto 2012-03-02 um 19.25.26.png");
+	
+	//blendmodeShader.load(<#string shaderName#>)
 	
 	
 /*
@@ -271,10 +275,15 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
+	
+	
+	ofEnableAlphaBlending();
+    ofSetColor(255,255,255,20);
+    //ofRect(0, 0, ofGetWidth(), ofGetHeight());
+	background.draw(0, 0, 1024, 768);
 
-    ofSetColor(0,0,0,50);
-    ofRect(0, 0, ofGetWidth(), ofGetHeight());
-    
+	ofDisableAlphaBlending();
+	
     float ch = CAMHEIGHT;
     float cw = CAMWIDTH;
     int breite = scStop-scStart;
@@ -360,10 +369,25 @@ void testApp::draw(){
         
     }
 	
+	for (int i = 0; i<attractors.size(); i++) {
+        attractors[i].draw();
+        
+    }
+	
+	
 	
 
 	// GrafphicsContainer
 	graphic.draw();
+	
+	/*
+	ofEnableBlendMode(OF_BLENDMODE_MULTIPLY);
+	ofEnableAlphaBlending();
+	ofSetColor(255, 0, 0, 20);
+	ofRect(0, 0, ofGetWidth(), ofGetHeight());
+	ofDisableAlphaBlending();
+	ofDisableBlendMode();
+	*/
 }
 
 
@@ -408,6 +432,9 @@ void testApp::createAttractor() {
 void testApp::keyPressed(int key){
 
 	switch (key){
+		case 'a':
+            createAttractor();
+            break;
         case 's':
             vidGrabber.videoSettings();
             break;

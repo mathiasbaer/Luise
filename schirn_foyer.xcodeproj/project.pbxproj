@@ -40,6 +40,7 @@
 		994C58B91500E51100A0CE49 /* ImageList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 994C58B81500E51100A0CE49 /* ImageList.cpp */; };
 		994C58E01500ECA600A0CE49 /* GraphicsContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 994C58DF1500ECA600A0CE49 /* GraphicsContainer.cpp */; };
 		994C5A0B1501041400A0CE49 /* Attractor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 994C5A0A1501041400A0CE49 /* Attractor.cpp */; };
+		99645986150127D0009BF423 /* MeshObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99645985150127D0009BF423 /* MeshObject.cpp */; };
 		99F0C68914FD3AFB00DA1372 /* Structure.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99F0C68814FD3AFB00DA1372 /* Structure.cpp */; };
 		99F0C68C14FD3F4100DA1372 /* FocusObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99F0C68B14FD3F4100DA1372 /* FocusObject.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
@@ -172,6 +173,8 @@
 		994C58DF1500ECA600A0CE49 /* GraphicsContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphicsContainer.cpp; sourceTree = "<group>"; };
 		994C5A091501041400A0CE49 /* Attractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Attractor.h; sourceTree = "<group>"; };
 		994C5A0A1501041400A0CE49 /* Attractor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Attractor.cpp; sourceTree = "<group>"; };
+		99645984150127D0009BF423 /* MeshObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeshObject.h; sourceTree = "<group>"; };
+		99645985150127D0009BF423 /* MeshObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MeshObject.cpp; sourceTree = "<group>"; };
 		99F0C68714FD3AFB00DA1372 /* Structure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Structure.h; sourceTree = "<group>"; };
 		99F0C68814FD3AFB00DA1372 /* Structure.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Structure.cpp; sourceTree = "<group>"; };
 		99F0C68A14FD3F4100DA1372 /* FocusObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FocusObject.h; sourceTree = "<group>"; };
@@ -460,6 +463,8 @@
 				994C58DF1500ECA600A0CE49 /* GraphicsContainer.cpp */,
 				994C5A091501041400A0CE49 /* Attractor.h */,
 				994C5A0A1501041400A0CE49 /* Attractor.cpp */,
+				99645984150127D0009BF423 /* MeshObject.h */,
+				99645985150127D0009BF423 /* MeshObject.cpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -595,6 +600,7 @@
 				994C58B91500E51100A0CE49 /* ImageList.cpp in Sources */,
 				994C58E01500ECA600A0CE49 /* GraphicsContainer.cpp in Sources */,
 				994C5A0B1501041400A0CE49 /* Attractor.cpp in Sources */,
+				99645986150127D0009BF423 /* MeshObject.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

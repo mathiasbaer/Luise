@@ -11,7 +11,7 @@ void Fragment::create(float _x, float _y) {
     
     iLength.setRange(100.0);
     iLength.minValue = 20.0;
-    iLength.speed = 0.05;
+    iLength.speed = 0.02;
     
     // for free movement
     speed = 0.5;
@@ -22,10 +22,9 @@ void Fragment::create(float _x, float _y) {
 
 void Fragment::update() {
 	
-	lastPosition0 = position;
-	lastPosition1 = lastPosition0;
+	lastPosition1.set(lastPosition0);
+	lastPosition0.set(position);
    
-    
     if( hasTarget || opacity > 0 ) {
 		
 		iRotation.update();
@@ -73,7 +72,7 @@ void Fragment::update() {
 			
 			ofVec2f v;
 			v.set(1,1);
-			v /= 3000;
+			v /= 5000;
 			acc += v;
             acc.limit( 0.05 );
 			desired *= acc;
@@ -90,25 +89,39 @@ void Fragment::update() {
 		//position += desired;
         
         //acc *= 0.2;
-        
-        // set position in structure as desired for next fragment
-        desired = v1;
 		
         
         // set force to move fragment up if target is cleared next frame
-        force.set(0,-1.5);
+        force.set(0,-1);
+		//force.normalize();
+		force *= 1;
+		force += desired;
         //force += vel;
         //force.limit( 2 );
 		
+		// set position in structure as desired for next fragment
+        desired = v1;
     }
     // free movement
     else {
-        rotation = atan2( vel.y, vel.x ) + ofRandom(-PI/10, PI/10);
+		
+		rotation = atan2( vel.y, vel.x ) + ofRandom(-PI/10, PI/10);
+		/*
+		if (opacity > 0) {
+			if ( rotation < 0 && rotation > -PI/2 ) {
+				rotation - PI/10;
+			}
+			else if ( rotation > ) {
+				
+			}
+		}
+		*/
+		
         vel.set(cos(rotation) * speed, sin(rotation) * speed);
         if (opacity > 0) { vel += force; }
         position += vel;
         force *= 0.99f;
-        if (force.length()<0.5) { force *= 0; };
+		if (force.length()<0.1) { force *= 0; };
     }
     
     // reset rotation for next fragment
@@ -126,6 +139,8 @@ void Fragment::setPropertiesWithIndex( int _i ) {
 }
 
 void Fragment::draw() {
+	ofPushStyle();
+	ofEnableAlphaBlending();
     glPushMatrix();
     //glTranslated(position.x, position.y,0);
     
@@ -158,7 +173,9 @@ void Fragment::draw() {
          fill(fillColor);
          rect(-abs(d.x)/2,-length,abs(d.x),length);
          */
-        
+		
+		glPushMatrix();
+		glTranslated(position.x, position.y, 0);
 		
         ofSetColor(c, opacity*255/4);
         ofSetLineWidth(4);
@@ -168,19 +185,21 @@ void Fragment::draw() {
         ofSetLineWidth(2);
         ofLine(0,-length/2, 0,length/2);
 		
+		glPopMatrix();
     }
     
 //    noStroke();
     
     if(hasTarget) {
-        ofSetColor(255,0,0,190);
+        ofSetColor(fillColor,100);
 	
 		//tail
-		ofSetLineWidth(lastPosition0.distance(lastPosition1)/5);
+		
+		ofSetLineWidth(lastPosition0.distance(lastPosition1));
 		ofLine(lastPosition0.x, lastPosition0.y,
 			   lastPosition1.x, lastPosition1.y);
 		
-		ofSetLineWidth(position.distance(lastPosition0)/5);
+		ofSetLineWidth(position.distance(lastPosition0));
 		ofLine(position.x, position.y,
 			   lastPosition0.x, lastPosition0.y);
 	} else {
@@ -192,6 +211,9 @@ void Fragment::draw() {
     
     ofSetColor(fillColor);
     ofEllipse(position.x,position.y,2,2);
+	
     glPopMatrix();
+	ofDisableAlphaBlending();
+	ofPopStyle();
 }
 

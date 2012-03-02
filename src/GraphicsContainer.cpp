@@ -35,8 +35,8 @@ void GraphicsContainer::setImage( ofImage _image ) {
 
 void GraphicsContainer::update() {
 	rotation += ofRandom(-PI/10,PI/10);
-	position += ofVec2f( cos(rotation)*speed,
-						 sin(rotation)*speed );
+	vel = ofVec2f( cos(rotation)*speed, sin(rotation)*speed );
+	position += vel;
 	speed *= 0.9;
 }
 
@@ -45,6 +45,10 @@ void GraphicsContainer::draw() {
 	/*
 	 * fade out buffer image slowly. semi transparent clear not working
 	 */
+	
+	ofPushStyle();
+	
+	ofSetColor(255, 255, 255);
 	
 	if (canDraw) {
 	
@@ -58,10 +62,10 @@ void GraphicsContainer::draw() {
 		
 		
 		// add image to buffer
-		if (steps < maxSteps) {
+		if (steps < maxSteps && speed > 0.1) {
 			buffer.begin();
-				//ofEnableAlphaBlending();
 				ofEnableBlendMode(OF_BLENDMODE_SCREEN);
+				//ofEnableAlphaBlending();
 			
 					//ofSetColor(0, 0, 0, 100);
 					//ofRect(0, 0, ofGetWidth()-300, ofGetHeight());
@@ -84,4 +88,5 @@ void GraphicsContainer::draw() {
 		
 		steps++;
 	}
+	ofPopStyle();
 }

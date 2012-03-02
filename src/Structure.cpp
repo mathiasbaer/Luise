@@ -41,6 +41,9 @@ void Structure::addChildren( std::vector<Fragment*> _fs ) {
 
 void Structure::draw() {
 	
+	ofPushStyle();
+	ofEnableAlphaBlending();
+	
     leader.draw();
 	
 	int ln = children.size();
@@ -56,11 +59,13 @@ void Structure::draw() {
 			if (dist<100 && f0->opacity < 0.8) {
 				float op = (1-dist/100);
 				if (op>f0->opacity) op = f0->opacity;
-				ofSetColor(f0->fillColor, op*250);
+				ofSetColor(f0->fillColor, op*100);
 				ofLine(f0->position.x,f0->position.y,f1->position.x,f1->position.y); 
 			}
 		}
 	}
+	ofDisableAlphaBlending();
+	ofPopStyle();
 }
 
 void Structure::update() {

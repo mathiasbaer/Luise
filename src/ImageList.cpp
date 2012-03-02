@@ -4,7 +4,7 @@
 void ImageList::create() {
 	
 	// get image paths => dir.getPath(i)
-	dir.listDir("images/");
+	dir.listDir("images/random_textures/");
 	dir.sort();
 
 	if( dir.size() ){

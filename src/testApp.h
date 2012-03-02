@@ -11,6 +11,7 @@
 #include "ImageList.h"
 #include "GraphicsContainer.h"
 #include "Attractor.h"
+#include "MeshObject.h"
 
 //CONST
 #define RECORDPICTURES 8
@@ -37,6 +38,9 @@ class testApp : public ofBaseApp{
 			drawBuffer = false;
 			
 			structures.reserve(STRUCTURENUMBER);
+			
+			mThreshold = 9;
+			mBlur = 8;
             
         }
     
@@ -60,6 +64,8 @@ class testApp : public ofBaseApp{
 
         //Camera & Tracking
         ofVideoGrabber          vidGrabber;
+	
+		ofImage background;
         
         ofxCvColorImage			mColorImg;
         ofxCvGrayscaleImage 	mGrayImage;
@@ -89,7 +95,8 @@ class testApp : public ofBaseApp{
 		std::vector<Structure> structures;
 	
 		std::vector<Attractor> attractors;
-	
+		
+		ofShader blendmodeShader;
 
         //Setup Screen
         bool        setupMode;
