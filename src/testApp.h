@@ -9,6 +9,7 @@
 #include "Structure.h"
 #include "TrackingPoint.h"
 #include "ImageList.h"
+#include "GraphicsContainer.h"
 
 //CONST
 #define RECORDPICTURES 8
@@ -73,10 +74,11 @@ class testApp : public ofBaseApp{
         vector <ofxCvBlob> mLastBlobs;
         std::vector<TrackingPoint> trackingPoints;
 		
+		// all images in bin/data/images. images folder not syncing with git somehow
 		ImageList imageList;
-		
-		ofImage image;
-		ofFbo buffer;
+	
+		// graphics: make vector/array later
+		GraphicsContainer graphic;
 		bool drawBuffer;
     
         //Fragmente & Structuren

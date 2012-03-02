@@ -27,8 +27,7 @@ void testApp::setup(){
     
 	imageList.create();
 	
-	// buffer code
-	buffer.allocate(1024,768);
+	graphic.create();
 	
 	
 /*
@@ -255,8 +254,13 @@ void testApp::update(){
     for ( int i=0; i<FRAGMENTNUMBER; i++ ) {
         fragments[i].update();
     }
+	
+	
+	/////////////////////////////////////////////////
+    // GraphicsContainer ////////////////////////////
+    /////////////////////////////////////////////////	
 
-    
+    graphic.update();
 }
 
 //--------------------------------------------------------------
@@ -343,13 +347,11 @@ void testApp::draw(){
         trackingPoints[i].draw();
         
     }
-    
-	ofEnableBlendMode(OF_BLENDMODE_SCREEN);
-	buffer.begin();
-	image.draw(ofRandom(1000), ofRandom(100));
-	buffer.end();
-	//buffer.draw(0,0);
-	ofDisableBlendMode();
+	
+	
+
+	// GrafphicsContainer
+	if (drawBuffer) graphic.draw();
 }
 
 
@@ -442,7 +444,8 @@ void testApp::mouseDragged(int x, int y, int button){
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
 
-	image = imageList.getRandom();
+	graphic.setImage(imageList.getRandom());
+	
 	drawBuffer = true;
 }
 
