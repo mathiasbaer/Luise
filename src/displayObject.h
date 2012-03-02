@@ -42,6 +42,7 @@ public:
 	void setTarget( DisplayObject* _t );
     void setPosition( float x, float y );
     void setPosition( int x, int y );
+	void pos ( float x, float y );
     
     // for graphic in structure mode
     float           length; 
@@ -64,11 +65,6 @@ public:
     //Structure structure;
     
     ofColor     fillColor;
-    
-    
-private: 
-    
-    void pos ( float x, float y );
     
 };
 

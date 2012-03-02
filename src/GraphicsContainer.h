@@ -15,10 +15,14 @@ public:
     }
 	
 	void create();
+	void init();
 	void update();
 	void draw();
 	void setImage( ofImage _image );
 	void clear();
+	
+	void setPosition( float x, float y );
+    void setPosition( int x, int y );
 	
 	int steps;
 	int maxSteps;

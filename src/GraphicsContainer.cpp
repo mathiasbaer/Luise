@@ -1,10 +1,24 @@
 #include "GraphicsContainer.h"
 
+
 void GraphicsContainer::create() {
 	buffer.allocate(ofGetWidth(),ofGetHeight());
-	buffer.begin();
-	ofClear(0, 0, 0, 0);
-	buffer.end();
+	init();
+}
+
+void GraphicsContainer::init() {
+	steps = 0;
+	clear();
+	rotation = ofRandom(PI*2);
+	speed = 5;
+}
+
+void GraphicsContainer::setPosition( float x, float y ) {
+    pos( x - image.getWidth()/2 , y - image.getHeight()/2 );
+}
+
+void GraphicsContainer::setPosition( int x, int y ) {
+    pos( (float) x - image.getWidth()/2 ,(float) y - image.getHeight()/2 );
 }
 
 void GraphicsContainer::clear() {
@@ -15,15 +29,14 @@ void GraphicsContainer::clear() {
 
 void GraphicsContainer::setImage( ofImage _image ) {
 	image = _image;
-	steps = 0;
-	buffer.begin();
-	ofClear(0, 0, 0, 0);
-	buffer.end();
-	position = ofVec2f( ofGetWidth()/2 - image.getWidth()/2, ofGetHeight()/2 - image.getHeight()/2);
+	init();
 }
 
 void GraphicsContainer::update() {
-	position += ofVec2f( ofRandom(-10,10),ofRandom(-10,10) );
+	rotation += ofRandom(-PI/10,PI/10);
+	position += ofVec2f( cos(rotation)*speed,
+						 sin(rotation)*speed );
+	speed *= 0.9;
 }
 
 void GraphicsContainer::draw() {

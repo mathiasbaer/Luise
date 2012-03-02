@@ -445,6 +445,7 @@ void testApp::mouseDragged(int x, int y, int button){
 void testApp::mousePressed(int x, int y, int button){
 
 	graphic.setImage(imageList.getRandom());
+	graphic.setPosition(mouseX, mouseY);
 	
 	drawBuffer = true;
 }
