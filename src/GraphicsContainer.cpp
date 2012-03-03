@@ -3,7 +3,6 @@
 
 void GraphicsContainer::create() {
 	buffer.allocate(2048,768);
-	gBuffer.allocate(2048,768);
 }
 
 void GraphicsContainer::init( ofImage _img, float _x, float _y) {
@@ -28,9 +27,12 @@ void GraphicsContainer::setPosition( int x, int y ) {
 }
 
 void GraphicsContainer::clear() {
+	/*
 	buffer.begin();
 	ofClear(0, 0, 0, 0);
 	buffer.end();
+	 */
+	gBuffer.clear();
 }
 
 // rename: setTexture
@@ -41,12 +43,13 @@ void GraphicsContainer::setImage( ofImage _image ) {
 
 void GraphicsContainer::setVertices( std::vector<ofVec2f> _v ) {
 	vecs = _v;
-	setMesh();
+	//cout << _v.size() << endl;
+	//setMesh();
 }
 
 void GraphicsContainer::setMesh() {
 	for (int i=0; i<vecs.size(); i++) {
-		gMesh.addVertex(ofVec3f(vecs[i], 0));
+		gMesh.addVertex(ofVec3f(vecs[i].x, vecs[i].y, 0));
 	}
 	gBuffer.setMesh(gMesh,GL_STATIC_DRAW);
 }
@@ -64,10 +67,14 @@ void GraphicsContainer::draw() {
 	 * fade out buffer image slowly. semi transparent clear not working
 	 */
 	
+	/*
+	// MESH DRAW
 	ofPushStyle();
 	ofSetColor(255, 0, 0);
 	gBuffer.draw(GL_QUADS,0,4);
 	ofPopStyle();
+	*/
+	
 	
 	
 	/*

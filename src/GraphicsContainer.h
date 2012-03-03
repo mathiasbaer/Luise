@@ -42,7 +42,7 @@ public:
 	ofImage image;
 	ofFbo buffer;
 	
-	ofFbo gBuffer;
+	ofVbo gBuffer;
 	ofMesh gMesh;
 	
 	std::vector<ofVec2f> vecs;

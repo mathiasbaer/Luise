@@ -337,7 +337,7 @@ void testApp::update(){
 		
 		Attractor a = attractors[i];
 		if (a.hasEnough()) {
-			changeGraphic( a.position.x, a.position.y );
+			changeGraphic( a.satellites );
 		}
 		
 		attractors[i].clearSatellites();
@@ -516,9 +516,10 @@ void testApp::createAttractor() {
 	attractors.back().create();
 }
 
-void testApp::changeGraphic( float _x, float _y ) {
+void testApp::changeGraphic( std::vector<ofVec2f> _v ) {
 	
-	attractorGraphics.init(imageList.getRandom(),_x, _y);
+	attractorGraphics.init(imageList.getRandom(),0,0);
+	attractorGraphics.setVertices(_v);
 }
 
 
@@ -597,7 +598,11 @@ void testApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
-	changeGraphic( mouseX, mouseY );
+	std::vector<ofVec2f> tmp;
+	for (int i=0; i<20; i++) {
+		tmp.push_back(ofVec2f(ofRandom(ofGetWidth()),ofRandom(ofGetHeight())));
+	}
+	changeGraphic( tmp );
 }
 
 //--------------------------------------------------------------
