@@ -13,7 +13,7 @@ void GraphicsContainer::init( ofImage _img, float _x, float _y) {
 		rotation = ofRandom(PI*2);
 		speed = 5;
 		setImage( _img );
-		setPosition( _x,_y);
+		//setPosition( _x,_y);
 		elapsedTime = ofGetElapsedTimef();
 	}
 }
