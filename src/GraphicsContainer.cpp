@@ -32,7 +32,9 @@ void GraphicsContainer::clear() {
 	ofClear(0, 0, 0, 0);
 	buffer.end();
 	 */
-	gBuffer.clear();
+	//gBuffer.clear();
+    
+    testMesh.clear();
 }
 
 // rename: setTexture
@@ -44,14 +46,19 @@ void GraphicsContainer::setImage( ofImage _image ) {
 void GraphicsContainer::setVertices( std::vector<ofVec2f> _v ) {
 	vecs = _v;
 	//cout << _v.size() << endl;
-	//setMesh();
+	setMesh();
 }
 
 void GraphicsContainer::setMesh() {
 	for (int i=0; i<vecs.size(); i++) {
-		gMesh.addVertex(ofVec3f(vecs[i].x, vecs[i].y, 0));
+		//gMesh.addVertex(ofVec3f(vecs[i].x, vecs[i].y, 0));
+        
+        testMesh.addVertex(ofVec3f(vecs[i].x, vecs[i].y, 0));
+        testMesh.addTexCoord(vecs[i]);
+        
+        
 	}
-	gBuffer.setMesh(gMesh,GL_STATIC_DRAW);
+	//gBuffer.setMesh(gMesh,GL_STATIC_DRAW);
 }
 
 void GraphicsContainer::update() {
@@ -67,13 +74,17 @@ void GraphicsContainer::draw() {
 	 * fade out buffer image slowly. semi transparent clear not working
 	 */
 	
-	/*
+	
 	// MESH DRAW
 	ofPushStyle();
 	ofSetColor(255, 0, 0);
-	gBuffer.draw(GL_QUADS,0,4);
+    image.getTextureReference().bind();
+    testMesh.draw();
+    image.getTextureReference().unbind();
+    
+	//gBuffer.draw(GL_TRIANGLE_STRIP,0,4);
 	ofPopStyle();
-	*/
+	
 	
 	
 	

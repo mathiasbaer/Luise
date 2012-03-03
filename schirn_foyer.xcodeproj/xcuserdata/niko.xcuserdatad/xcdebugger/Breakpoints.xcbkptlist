@@ -16,32 +16,6 @@
          endingLineNumber = "181"
          landmarkName = "testApp::update()"
          landmarkType = "5">
-         <Locations>
-            <Location
-               shouldBeEnabled = "Yes"
-               ignoreCount = "0"
-               continueAfterRunningActions = "No"
-               symbolName = "std::vector&lt;ofxCvBlob, std::allocator&lt;ofxCvBlob&gt; &gt;::size() const"
-               urlString = "file://localhost/testApp.cpp"
-               timestampString = "352266703.432688"
-               startingColumnNumber = "9223372036854775807"
-               endingColumnNumber = "9223372036854775807"
-               startingLineNumber = "120"
-               endingLineNumber = "120">
-            </Location>
-            <Location
-               shouldBeEnabled = "Yes"
-               ignoreCount = "0"
-               continueAfterRunningActions = "No"
-               symbolName = "testApp::update()"
-               urlString = "file://localhost/testApp.cpp"
-               timestampString = "352266703.432965"
-               startingColumnNumber = "9223372036854775807"
-               endingColumnNumber = "9223372036854775807"
-               startingLineNumber = "120"
-               endingLineNumber = "120">
-            </Location>
-         </Locations>
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

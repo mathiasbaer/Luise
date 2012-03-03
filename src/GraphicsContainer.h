@@ -42,8 +42,10 @@ public:
 	ofImage image;
 	ofFbo buffer;
 	
-	ofVbo gBuffer;
-	ofMesh gMesh;
+	//ofVbo gBuffer;
+	//ofMesh gMesh;
+    
+    ofVboMesh testMesh;
 	
 	std::vector<ofVec2f> vecs;
 	
