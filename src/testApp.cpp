@@ -506,8 +506,8 @@ void testApp::draw(){
 	 */
     
     //Treppen fŸr die kleinen Screens
-    mTreppen[0].draw();
-    mTreppen[1].draw();
+    //mTreppen[0].draw();
+   // mTreppen[1].draw();
     
     
     

@@ -4,10 +4,13 @@
 void DisplayObject::checkBoundries() {
     
     if (!hasTarget) {
-        if ( position.x > ofGetWidth() + 20 )  position.x = 0;
-        if ( position.x < 0 - 20 )			   position.x = ofGetWidth();
-        if ( position.y > ofGetHeight() + 20 ) position.y = 0;
-        if ( position.y < 0 - 20 )             position.y = ofGetHeight();
+        int xEnd = mBoundary.x + mBoundary.width;
+        int yEnd = mBoundary.y + mBoundary.height;
+        
+        if ( position.x > xEnd + 30 )               position.x = xEnd;
+        if ( position.x < mBoundary.x - 30 )        position.x = mBoundary.x;
+        if ( position.y > yEnd +30 )                position.y = yEnd;
+        if ( position.y < mBoundary.y - 30 )        position.y = mBoundary.y;
     }
 }
 
@@ -31,6 +34,10 @@ void DisplayObject::setStructure( Structure s ) {
 
 }
 */
+
+void DisplayObject::setBoundary(ofRectangle _b) {
+    mBoundary = _b;
+}
 
 void DisplayObject::setPosition( float x, float y ) {
     pos( x,y );

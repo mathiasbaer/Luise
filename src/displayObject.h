@@ -20,6 +20,8 @@ public:
         hasTarget       = false;
         isLeader        = false;
         
+        mBoundary        = ofRectangle(0,0,1024*2,786);
+        
         childIndex      = 0;
         
         fillColor.r        = 200;
@@ -45,6 +47,7 @@ public:
 	void setTarget( DisplayObject* _t );
     void setPosition( float x, float y );
     void setPosition( int x, int y );
+    void setBoundary(ofRectangle _b);
 	void pos ( float x, float y );
     
     // for attractorGraphics in structure mode
@@ -57,6 +60,8 @@ public:
     float           offsetToTarget;
     ofVec2f         position, desired, vel, acc, force, lastPosition0, lastPosition1, pull;
 	
+    ofRectangle mBoundary;
+    
 	DisplayObject*	target;
     
     bool            hasTarget;

@@ -22,9 +22,7 @@ void Treppe::setStufenAbstand(int _abstand) {
 
 void Treppe::setStufenHoehe(int _hoehe) {
     mStufenHoehe = _hoehe;
-    for(int i = 0; i < STUFENANZAHL; i++) {
-        Stufen[i].setHeight(mStufenHoehe);
-    }
+    setPosition(mPosition);
 }
 
 void Treppe::setStufenBreite(int _breite) {
@@ -39,11 +37,15 @@ void Treppe::setPosition(ofVec2f _pos) {
     mPosition = _pos;
     
     Stufen[0].mPosition = mPosition;
+    if(mAlign == 1) Stufen[0].setHeight(mStufenHoehe);
+    else Stufen[0].setHeight(mStufenHoehe+mStufenAbstand*(STUFENANZAHL-1));
+    
     for(int i = 1; i < STUFENANZAHL; i++) {
         Stufen[i].mPosition.x = Stufen[i-1].mPosition.x + Stufen[i-1].mWidth;
+        Stufen[i].mPosition.y = mPosition.y;
         
-        if(mAlign == 2) { Stufen[i].mPosition.y = Stufen[i-1].mPosition.y - mStufenAbstand; }
-        else { Stufen[i].mPosition.y = Stufen[i-1].mPosition.y + mStufenAbstand;  }
+        if(mAlign == 1) { Stufen[i].setHeight(Stufen[i-1].mHeight + mStufenAbstand); }
+        else { Stufen[i].setHeight(Stufen[i-1].mHeight - mStufenAbstand);  }
         
     }
     
