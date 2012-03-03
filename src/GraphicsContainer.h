@@ -25,6 +25,9 @@ public:
 	void setImage( ofImage _image );
 	void clear();
 	
+	void setVertices(std::vector<ofVec2f> _v);
+	void setMesh();
+	
 	void setPosition( float x, float y );
     void setPosition( int x, int y );
 	
@@ -38,6 +41,13 @@ public:
 	
 	ofImage image;
 	ofFbo buffer;
+	
+	ofFbo gBuffer;
+	ofMesh gMesh;
+	
+	std::vector<ofVec2f> vecs;
+	
+	
 	
 };
 

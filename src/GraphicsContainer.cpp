@@ -2,7 +2,8 @@
 
 
 void GraphicsContainer::create() {
-	buffer.allocate(ofGetWidth(),ofGetHeight());
+	buffer.allocate(2048,768);
+	gBuffer.allocate(2048,768);
 }
 
 void GraphicsContainer::init( ofImage _img, float _x, float _y) {
@@ -32,9 +33,22 @@ void GraphicsContainer::clear() {
 	buffer.end();
 }
 
+// rename: setTexture
 void GraphicsContainer::setImage( ofImage _image ) {
 	image = _image;
 	canDraw = true;
+}
+
+void GraphicsContainer::setVertices( std::vector<ofVec2f> _v ) {
+	vecs = _v;
+	setMesh();
+}
+
+void GraphicsContainer::setMesh() {
+	for (int i=0; i<vecs.size(); i++) {
+		gMesh.addVertex(ofVec3f(vecs[i], 0));
+	}
+	gBuffer.setMesh(gMesh,GL_STATIC_DRAW);
 }
 
 void GraphicsContainer::update() {
@@ -51,6 +65,13 @@ void GraphicsContainer::draw() {
 	 */
 	
 	ofPushStyle();
+	ofSetColor(255, 0, 0);
+	gBuffer.draw(GL_QUADS,0,4);
+	ofPopStyle();
+	
+	
+	/*
+	ofPushStyle();
 	
 	ofSetColor(255, 255, 255);
 	
@@ -66,7 +87,7 @@ void GraphicsContainer::draw() {
 		
 		
 		// add image to buffer
-		if (steps < maxSteps /*&& speed > 0.1*/) {
+		if (steps < maxSteps) {
 			//buffer.begin();
 				ofEnableBlendMode(OF_BLENDMODE_SCREEN);
 				//ofEnableAlphaBlending();
@@ -94,4 +115,5 @@ void GraphicsContainer::draw() {
 		steps++;
 	}
 	ofPopStyle();
+	 */
 }
