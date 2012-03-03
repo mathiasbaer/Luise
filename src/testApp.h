@@ -12,15 +12,15 @@
 #include "GraphicsContainer.h"
 #include "Attractor.h"
 #include "MeshObject.h"
+#include "ofxLibdc.h"
 
 //CONST
 #define RECORDPICTURES 8
 #define FRAGMENTNUMBER 500
 #define STRUCTURENUMBER 20
-#define CAMWIDTH 320  //MUSS AUCH IN TRACKINGPOINT.H GE€NDERT WERDEN
-#define CAMHEIGHT 240 //MUSS AUCH IN TRACKINGPOINT.H GE€NDERT WERDEN
 
-
+// Wenn 2 Kameras
+//#define _USE_TWO_CAMS
 
 class testApp : public ofBaseApp{
     
@@ -64,9 +64,20 @@ class testApp : public ofBaseApp{
     
 
         //Camera & Tracking
-        ofVideoGrabber          vidGrabber;
+            
+        int mCamWidth;
+        int mCamHeight;
+            
+        #ifdef _USE_TWO_CAMS
+            ofxLibdc::PointGrey camera[2];
+            ofImage mCaptureImages[2];
+            // include these just to make sure they compile
+            ofxLibdc::Grabber   dummyGrabber;
+        #else
+            ofVideoGrabber      vidGrabber;
+        #endif
 	
-		ofImage background;
+		
         
         ofxCvColorImage			mColorImg;
         ofxCvGrayscaleImage 	mGrayImage;
@@ -81,6 +92,9 @@ class testApp : public ofBaseApp{
         bool        mSavePicture;
         bool        mTracking;
     
+        //TEMP
+        ofImage background;
+        
         vector <ofxCvBlob> mLastBlobs;
         std::vector<TrackingPoint> trackingPoints;
 		

@@ -4,8 +4,8 @@ void TrackingPoint::update(ofVec2f _pos) {
 	position = _pos;
     
     //Mapping
-    mMapPos.x = ofMap(position.x, 0, CAMWIDTH, 0, ofGetWidth());
-    mMapPos.y = ofMap(position.y, 0, CAMHEIGHT, 0, ofGetHeight());
+    mMapPos.x = ofMap(position.x, 0, mCamWidth, 0, ofGetWidth());
+    mMapPos.y = ofMap(position.y, 0, mCamHeight, 0, ofGetHeight());
     
 }
 

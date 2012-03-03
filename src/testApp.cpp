@@ -6,7 +6,7 @@ void testApp::setup(){
     
     //General Settings
     ofSetFrameRate(30);
-
+    //ofSetVerticalSync(true);
     
     //Grafik Settings
     ofEnableAlphaBlending();
@@ -16,14 +16,45 @@ void testApp::setup(){
     
     
     //Videoinput & Tracking
-    vidGrabber.setVerbose(true);
-	vidGrabber.setDeviceID(3);
-    vidGrabber.initGrabber(CAMWIDTH,CAMHEIGHT);
     
-    mColorImg.allocate(CAMWIDTH,CAMHEIGHT);
-    mGrayImage.allocate(CAMWIDTH,CAMHEIGHT);
-    mGrayDiff.allocate(CAMWIDTH,CAMHEIGHT);
-    mSaveBackground.allocate(CAMWIDTH,CAMHEIGHT);
+    #ifdef _USE_TWO_CAMS
+        for (int i = 0; i<2; i++) {
+            //752x480
+            //camera[i]setSize(700, 200);
+            //camera[i].setPosition((752 - 700) / 2, 100);
+            
+            camera[i].setFrameRate(30);
+            camera[i].setImageType(OF_IMAGE_GRAYSCALE);
+            camera[i].setFormat7(true);
+        }
+        
+        camera[1].setup("0xB09D0100ADA9AF");
+        camera[0].setup("0xB09D0100ADA978");
+        
+        mCamWidth = camera[0].getWidth();
+        mCamHeight = camera[0].getHeight();
+        
+        mColorImg.allocate(mCamWidth,mCamHeight);
+        
+        mGrayImage.allocate(mCamWidth*2,mCamHeight);
+        mGrayDiff.allocate(mCamWidth*2,mCamHeight);
+        mSaveBackground.allocate(mCamWidth*2,mCamHeight);
+        
+    #else
+        
+        mCamWidth = 320;
+        mCamHeight = 240;
+        
+        vidGrabber.setVerbose(true);
+        vidGrabber.setDeviceID(3);
+        vidGrabber.initGrabber(mCamWidth,mCamHeight);
+        
+        mColorImg.allocate(mCamWidth,mCamHeight);
+        mGrayImage.allocate(mCamWidth,mCamHeight);
+        mGrayDiff.allocate(mCamWidth,mCamHeight);
+        mSaveBackground.allocate(mCamWidth,mCamHeight);
+    
+    #endif
     
 	imageList.create();
 	
@@ -71,16 +102,47 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
     
-    vidGrabber.grabFrame();
-    
-    //Neuer Frame?
     bool bNewFrame = false;
-    bNewFrame = vidGrabber.isFrameNew();
-
-    if (bNewFrame){
+    
+    #ifdef _USE_TWO_CAMS
+        for (int i = 0; i<2; i++) {
+            if(camera[i].grabVideo(mCaptureImages[i])) {
+                camera[i].update();
+                bNewFrame = true;
+            }
+        }
+    #else
+        vidGrabber.grabFrame();
+        //Neuer Frame?
+        bNewFrame = vidGrabber.isFrameNew();
+    #endif
         
-        mColorImg.setFromPixels(vidGrabber.getPixels(), CAMWIDTH,CAMHEIGHT);
-        mGrayImage = mColorImg;
+    if (bNewFrame){
+                
+        #ifdef _USE_TWO_CAMS
+                
+                
+                mCaptureImages[0].setImageType(OF_IMAGE_COLOR);
+                ofxCvGrayscaleImage 	tmpGrayImage;
+                tmpGrayImage.allocate(mCamWidth, mCamHeight);
+                tmpGrayImage.setFromPixels(mCaptureImages[0].getPixels(), mCamWidth, mCamHeight);
+                
+                mGrayImage.setROI(0, 0, mCamWidth, mCamHeight);
+                mGrayImage = tmpGrayImage;
+                mGrayImage.resetROI();
+                
+                mCaptureImages[1].setImageType(OF_IMAGE_COLOR);
+                tmpGrayImage.setFromPixels(mCaptureImages[1].getPixels(), mCamWidth, mCamHeight);
+                
+                mGrayImage.setROI(mCamWidth, 0, mCamWidth*2, mCamHeight);
+                mGrayImage = tmpGrayImage;
+                mGrayImage.resetROI();
+        #else
+                
+                mColorImg.setFromPixels(vidGrabber.getPixels(), mCamWidth,mCamHeight);
+                mGrayImage = mColorImg;
+                
+        #endif
         
         // take the abs value of the difference between background and incoming and then threshold:
 		mGrayDiff.absDiff(mSaveBackground, mGrayImage);
@@ -90,7 +152,7 @@ void testApp::update(){
         
         // find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
 		// also, find holes is set to true so we will get interior contours as well....
-		mContourFinder.findContours(mGrayDiff, 20, (340*240)/3, 10, false);	// find holes
+		mContourFinder.findContours(mGrayDiff, 20, (mCamWidth*mCamHeight)/3, 10, false);	// find holes
         
         
         
@@ -113,7 +175,7 @@ void testApp::update(){
                 
                 if(newBlob) {
                     //Trackingpoint erstellen
-                    trackingPoints.push_back(TrackingPoint(tmpBlob.centroid));
+                    trackingPoints.push_back(TrackingPoint(tmpBlob.centroid, mCamWidth, mCamHeight));
                 }
   
             } //i-schleife
@@ -303,8 +365,8 @@ void testApp::draw(){
 
 	ofDisableAlphaBlending();
 	
-    float ch = CAMHEIGHT;
-    float cw = CAMWIDTH;
+    float ch = mCamWidth;
+    float cw = mCamWidth;
     int breite = scStop-scStart;
     int hoehe = (int) ((ch/cw)*breite);
     ofRectangle screenRect;
@@ -318,7 +380,7 @@ void testApp::draw(){
         //Draw Camera & Blobs
         ofSetColor(255,255,255);
         
-        vidGrabber.draw(screenRect);
+        mGrayImage.draw(screenRect);
         mContourFinder.draw(screenRect);
         
         // finally, a report:
@@ -369,13 +431,21 @@ void testApp::draw(){
             fragments[i].draw();
 		}
    
-    
-	
-		ofSetColor(255);
-		mGrayDiff.draw(0, 0);
-		mContourFinder.draw();
-    
-		vidGrabber.draw(400,0);
+        
+        
+        ofSetColor(255);
+        #ifdef _USE_TWO_CAMS
+            mGrayDiff.draw(0, 0, mCamWidth, mCamHeight/2);
+            mContourFinder.draw(0,0,mCamWidth, mCamHeight/2);
+            mGrayImage.draw(mCamWidth+20,0,mCamWidth, mCamHeight/2);
+        #else
+            mGrayDiff.draw(0, 0, mCamWidth, mCamHeight);
+            mContourFinder.draw(0,0,mCamWidth, mCamHeight);
+            mGrayImage.draw(mCamWidth+20,0,mCamWidth, mCamHeight);
+        #endif	
+        
+		
+
 		
     }
     
@@ -459,9 +529,6 @@ void testApp::keyPressed(int key){
 		case 'a':
             createAttractor();
             break;
-        case 's':
-            vidGrabber.videoSettings();
-            break;
         case 'f':
             ofToggleFullscreen();
             break;
@@ -483,6 +550,24 @@ void testApp::keyPressed(int key){
             break;
         case 't':
             mTracking = !mTracking;
+            break;
+        case 'i':
+            mThreshold--;
+            if(mThreshold < 0) mThreshold = 0;
+            cout << "Threshold: " << mThreshold << endl;
+            break;
+        case 'o':
+            mThreshold++;
+            cout << "Threshold: " << mThreshold << endl;
+            break;
+        case 'k':
+            mBlur--;
+            if(mBlur < 0) mBlur = 0;
+            cout << "Blur: " << mBlur << endl;
+            break;
+        case 'l':
+            mBlur++;
+            cout << "Blur: " << mBlur << endl;
             break;
 
 	}

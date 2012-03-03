@@ -4,18 +4,18 @@
 #include "ofMain.h"
 #include "displayObject.h"
 
-#define CAMWIDTH 320  
-#define CAMHEIGHT 240 
-
 class TrackingPoint: public DisplayObject {
     
 public:
     
-    TrackingPoint(ofVec2f _pos): DisplayObject() {
+    TrackingPoint(ofVec2f _pos, int _camWidth, int _camHeight): DisplayObject() {
         hasStructure = false;
         position = _pos;
         
         mMapPos = ofVec2f(0,0);
+        
+        mCamWidth = _camWidth;
+        mCamHeight = _camHeight;
     }
 	
 	void    update(ofVec2f _pos);
@@ -25,6 +25,9 @@ public:
     bool    hasStructure;
     
     ofVec2f mMapPos;
+    
+    int mCamWidth;
+    int mCamHeight;
 	
 };
 
