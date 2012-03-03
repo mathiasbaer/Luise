@@ -96,8 +96,16 @@ void testApp::setup(){
     }
     
 
-
     
+    //TreppenShape
+    mTreppen[0].setSeite(LINKS);
+    mTreppen[1].setSeite(RECHTS);
+    
+    mTreppen[0].initStufen(50, 70);
+    mTreppen[1].initStufen(50, 70);
+    
+    mTreppen[0].setPosition(ofVec2f(200,400));
+    mTreppen[1].setPosition(ofVec2f(400,400));
 }
 
 //--------------------------------------------------------------
@@ -496,6 +504,11 @@ void testApp::draw(){
 	ofSetColor(255, 255, 255);
 	screenTop.draw(0,0);
 	 */
+    
+    //Treppen für die kleinen Screens
+   // mTreppen[0].draw();
+   // mTreppen[1].draw();
+    
     
     
     // SETUP /////////////////////////////

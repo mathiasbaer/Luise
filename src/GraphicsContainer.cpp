@@ -91,7 +91,6 @@ void GraphicsContainer::draw() {
 	}
 	
 	steps++;
-    
 	//gBuffer.draw(GL_TRIANGLE_STRIP,0,4);
 	ofPopStyle();
 	

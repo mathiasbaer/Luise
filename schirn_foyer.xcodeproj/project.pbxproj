@@ -33,6 +33,8 @@
 		23B622D71501A53300AB551E /* PointGrey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23B622D21501A53300AB551E /* PointGrey.cpp */; };
 		23C5B06414FC05BD00FE80C6 /* displayObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C5B06314FC05BD00FE80C6 /* displayObject.cpp */; };
 		23C5B07314FC14C700FE80C6 /* fragment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C5B07214FC14C700FE80C6 /* fragment.cpp */; };
+		23D939D81501EBEE00646432 /* Stufe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D939D71501EBEE00646432 /* Stufe.cpp */; };
+		23D939DB1501F1C800646432 /* Treppe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D939DA1501F1C800646432 /* Treppe.cpp */; };
 		990C105214FE7E17004DA0F7 /* TrackingPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 990C105114FE7E17004DA0F7 /* TrackingPoint.cpp */; };
 		9949C6B014FC274500371963 /* ofxCvColorImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9949C69914FC274500371963 /* ofxCvColorImage.cpp */; };
 		9949C6B114FC274500371963 /* ofxCvContourFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9949C69C14FC274500371963 /* ofxCvContourFinder.cpp */; };
@@ -179,6 +181,10 @@
 		23C5B07114FC14BD00FE80C6 /* fragment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fragment.h; sourceTree = "<group>"; };
 		23C5B07214FC14C700FE80C6 /* fragment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fragment.cpp; sourceTree = "<group>"; };
 		23C5B07514FC178D00FE80C6 /* LFO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFO.h; sourceTree = "<group>"; };
+		23D939D61501EBE300646432 /* Stufe.h */ = {isa = PBXFileReference; fileEncoding = 4; path = Stufe.h; sourceTree = "<group>"; };
+		23D939D71501EBEE00646432 /* Stufe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Stufe.cpp; sourceTree = "<group>"; };
+		23D939D91501F1B600646432 /* Treppe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Treppe.h; sourceTree = "<group>"; };
+		23D939DA1501F1C800646432 /* Treppe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Treppe.cpp; sourceTree = "<group>"; };
 		990C105014FE7E17004DA0F7 /* TrackingPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackingPoint.h; sourceTree = "<group>"; };
 		990C105114FE7E17004DA0F7 /* TrackingPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackingPoint.cpp; sourceTree = "<group>"; };
 		9949C69814FC274500371963 /* ofxCvBlob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxCvBlob.h; path = ../../../addons/ofxOpenCv/src/ofxCvBlob.h; sourceTree = SOURCE_ROOT; };
@@ -599,6 +605,10 @@
 				994C5A0A1501041400A0CE49 /* Attractor.cpp */,
 				99645984150127D0009BF423 /* MeshObject.h */,
 				99645985150127D0009BF423 /* MeshObject.cpp */,
+				23D939D61501EBE300646432 /* Stufe.h */,
+				23D939D71501EBEE00646432 /* Stufe.cpp */,
+				23D939D91501F1B600646432 /* Treppe.h */,
+				23D939DA1501F1C800646432 /* Treppe.cpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -738,6 +748,8 @@
 				23B622D51501A53300AB551E /* Camera.cpp in Sources */,
 				23B622D61501A53300AB551E /* Grabber.cpp in Sources */,
 				23B622D71501A53300AB551E /* PointGrey.cpp in Sources */,
+				23D939D81501EBEE00646432 /* Stufe.cpp in Sources */,
+				23D939DB1501F1C800646432 /* Treppe.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

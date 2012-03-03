@@ -12,11 +12,14 @@
 #include "Attractor.h"
 #include "MeshObject.h"
 #include "ofxLibdc.h"
+#include "Treppe.h"
 
 //CONST
 #define RECORDPICTURES 8
 #define FRAGMENTNUMBER 500
 #define STRUCTURENUMBER 20
+#define LINKS 2
+#define RECHTS 1
 
 // Wenn 2 Kameras
 //#define _USE_TWO_CAMS
@@ -169,6 +172,8 @@ class testApp : public ofBaseApp{
         int         scHeight;
 
     
+        //Untere Screens
+        Treppe      mTreppen[2];
     
 };
 
