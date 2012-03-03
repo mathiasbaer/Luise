@@ -10,14 +10,25 @@ void Attractor::update() {
 	vel.set( cos(rotation)*speed, sin(rotation)*speed );
 	position += vel;
 	checkBoundries();
-	
-	hasEnough = false;
-	
-	if (satellites > maxSatellites){
-		cout << satellites << endl;
-		hasEnough = true;
+}
+
+void Attractor::addSatellite( ofVec2f _v ) {
+	satellites.push_back( _v );
+	numSatellites = satellites.size();
+}
+
+void Attractor::clearSatellites() {
+	satellites.clear();
+	numSatellites = 0;
+}
+
+bool Attractor::hasEnough() {
+	if (numSatellites > maxSatellites){
+		return true;
 	}
-	satellites = 0;
+	else {
+		return false;
+	}
 }
 
 void Attractor::draw() {

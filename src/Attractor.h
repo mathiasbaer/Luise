@@ -15,8 +15,7 @@ public:
 		position.set(0,0);
         rotation = 0;
 		speed = 10;
-		satellites = 0;
-		hasEnough = false;
+		numSatellites = 0;
 		maxSatellites = 30;
     }
     
@@ -24,13 +23,17 @@ public:
     void update();
     void draw();
 	void checkBoundries();
-	
-	bool hasEnough;
+	void addSatellite(ofVec2f _v);
+	void clearSatellites();
+	bool hasEnough();
+		
 	int maxSatellites;
 	float rotation;
 	float speed;
-	int satellites;
+	int numSatellites;
 		
+	std::vector<ofVec2f> satellites;
+	
 	ofVec2f position, vel;
 };
 

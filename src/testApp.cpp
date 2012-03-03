@@ -27,9 +27,13 @@ void testApp::setup(){
     
 	imageList.create();
 	
-	graphic.create();
+	attractorGraphics.create();
 	
 	background.loadImage("images/Bildschirmfoto 2012-03-02 um 19.25.26.png");
+	
+	screenTop.allocate(2048,768);
+	screenLeft.allocate(1048,768);
+	screenRight.allocate(1048,768);
 	
 	//blendmodeShader.load(<#string shaderName#>)
 	
@@ -259,30 +263,38 @@ void testApp::update(){
     //Update Fragments
     for ( int i=0; i<FRAGMENTNUMBER; i++ ) {
 		int attIdx = fragments[i].findAttractor( attractors );
-		if ( attIdx > -1 ) attractors[attIdx].satellites++;
+		if ( attIdx > -1 ) {
+			attractors[attIdx].addSatellite(fragments[i].position);
+		}
 		fragments[i].update();
     }
 	
 	// upadate attractors
 	for ( int i=0; i<attractors.size(); i++ ) {
         attractors[i].update();
+		
 		Attractor a = attractors[i];
-		if (a.hasEnough) {
+		if (a.hasEnough()) {
 			changeGraphic( a.position.x, a.position.y );
 		}
+		
+		attractors[i].clearSatellites();
     }
+	
+	
 	
 	
 	/////////////////////////////////////////////////
     // GraphicsContainer ////////////////////////////
     /////////////////////////////////////////////////	
 
-    graphic.update();
+    attractorGraphics.update();
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
 	
+	//screenTop.begin();
 	
 	ofEnableAlphaBlending();
     ofSetColor(255,255,255,20);
@@ -377,7 +389,7 @@ void testApp::draw(){
     }
 
 	// GrafphicsContainer
-	graphic.draw();
+	attractorGraphics.draw();
 	
 	/*
 	ofEnableBlendMode(OF_BLENDMODE_MULTIPLY);
@@ -387,6 +399,14 @@ void testApp::draw(){
 	ofDisableAlphaBlending();
 	ofDisableBlendMode();
 	*/
+	
+	/*
+	screenTop.end();
+	
+	
+	ofSetColor(255, 255, 255);
+	screenTop.draw(0,0);
+	 */
 }
 
 
@@ -428,7 +448,7 @@ void testApp::createAttractor() {
 
 void testApp::changeGraphic( float _x, float _y ) {
 	
-	graphic.init(imageList.getRandom(),_x, _y);
+	attractorGraphics.init(imageList.getRandom(),_x, _y);
 }
 
 

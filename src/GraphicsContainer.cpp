@@ -14,9 +14,8 @@ void GraphicsContainer::init( ofImage _img, float _x, float _y) {
 		speed = 5;
 		setImage( _img );
 		setPosition( _x,_y);
+		elapsedTime = ofGetElapsedTimef();
 	}
-	
-	elapsedTime = ofGetElapsedTimef();
 }
 
 void GraphicsContainer::setPosition( float x, float y ) {

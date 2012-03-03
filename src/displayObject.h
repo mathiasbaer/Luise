@@ -47,7 +47,7 @@ public:
     void setPosition( int x, int y );
 	void pos ( float x, float y );
     
-    // for graphic in structure mode
+    // for attractorGraphics in structure mode
     float           length; 
     float           rotation;
     float           targetDistance;

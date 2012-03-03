@@ -84,11 +84,16 @@ class testApp : public ofBaseApp{
         vector <ofxCvBlob> mLastBlobs;
         std::vector<TrackingPoint> trackingPoints;
 		
+		ofFbo screenTop;
+		ofFbo screenLeft;
+		ofFbo screenRight;
+	
 		// all images in bin/data/images. images folder not syncing with git somehow
 		ImageList imageList;
 	
-		// graphics: make vector/array later
-		GraphicsContainer graphic;
+		// attractorGraphicss: make vector/array later
+		GraphicsContainer attractorGraphics;
+		std::vector<GraphicsContainer> attractorGraphicss;
 		bool drawBuffer;
     
         //Fragmente & Structuren
@@ -97,7 +102,7 @@ class testApp : public ofBaseApp{
 	
 		std::vector<Attractor> attractors;
 		
-		ofShader blendmodeShader;
+		//ofShader blendmodeShader;
 
         //Setup Screen
         bool        setupMode;
