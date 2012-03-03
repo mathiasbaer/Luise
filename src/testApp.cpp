@@ -506,8 +506,8 @@ void testApp::draw(){
 	 */
     
     //Treppen für die kleinen Screens
-   // mTreppen[0].draw();
-   // mTreppen[1].draw();
+    mTreppen[0].draw();
+    mTreppen[1].draw();
     
     
     
@@ -694,6 +694,8 @@ void testApp::keyPressed(int key){
         case 'i': // MinBlobSize
         case 'o': // MaxBlobs
         case 'm': // MODUS
+        case 'h': // Treppe
+            
             lastKey = key;
             break;
         case '+':
@@ -710,9 +712,11 @@ void testApp::keyPressed(int key){
         break;
         case '1':
             if(lastKey == 'm') { modus = 1; };
+            if(lastKey == 'h') { keyOption = LINKS; };
         break; 
         case '2':
             if(lastKey == 'm') { modus = 2; };
+            if(lastKey == 'h') { keyOption = RECHTS; };
         break; 
         case '3':
             if(lastKey == 'm') { modus = 3; };
@@ -745,6 +749,15 @@ void testApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
+    
+    if(lastKey == 'h' && keyOption == LINKS) {
+        mTreppen[0].setPosition(ofVec2f(x,y));
+    }
+    
+    if(lastKey == 'h' && keyOption == RECHTS) {
+        mTreppen[1].setPosition(ofVec2f(x,y));
+    }
+    
 	std::vector<ofVec2f> tmp;
 	for (int i=0; i<20; i++) {
 		tmp.push_back(ofVec2f(ofRandom(ofGetWidth()),ofRandom(ofGetHeight())));

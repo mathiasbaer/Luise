@@ -18,8 +18,8 @@
 #define RECORDPICTURES 8
 #define FRAGMENTNUMBER 500
 #define STRUCTURENUMBER 20
-#define LINKS 2
-#define RECHTS 1
+#define LINKS 1
+#define RECHTS 2
 
 // Wenn 2 Kameras
 //#define _USE_TWO_CAMS
@@ -58,6 +58,8 @@ class testApp : public ofBaseApp{
             modus = 1;
             
             mTrackingFrame = 0;
+            
+            keyOption = 0;
         }
     
 		void setup();
@@ -167,6 +169,7 @@ class testApp : public ofBaseApp{
         bool        setupMode;
         int         modus;
         int         lastKey;
+        int         keyOption;
         int         scStart;
         int         scStop;
         int         scHeight;

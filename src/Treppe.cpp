@@ -10,7 +10,7 @@ void Treppe::setSeite(int _seite) {
 
 
 void Treppe::initStufen(int _w, int _h) {
-    for(int i = 1; i < STUFENANZAHL; i++) {
+    for(int i = 0; i < STUFENANZAHL; i++) {
         Stufen[i].init(mPosition, _w, _h);
     }
 }
@@ -21,7 +21,7 @@ void Treppe::setStufenAbstand(int _abstand) {
 }
 void Treppe::setStufenBreite(int _breite) {
     mStufenBreite = _breite;
-    for(int i = 1; i < STUFENANZAHL; i++) {
+    for(int i = 0; i < STUFENANZAHL; i++) {
         Stufen[i].mWidth = mStufenBreite;
     }
     setPosition(mPosition);
@@ -34,7 +34,7 @@ void Treppe::setPosition(ofVec2f _pos) {
     for(int i = 1; i < STUFENANZAHL; i++) {
         Stufen[i].mPosition.x = Stufen[i-1].mPosition.x + Stufen[i-1].mWidth;
         
-        if(mAlign == 1) { Stufen[i].mPosition.y = Stufen[i-1].mPosition.y - mStufenAbstand; }
+        if(mAlign == 2) { Stufen[i].mPosition.y = Stufen[i-1].mPosition.y - mStufenAbstand; }
         else { Stufen[i].mPosition.y = Stufen[i-1].mPosition.y + mStufenAbstand;  }
         
     }
