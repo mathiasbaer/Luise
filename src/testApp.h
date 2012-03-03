@@ -62,6 +62,12 @@ class testApp : public ofBaseApp{
 		void createStructure(ofVec2f _pos, int _n);
 		void createAttractor();
     
+        //SOUND
+        void audioReceived 	(float * input, int bufferSize, int nChannels); 
+
+        float * left;
+        float * right;
+        int 	bufferCounter;
 
         //Camera & Tracking
             

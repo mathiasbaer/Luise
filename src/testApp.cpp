@@ -248,6 +248,13 @@ void testApp::update(){
         mSavePicture = false;
     }
     
+    /////////////////////////////////////////////////
+    // Sound ////////////////////////////////////////
+    /////////////////////////////////////////////////	
+    ofSoundUpdate();
+    
+    mSoundControl.update();
+    
     
     
     /////////////////////////////////////////////////
@@ -522,6 +529,18 @@ void testApp::changeGraphic( std::vector<ofVec2f> _v ) {
 	attractorGraphics.setVertices(_v);
 }
 
+static float adder = 0;
+//--------------------------------------------------------------
+void testApp::audioReceived 	(float * input, int bufferSize, int nChannels){	
+	// samples are "interleaved"
+	for (int i = 0; i < bufferSize; i++){
+		left[i] = input[i*2];
+		//right[i] = input[i*2+1];
+		right[i] = left[i];
+	}
+	bufferCounter++;
+	
+}
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
