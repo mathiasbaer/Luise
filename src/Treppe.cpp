@@ -19,6 +19,14 @@ void Treppe::setStufenAbstand(int _abstand) {
     mStufenAbstand = _abstand;
     setPosition(mPosition);
 }
+
+void Treppe::setStufenHoehe(int _hoehe) {
+    mStufenHoehe = _hoehe;
+    for(int i = 0; i < STUFENANZAHL; i++) {
+        Stufen[i].setHeight(mStufenHoehe);
+    }
+}
+
 void Treppe::setStufenBreite(int _breite) {
     mStufenBreite = _breite;
     for(int i = 0; i < STUFENANZAHL; i++) {

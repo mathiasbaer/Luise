@@ -32,6 +32,7 @@ public:
     void setPosition(ofVec2f _pos);
     void setStufenAbstand(int _abstand);
     void setStufenBreite(int _breite);
+    void setStufenHoehe(int _hoehe);
     void draw();
     
     

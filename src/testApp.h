@@ -60,6 +60,7 @@ class testApp : public ofBaseApp{
             mTrackingFrame = 0;
             
             keyOption = 0;
+            mouseClickStart = ofVec2f(0,0);
         }
     
 		void setup();
@@ -173,6 +174,7 @@ class testApp : public ofBaseApp{
         int         scStart;
         int         scStop;
         int         scHeight;
+        ofVec2f     mouseClickStart;
 
     
         //Untere Screens

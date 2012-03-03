@@ -537,11 +537,17 @@ void testApp::draw(){
             
         }
         
+        //Lines
+        if(mouseClickStart != ofVec2f(0,0)) {
+            ofSetColor(255,0,0);
+            ofCircle(mouseClickStart.x, mouseClickStart.y, 10);
+            ofLine(mouseClickStart.x, mouseClickStart.y, mouseX, mouseY);
+        }
+        
         
         // finally, a report:
         
-        ofSetColor(0,0,0);
-        ofRect(0, 530, 600, 180);
+        char reportStr[1024];
         ofSetColor(0,255,0);
         ofDrawBitmapString("press ' ': load Settings\n"
                            "press s:   save Settings\n"
@@ -558,7 +564,6 @@ void testApp::draw(){
         
         
         ofSetColor(255,255,255);
-        char reportStr[1024];
         sprintf(reportStr, "STATUS\n\n"
                             "threshold %i \n"
                             "blur %i \n"
@@ -567,6 +572,17 @@ void testApp::draw(){
                             "blobs found %i\n"
                             "fps: %f", mThreshold, mBlur, mMinBlobsize, mMaxBlobs, mContourFinder.nBlobs, ofGetFrameRate());
         ofDrawBitmapString(reportStr, 300, 550);
+        
+        if(lastKey == 'h') {
+            ofSetColor(0,255,0);
+            sprintf(reportStr, "TREPPE - keyOption: %i\n\n"
+                               "press 1:  Pos Linke Treppe\n"
+                               "press 2:  Pos Rechte Treppe\n"
+                               "press 3:  Breite Treppenstufe\n"
+                               "press 4:  Hoehenabstand Treppenstufe\n"
+                               "press 5:  Hoehe  Treppenstufe\n", keyOption);
+            ofDrawBitmapString(reportStr, 500, 550);
+        }
     }
     
     
@@ -627,36 +643,65 @@ void testApp::audioReceived 	(float * input, int bufferSize, int nChannels){
 	
 }
 
-void testApp::loadSettings() {
+void testApp::saveSettings() {
     ofstream schreiben;
 	schreiben.open("settings.txt");
 	schreiben << mThreshold << ";";
 	schreiben << mBlur << ";";
     schreiben << mMinBlobsize << ";";
     schreiben << mMaxBlobs << ";";
+    //Treppe
+    schreiben << mTreppen[0].mPosition.x << ";";
+    schreiben << mTreppen[0].mPosition.y << ";";
+    schreiben << mTreppen[1].mPosition.x << ";";
+    schreiben << mTreppen[1].mPosition.y << ";";
+    schreiben << mTreppen[0].mStufenBreite << ";";
+    schreiben << mTreppen[0].mStufenAbstand << ";";
+    schreiben << mTreppen[0].mStufenHoehe << ";";
 	schreiben.close();
-    
-    ofImage loadImg;
-    loadImg.setImageType(OF_IMAGE_GRAYSCALE);
-    loadImg.loadImage("trackingBackground.png");
-
-    mSaveBackground.setFromPixels(loadImg.getPixels(), loadImg.width, loadImg.height);
     
 }
 
-void testApp::saveSettings() {
+void testApp::loadSettings() {
     ifstream lesen;
 	string data;
 	lesen.open("settings.txt");
 	getline(lesen,data,';');
-	mThreshold = ofToFloat(data);
+	mThreshold = ofToInt(data);
 	getline(lesen,data,';');
-	mBlur = ofToFloat(data);
+	mBlur = ofToInt(data);
     getline(lesen,data,';');
-	mMinBlobsize = ofToFloat(data);
+	mMinBlobsize = ofToInt(data);
     getline(lesen,data,';');
-	mMaxBlobs = ofToFloat(data);
+	mMaxBlobs = ofToInt(data);
+    //Treppe
+    getline(lesen,data,';');
+	mTreppen[0].mPosition.x = ofToInt(data);
+    getline(lesen,data,';');
+	mTreppen[0].mPosition.y = ofToInt(data);
+    getline(lesen,data,';');
+	mTreppen[1].mPosition.x = ofToInt(data);
+    getline(lesen,data,';');
+	mTreppen[1].mPosition.y = ofToInt(data);
+    getline(lesen,data,';');
+    mTreppen[0].setStufenBreite(ofToInt(data));
+    mTreppen[1].setStufenBreite(ofToInt(data));
+    getline(lesen,data,';');
+    mTreppen[0].setStufenAbstand(ofToInt(data));
+    mTreppen[1].setStufenAbstand(ofToInt(data));
+    getline(lesen,data,';');
+    mTreppen[0].setStufenHoehe(ofToInt(data));
+    mTreppen[1].setStufenHoehe(ofToInt(data));
 	lesen.close();
+    
+    //Load Background
+    ofImage loadImg;
+    loadImg.setImageType(OF_IMAGE_GRAYSCALE);
+    loadImg.loadImage("trackingBackground.png");
+    
+    mSaveBackground.setFromPixels(loadImg.getPixels(), loadImg.width, loadImg.height);
+    
+
 }
 
 //--------------------------------------------------------------
@@ -682,6 +727,7 @@ void testApp::keyPressed(int key){
             break;
         case 's':
             saveSettings();
+            lastKey = 's';
             break;    
         case 'b':
             mSavePicture = true;
@@ -720,7 +766,14 @@ void testApp::keyPressed(int key){
         break; 
         case '3':
             if(lastKey == 'm') { modus = 3; };
-        break;            
+            if(lastKey == 'h') { keyOption = 3; };
+        break;        
+        case '4':
+            if(lastKey == 'h') { keyOption = 4; };
+        break;
+        case '5':
+            if(lastKey == 'h') { keyOption = 5; };
+        break;    
 
 	}
 }
@@ -750,12 +803,20 @@ void testApp::mouseDragged(int x, int y, int button){
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
     
-    if(lastKey == 'h' && keyOption == LINKS) {
-        mTreppen[0].setPosition(ofVec2f(x,y));
-    }
-    
-    if(lastKey == 'h' && keyOption == RECHTS) {
-        mTreppen[1].setPosition(ofVec2f(x,y));
+    if(lastKey == 'h') {
+        switch (keyOption){
+            case LINKS:
+                mTreppen[0].setPosition(ofVec2f(x,y));
+            break;
+            case RECHTS:
+                mTreppen[1].setPosition(ofVec2f(x,y));
+            break;
+            case 3:
+            case 4:
+            case 5:
+                mouseClickStart.set(x, y);
+            break;
+        }
     }
     
 	std::vector<ofVec2f> tmp;
@@ -767,7 +828,31 @@ void testApp::mousePressed(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
-
+    
+    int dist = 0;
+    
+    if(lastKey == 'h') {
+        switch (keyOption){
+            case 3: // Breite Treppenstufe
+                dist = ABS(mouseClickStart.x - x);
+                mTreppen[0].setStufenBreite(dist);
+                mTreppen[1].setStufenBreite(dist);
+                mouseClickStart.set(0, 0);
+            break;
+            case 4: //Hoehenabstand Treppenstufe
+                dist = ABS(mouseClickStart.y - y);
+                mTreppen[0].setStufenAbstand(dist);
+                mTreppen[1].setStufenAbstand(dist);
+                mouseClickStart.set(0, 0);
+            break;
+            case 5: // Hoehe  Treppenstufe
+                dist = ABS(mouseClickStart.y - y);
+                mTreppen[0].setStufenHoehe(dist);
+                mTreppen[1].setStufenHoehe(dist);
+                mouseClickStart.set(0, 0);
+            break;
+        }
+    }    
 }
 
 //--------------------------------------------------------------

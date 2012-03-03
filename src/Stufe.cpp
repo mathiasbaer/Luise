@@ -7,6 +7,11 @@ void Stufe::init(ofVec2f _pos, int _w, int _h) {
     
 
 }
+
+void Stufe::setHeight(int _h) {
+    mHeight = mTargetH = curHeight = _h;
+}
+
 void Stufe::move(int _h, float _speed) {
     mTargetH = _h;
 }

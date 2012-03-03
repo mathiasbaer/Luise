@@ -21,6 +21,7 @@ public:
     }
     
     void init(ofVec2f _pos, int _w, int _h);
+    void setHeight(int _h);
     void move(int _h, float _speed);
     void update();
     
