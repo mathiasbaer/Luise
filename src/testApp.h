@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxSimpleGuiToo.h"
 #include "ofxOpenCv.h"
 
 #include "displayObject.h"
@@ -42,11 +41,28 @@ class testApp : public ofBaseApp{
 			mThreshold = 9;
 			mBlur = 8;
             
+            mVolume = 0;
+            mSmoothVolume = 0;
+            
+            hspeed=0;
+            lastvolume=0;
+            baaam=0;
+            
+            
+            mMinBlobsize = 500;
+            mMaxBlobs = 10;
+            
+            modus = 1;
+            
+            mTrackingFrame = 0;
         }
     
 		void setup();
 		void update();
 		void draw();
+    
+        void loadSettings();
+        void saveSettings();
 		
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -69,6 +85,23 @@ class testApp : public ofBaseApp{
         float * right;
         int 	bufferCounter;
 
+        int nBandsToGet;
+        float * fftSmoothed;
+
+    
+        float maxLevel;
+        float peaks[100];
+	
+
+        float mVolume;
+        float mSmoothVolume;
+    
+        //speeder helper
+        int hspeed;
+    
+        float lastvolume;
+        float baaam;
+    
         //Camera & Tracking
             
         int mCamWidth;
@@ -97,6 +130,9 @@ class testApp : public ofBaseApp{
         int         mBlur;
         bool        mSavePicture;
         bool        mTracking;
+        int         mMinBlobsize;
+        int         mMaxBlobs;
+        int         mTrackingFrame;
     
         //TEMP
         ofImage background;
@@ -126,6 +162,8 @@ class testApp : public ofBaseApp{
 
         //Setup Screen
         bool        setupMode;
+        int         modus;
+        int         lastKey;
         int         scStart;
         int         scStop;
         int         scHeight;

@@ -56,6 +56,27 @@ void testApp::setup(){
     
     #endif
     
+    
+    //Sound Input
+	ofSoundStreamSetup(0,2,this, 44100, 256, 4);	
+	left = new float[256];
+	right = new float[256];
+	bufferCounter = 0;
+    
+	maxLevel = 30;
+	for (int i = 0; i<100; i++) {
+		peaks[i] = 30;
+	}
+
+    //smooth volume
+    nBandsToGet = 128;
+	fftSmoothed = new float[8192];
+	for (int i = 0; i < 8192; i++){
+		fftSmoothed[i] = 0;
+	}
+
+    
+    
 	imageList.create();
 	
 	attractorGraphics.create();
@@ -68,26 +89,6 @@ void testApp::setup(){
 	
 	//blendmodeShader.load(<#string shaderName#>)
 	
-	
-/*
-    //GUI
-    //gui.addPage("setup");
-        
-    gui.addTitle("screen settings");
-	gui.addSlider("screen start", scStart, -2000, 2000); 
-	gui.addSlider("screen end", scStop, -2000, 2000); 
-    gui.addSlider("screen height", scHeight, -200, 1500); 
-    
-    //VideoSetup
-	gui.addTitle("video settings").setNewColumn(true);
-	gui.addSlider("threshold", mThreshold, 0, 200);
-    gui.addSlider("blur", mBlur, 0, 10);
-    gui.addContent("kamera", mColorImg);
-	gui.addContent("gray diff", mGrayDiff);
-    
-    gui.loadFromXML();
-	gui.show();
-*/
 
     //Create Fragments
     for (int i=0; i<FRAGMENTNUMBER; i++) {
@@ -152,7 +153,7 @@ void testApp::update(){
         
         // find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
 		// also, find holes is set to true so we will get interior contours as well....
-		mContourFinder.findContours(mGrayDiff, 20, (mCamWidth*mCamHeight)/3, 10, false);	// find holes
+		mContourFinder.findContours(mGrayDiff, mMinBlobsize, (mCamWidth*mCamHeight)/3, mMaxBlobs, false);	// find holes
         
         
         
@@ -173,9 +174,14 @@ void testApp::update(){
                     }	
                 }
                 
+                
                 if(newBlob) {
-                    //Trackingpoint erstellen
-                    trackingPoints.push_back(TrackingPoint(tmpBlob.centroid, mCamWidth, mCamHeight));
+                    int lastTracking = ofGetFrameNum() - mTrackingFrame;
+                    if(lastTracking > 10) {
+                        //Trackingpoint erstellen
+                        trackingPoints.push_back(TrackingPoint(tmpBlob.centroid, mCamWidth, mCamHeight));
+                        mTrackingFrame = ofGetFrameNum();
+                    }
                 }
   
             } //i-schleife
@@ -245,15 +251,90 @@ void testApp::update(){
     //Background Speichern
     if(mSavePicture) { 
         mSaveBackground = mGrayImage; 
+        ofImage saveImg;
+        saveImg.setFromPixels(mSaveBackground.getPixels(), mCamWidth, mCamHeight, OF_IMAGE_GRAYSCALE);
+        saveImg.saveImage("trackingBackground.png");
         mSavePicture = false;
     }
     
     /////////////////////////////////////////////////
     // Sound ////////////////////////////////////////
     /////////////////////////////////////////////////	
-    ofSoundUpdate();
+
     
-    mSoundControl.update();
+    //Volume Input    
+    int counter = 0;
+    mVolume = 0;
+    for (int i = 0; i < 256; i++){
+        if(left[i] > 0)
+        {
+            mVolume += left[i];
+            counter++;
+        }
+        if(right[i] > 0)
+        {
+            mVolume += right[i];
+            counter++;
+        }
+		
+    }
+    mVolume = mVolume/counter * 1000;
+     
+    //Smooth Volume Input
+    float * val = right;
+    for (int i = 0;i < nBandsToGet; i++){
+        
+        // let the smoothed calue sink to zero:
+        fftSmoothed[i] *= 0.96f;
+        
+        // take the max, either the smoothed or the incoming:
+        if (fftSmoothed[i] < val[i]) fftSmoothed[i] = val[i];
+        
+    }
+    
+    float dvol = 0;
+    for (int i = 0; i<3; i++) {
+        dvol += fftSmoothed[i];
+    }
+    
+    mSmoothVolume = dvol*100; 
+    //cout << mSmoothVolume << " - " << mVolume << endl;
+    
+    
+	
+    // Level spitzen errechnen
+    if(ofGetFrameNum() > 10) {
+        if (maxLevel < mVolume || (ofGetFrameNum() % 300) == 0) {
+            for (int i = 0; i<99; i++) {
+                peaks[i] = peaks[i+1];
+            }
+            peaks[99] = mVolume;
+			
+            // Durchschnitt berechnen
+			
+            float newLevel = 0;
+            for (int i = 0; i < 100; i++) {
+                newLevel += peaks[i];
+            }
+            maxLevel = newLevel / 100;
+        }
+    }
+	
+    //LEVEL MAPPEN /////////////////////////////////////
+    float mapLevel = ofMap(mVolume, 0, maxLevel, 0, 8, true);
+    
+    if(ofGetFrameNum()%10==0) lastvolume=ofMap(mVolume, 0, maxLevel, 0, 10, true);
+    
+    //speeder einschalten ///////////////////////////////////
+    
+    if(hspeed==0) {
+      if( (ofRandom(0,10)<3)  &&  (mapLevel > 9.5)) hspeed=30;  
+    }
+    if(hspeed<-100) hspeed=0;
+    if(hspeed>-100) --hspeed;
+    
+    
+    
     
     
     
@@ -378,67 +459,51 @@ void testApp::draw(){
     int hoehe = (int) ((ch/cw)*breite);
     ofRectangle screenRect;
     screenRect.set(scStart, scHeight-hoehe, breite, hoehe);
-   
-
-	
-
-    if(setupMode) {
-
-        //Draw Camera & Blobs
-        ofSetColor(255,255,255);
-        
-        mGrayImage.draw(screenRect);
-        mContourFinder.draw(screenRect);
-        
-        // finally, a report:
-
-        ofSetColor(0,255,0);
-        ofDrawBitmapString("press s: kamerasetup\npress f: toggle fullscreen", 20, 650);
-    
-        ofSetColor(255,255,255);
-        char reportStr[1024];
-        sprintf(reportStr, "bg subtraction and blob detection\nthreshold %i \nnum blobs found %i, fps: %f", mThreshold, mContourFinder.nBlobs, ofGetFrameRate());
-        ofDrawBitmapString(reportStr, 20, 600);
-    }
-    
-    //Streifen
-    
-    /*
-    ofSetColor(255, 0, 0, 50);
-    for (int i = 0; i < contourFinder.nBlobs; i++){
-        ofxCvBlob tmpBlob = contourFinder.blobs[i];
-        int blobXMapped = ofMap(tmpBlob.centroid.x, 0, CAMWIDTH, scStart, scStop);
-        int blobTopMapped = ofMap(tmpBlob.boundingRect.y, 0, CAMHIGHT, 0, screenRect.height);
-        
-        ofFill();
-        ofRect(blobXMapped, 0, 20, scHeight-blobTopMapped);
-    }*/
-    
-    
-   
-    int ln = structures.size();
-	for (int i=0; i<ln; i++) {
-        structures[i].draw();
-	}
-
-    
-    //GUI
-    //gui.draw();
-    
     
     if(!setupMode) {
-        //Draw Fragments
-		
-		// only for testing. not visible
-		for ( int i=0; i<attractors.size(); i++ ) {
-			//attractors[i].draw();
-		}
-		
-        for ( int i=0; i<FRAGMENTNUMBER; i++ ) {
-            fragments[i].draw();
-		}
-   
         
+       int ln = structures.size();
+       for (int i=0; i<ln; i++) {
+           structures[i].draw();
+       }
+       
+       
+       
+       // only for testing. not visible
+       for ( int i=0; i<attractors.size(); i++ ) {
+           //attractors[i].draw();
+       }
+       
+       for ( int i=0; i<FRAGMENTNUMBER; i++ ) {
+           fragments[i].draw();
+       }      
+		
+       // GrafphicsContainer
+       attractorGraphics.draw();
+		
+    }
+	
+	/*
+	ofEnableBlendMode(OF_BLENDMODE_MULTIPLY);
+	ofEnableAlphaBlending();
+	ofSetColor(255, 0, 0, 20);
+	ofRect(0, 0, ofGetWidth(), ofGetHeight());
+	ofDisableAlphaBlending();
+	ofDisableBlendMode();
+
+	screenTop.end();
+	
+	ofSetColor(255, 255, 255);
+	screenTop.draw(0,0);
+	 */
+    
+    
+    // SETUP /////////////////////////////
+    
+    if(setupMode) {
+        
+        //Draw Camera & Blobs
+        ofSetColor(255,255,255);
         
         ofSetColor(255);
         #ifdef _USE_TWO_CAMS
@@ -451,41 +516,48 @@ void testApp::draw(){
             mGrayImage.draw(mCamWidth+20,0,mCamWidth, mCamHeight);
         #endif	
         
-		
-
-		
+        
+        //Trackingpoints zeichnen
+        int ln_tp = trackingPoints.size();
+        for (int i = 0; i<ln_tp; i++) {
+            trackingPoints[i].draw();
+            
+        }
+        
+        
+        // finally, a report:
+        
+        ofSetColor(0,0,0);
+        ofRect(0, 530, 600, 180);
+        ofSetColor(0,255,0);
+        ofDrawBitmapString("press ' ': load Settings\n"
+                           "press s:   save Settings\n"
+                           "press b:   save Camera Picture\n"
+                           "press f:   toggle Fullscreen\n"
+                           "press m:   modus ( 1 / 2 / 3 )\n\n"
+                           "press e:   toggle SetupMode\n"
+                           "press z:   threshold -/+\n"
+                           "press u:   blur -/+\n"
+                           "press i:   minBlobSize -/+\n"
+                           "press o:   maxBlobs -/+\n"
+                           "press t:   start Tracking\n" , 20, 550);
+        
+        
+        
+        ofSetColor(255,255,255);
+        char reportStr[1024];
+        sprintf(reportStr, "STATUS\n\n"
+                            "threshold %i \n"
+                            "blur %i \n"
+                            "minBlobSize %i\n"
+                            "maxBlobs %i\n"
+                            "blobs found %i\n"
+                            "fps: %f", mThreshold, mBlur, mMinBlobsize, mMaxBlobs, mContourFinder.nBlobs, ofGetFrameRate());
+        ofDrawBitmapString(reportStr, 300, 550);
     }
     
-
-     
-    //Trackingpoints zeichnen
-    int ln_tp = trackingPoints.size();
-    for (int i = 0; i<ln_tp; i++) {
-        trackingPoints[i].draw();
-        
-    }
-
-	// GrafphicsContainer
-	attractorGraphics.draw();
-	
-	/*
-	ofEnableBlendMode(OF_BLENDMODE_MULTIPLY);
-	ofEnableAlphaBlending();
-	ofSetColor(255, 0, 0, 20);
-	ofRect(0, 0, ofGetWidth(), ofGetHeight());
-	ofDisableAlphaBlending();
-	ofDisableBlendMode();
-	*/
-	
-	/*
-	screenTop.end();
-	
-	
-	ofSetColor(255, 255, 255);
-	screenTop.draw(0,0);
-	 */
+    
 }
-
 
 
 
@@ -542,6 +614,38 @@ void testApp::audioReceived 	(float * input, int bufferSize, int nChannels){
 	
 }
 
+void testApp::loadSettings() {
+    ofstream schreiben;
+	schreiben.open("settings.txt");
+	schreiben << mThreshold << ";";
+	schreiben << mBlur << ";";
+    schreiben << mMinBlobsize << ";";
+    schreiben << mMaxBlobs << ";";
+	schreiben.close();
+    
+    ofImage loadImg;
+    loadImg.setImageType(OF_IMAGE_GRAYSCALE);
+    loadImg.loadImage("trackingBackground.png");
+
+    mSaveBackground.setFromPixels(loadImg.getPixels(), loadImg.width, loadImg.height);
+    
+}
+
+void testApp::saveSettings() {
+    ifstream lesen;
+	string data;
+	lesen.open("settings.txt");
+	getline(lesen,data,';');
+	mThreshold = ofToFloat(data);
+	getline(lesen,data,';');
+	mBlur = ofToFloat(data);
+    getline(lesen,data,';');
+	mMinBlobsize = ofToFloat(data);
+    getline(lesen,data,';');
+	mMaxBlobs = ofToFloat(data);
+	lesen.close();
+}
+
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
 
@@ -549,46 +653,57 @@ void testApp::keyPressed(int key){
 		case 'a':
             createAttractor();
             break;
-        case 'f':
-            ofToggleFullscreen();
-            break;
-        case 'e':
-            //gui.toggleDraw();
-            setupMode =! setupMode;
-            
-            break;
-        case 'u':
-            scStart = 0;
-            //gui.saveToXML();
-            break;
 		case 'p':
             //startTracking = true;
 			createStructure(ofVec2f(mouseX, mouseY), 70);
 			break;
-        case ' ':
-            mSavePicture = true;
+        ///////// AB HIER SINNVOLL !!!!! ////////
+        case 'f':      
+            ofToggleFullscreen();
             break;
+        case 'e':
+            setupMode =! setupMode;
+            break;
+        case ' ':
+            loadSettings();
+            break;
+        case 's':
+            saveSettings();
+            break;    
+        case 'b':
+            mSavePicture = true;
+            break;    
         case 't':
             mTracking = !mTracking;
             break;
-        case 'i':
-            mThreshold--;
-            if(mThreshold < 0) mThreshold = 0;
-            cout << "Threshold: " << mThreshold << endl;
+        case 'z': // Threshold
+        case 'u': // Blur
+        case 'i': // MinBlobSize
+        case 'o': // MaxBlobs
+        case 'm': // MODUS
+            lastKey = key;
             break;
-        case 'o':
-            mThreshold++;
-            cout << "Threshold: " << mThreshold << endl;
-            break;
-        case 'k':
-            mBlur--;
-            if(mBlur < 0) mBlur = 0;
-            cout << "Blur: " << mBlur << endl;
-            break;
-        case 'l':
-            mBlur++;
-            cout << "Blur: " << mBlur << endl;
-            break;
+        case '+':
+            if(lastKey == 'z') {  mThreshold++; }
+            else if(lastKey == 'u') {  mBlur++; }
+            else if(lastKey == 'o') {  mMaxBlobs++; }
+            else if(lastKey == 'i') {  mMinBlobsize+=5; }
+        break;
+        case '-':
+            if(lastKey == 'z') {  mThreshold--; if(mThreshold < 0) mThreshold = 0; }
+            else if(lastKey == 'u') {  mBlur--; if(mBlur < 0) mBlur = 0; }
+            else if(lastKey == 'o') {  mMaxBlobs--; if(mMaxBlobs < 0) mMaxBlobs = 0; }
+            else if(lastKey == 'i') {  mMinBlobsize--; if(mMinBlobsize < 0) mMinBlobsize = 0; }
+        break;
+        case '1':
+            if(lastKey == 'm') { modus = 1; };
+        break; 
+        case '2':
+            if(lastKey == 'm') { modus = 2; };
+        break; 
+        case '3':
+            if(lastKey == 'm') { modus = 3; };
+        break;            
 
 	}
 }
