@@ -77,10 +77,20 @@ void GraphicsContainer::draw() {
 	
 	// MESH DRAW
 	ofPushStyle();
-	ofSetColor(255, 0, 0);
-    image.getTextureReference().bind();
-    testMesh.draw();
-    image.getTextureReference().unbind();
+	
+	if (steps < 10) {
+		ofPushMatrix();
+			glTranslated(position.x, position.y, 0);
+			ofEnableBlendMode(OF_BLENDMODE_SCREEN);
+				ofSetColor(255, 255, 255, 100);
+				image.getTextureReference().bind();
+				testMesh.draw();
+				image.getTextureReference().unbind();
+			ofDisableBlendMode();
+		ofPopMatrix();
+	}
+	
+	steps++;
     
 	//gBuffer.draw(GL_TRIANGLE_STRIP,0,4);
 	ofPopStyle();
